@@ -1,1 +1,0 @@
-import{Y as u,H as _,a9 as o,E as t,X as g,aa as p,ab as i,Z as l,_ as d,R as E}from"./HMY-OBiG.js";function v(n,r){let a=null,f=t;var s;if(t){a=E;for(var e=g(document.head);e!==null&&(e.nodeType!==p||e.data!==n);)e=i(e);if(e===null)l(!1);else{var y=i(e);e.remove(),d(y)}}t||(s=document.head.appendChild(u()));try{_(()=>r(s),o)}finally{f&&(l(!0),d(a))}}export{v as h};
