@@ -1,0 +1,1 @@
+import{B as t,a6 as b,L as h,a7 as k,a8 as B}from"./HMY-OBiG.js";function u(r,a){return r===a||r?.[B]===a}function T(r={},a,f,L){return t(()=>{var i,s;return b(()=>{i=s,s=[],h(()=>{r!==f(...s)&&(a(r,...s),i&&u(f(...i),r)&&a(null,...i))})}),()=>{k(()=>{s&&u(f(...s),r)&&a(null,...s)})}}),r}export{T as b};

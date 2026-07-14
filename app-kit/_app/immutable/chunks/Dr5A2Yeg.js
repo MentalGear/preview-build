@@ -1,0 +1,1 @@
+import{m as n}from"./HMY-OBiG.js";class o{#e;#r;constructor(e,r){this.#e=e,this.#r=r,this.handler=this.handler.bind(this),n(this.handler)}handler(){let e=0;const r=this.#e();if(!r)return;const s=new ResizeObserver(()=>{cancelAnimationFrame(e),e=window.requestAnimationFrame(this.#r)});return s.observe(r),()=>{window.cancelAnimationFrame(e),s.unobserve(r)}}}export{o as S};
