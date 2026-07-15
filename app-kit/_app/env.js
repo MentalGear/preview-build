@@ -1,1 +1,1 @@
-export const env={"PUBLIC_PHOTOS_URL":"/preview-build/app-kit/photos-app/"}
+export const env={"PUBLIC_NOTES_URL":"/preview-build/app-kit/notes-app/","PUBLIC_WIKIPEDIA_URL":"/preview-build/app-kit/wikipedia-app/","PUBLIC_PHOTOS_URL":"/preview-build/app-kit/photos-app/"}
