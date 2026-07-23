@@ -1,1 +1,0 @@
-const f={slate:"#8a8a8e",yellow:"#e8b923",green:"#34c759",blue:"#0a84ff",purple:"#8b5cf6",pink:"#ff2d92",orange:"#ff9500"},a=new Intl.RelativeTimeFormat("en",{numeric:"auto"}),r=new Intl.DateTimeFormat("en",{month:"short",day:"numeric",year:"numeric"});function c(e,t){const n=Math.round((e-t)/864e5);return n>-7?a.format(n,"day"):r.format(new Date(e))}export{f as C,c as r};
