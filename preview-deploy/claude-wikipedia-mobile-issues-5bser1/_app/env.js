@@ -1,0 +1,1 @@
+export const env={"PUBLIC_NOTES_URL":"/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/notes-app/","PUBLIC_WIKIPEDIA_URL":"/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/wikipedia-app/","PUBLIC_PHOTOS_URL":"/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/photos-app/"}

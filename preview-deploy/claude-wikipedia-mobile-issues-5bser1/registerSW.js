@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/sw.js', { scope: '/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/' })})}
