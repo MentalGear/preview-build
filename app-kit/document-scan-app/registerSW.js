@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/app-kit/document-scan-app/sw.js', { scope: '/preview-build/app-kit/document-scan-app/' })})}
