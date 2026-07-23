@@ -1,0 +1,1 @@
+import{d as e,g as o,b as s}from"./C-Zr33nj.js";class i{#t=e("pill");get zoomSwitchStyle(){return o(this.#t)}set zoomSwitchStyle(t){s(this.#t,t,!0)}#e=e("overlay");get lightboxInfoMode(){return o(this.#e)}set lightboxInfoMode(t){s(this.#e,t,!0)}}const l=new i;export{l as d};

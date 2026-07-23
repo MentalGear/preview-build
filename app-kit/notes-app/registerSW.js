@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/app-kit/notes-app/sw.js', { scope: '/preview-build/app-kit/notes-app/' })})}
