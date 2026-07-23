@@ -1,0 +1,1 @@
+export const env={"PUBLIC_NOTES_URL":"/preview-build/preview-deploy/claude-inspector-panel-redesign/notes-app/","PUBLIC_WIKIPEDIA_URL":"/preview-build/preview-deploy/claude-inspector-panel-redesign/wikipedia-app/","PUBLIC_PHOTOS_URL":"/preview-build/preview-deploy/claude-inspector-panel-redesign/photos-app/"}
