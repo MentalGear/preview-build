@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_111tssz?.base??"/preview-build/preview-deploy/claude-photo-text-app-design-j8cy8l/document-scan-app",e=globalThis.__sveltekit_111tssz?.assets??s??"";export{e as a,s as b};
