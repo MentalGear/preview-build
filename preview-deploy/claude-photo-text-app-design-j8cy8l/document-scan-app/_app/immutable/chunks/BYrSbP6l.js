@@ -1,0 +1,1 @@
+import{m as n,q as r,h as c,e as s,g as u}from"./DE6W2Zv0.js";let t=r(!1);if(typeof matchMedia<"u"){const e=matchMedia("(prefers-reduced-motion: reduce)");n(t,e.matches,!0),e.addEventListener("change",a=>n(t,a.matches,!0))}function d(){return c(t)}function f(e){s(()=>u(()=>e()))}export{f as o,d as p};
