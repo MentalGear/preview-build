@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_smae38?.base??"/preview-build/preview-deploy/claude-lightbox-promoted-kit-composite-pttdkf/wikipedia-app",s=globalThis.__sveltekit_smae38?.assets??e??"";export{s as a,e as b};

@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_6jwx78?.base??"/preview-build/preview-deploy/claude-lightbox-promoted-kit-composite-pttdkf/document-scan-app",s=globalThis.__sveltekit_6jwx78?.assets??e??"";export{s as a,e as b};

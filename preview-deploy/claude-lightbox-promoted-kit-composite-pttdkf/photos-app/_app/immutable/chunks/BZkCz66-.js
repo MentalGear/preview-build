@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_187313t?.base??"/preview-build/preview-deploy/claude-lightbox-promoted-kit-composite-pttdkf/photos-app",t=globalThis.__sveltekit_187313t?.assets??s??"";export{t as a,s as b};
