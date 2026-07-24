@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1hnpe1g?.base??"/preview-build/preview-deploy/claude-wikipedia-mobile-issues-5bser1/wikipedia-app",s=globalThis.__sveltekit_1hnpe1g?.assets??e??"";export{s as a,e as b};
