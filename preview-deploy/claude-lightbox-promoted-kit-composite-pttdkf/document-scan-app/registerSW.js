@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-lightbox-promoted-kit-composite-pttdkf/document-scan-app/sw.js', { scope: '/preview-build/preview-deploy/claude-lightbox-promoted-kit-composite-pttdkf/document-scan-app/' })})}
