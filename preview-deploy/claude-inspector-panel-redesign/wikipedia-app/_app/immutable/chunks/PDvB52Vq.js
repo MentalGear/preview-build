@@ -1,0 +1,1 @@
+import"./DsnmJJEf.js";import{s as e,r as p}from"./DCxz2KO4.js";import{I as n}from"./C-huRYDc.js";function c(o,s){let r=p(s,["$$slots","$$events","$$legacy"]);const t=[["path",{d:"M5 12h14"}]];n(o,e({name:"minus"},()=>r,{get iconNode(){return t}}))}export{c as M};
