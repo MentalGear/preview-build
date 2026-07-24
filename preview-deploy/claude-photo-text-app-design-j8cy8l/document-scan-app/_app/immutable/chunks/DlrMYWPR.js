@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_qcrees?.base??"/preview-build/preview-deploy/claude-photo-text-app-design-j8cy8l/document-scan-app",s=globalThis.__sveltekit_qcrees?.assets??e??"";export{s as a,e as b};
