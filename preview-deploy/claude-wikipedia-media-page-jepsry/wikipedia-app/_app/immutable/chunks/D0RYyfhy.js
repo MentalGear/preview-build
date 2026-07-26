@@ -1,0 +1,1 @@
+import"./DsnmJJEf.js";import{s as t,r as p}from"./DS_cDHDs.js";import{I as c}from"./Cy45nqYg.js";function m(o,e){let r=p(e,["$$slots","$$events","$$legacy"]);const s=[["path",{d:"M20 6 9 17l-5-5"}]];c(o,t({name:"check"},()=>r,{get iconNode(){return s}}))}export{m as C};
