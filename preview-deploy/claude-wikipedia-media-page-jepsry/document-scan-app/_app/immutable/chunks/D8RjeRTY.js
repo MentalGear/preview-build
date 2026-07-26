@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1ihysuo?.base??"/preview-build/preview-deploy/claude-wikipedia-media-page-jepsry/document-scan-app",s=globalThis.__sveltekit_1ihysuo?.assets??e??"";export{s as a,e as b};
