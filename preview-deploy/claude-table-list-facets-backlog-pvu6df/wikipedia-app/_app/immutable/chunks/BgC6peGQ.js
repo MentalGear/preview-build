@@ -1,0 +1,1 @@
+const s=globalThis.__sveltekit_kgwsfz?.base??"/preview-build/preview-deploy/claude-table-list-facets-backlog-pvu6df/wikipedia-app",e=globalThis.__sveltekit_kgwsfz?.assets??s??"";export{e as a,s as b};
