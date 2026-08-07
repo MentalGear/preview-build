@@ -1,0 +1,1 @@
+import{ad as c,g as i,$ as n,L as f,h as u,ae as s,a8 as o}from"./ZIvRuFGn.js";function d(a){let e=0,r=n(0),t;return()=>{c()&&(i(r),f(()=>(e===0&&(t=u(()=>a(()=>s(r)))),e+=1,()=>{o(()=>{e-=1,e===0&&(t?.(),t=void 0,s(r))})})))}}export{d as c};
