@@ -6,7 +6,7 @@
       "chunk": 1,
       "file": "chunks/dictionary-1.json",
       "count": 5000,
-      "size_bytes": 2838466,
+      "size_bytes": 2841732,
       "rank_from": 1,
       "rank_to": 3726
     },
@@ -14,7 +14,7 @@
       "chunk": 2,
       "file": "chunks/dictionary-2.json",
       "count": 10000,
-      "size_bytes": 4291890,
+      "size_bytes": 4303821,
       "rank_from": 3726,
       "rank_to": 11656
     },
@@ -22,7 +22,7 @@
       "chunk": 3,
       "file": "chunks/dictionary-3.json",
       "count": 20000,
-      "size_bytes": 7785866,
+      "size_bytes": 7825866,
       "rank_from": 11657,
       "rank_to": 30461
     },
@@ -30,7 +30,7 @@
       "chunk": 4,
       "file": "chunks/dictionary-4.json",
       "count": 25000,
-      "size_bytes": 9598649,
+      "size_bytes": 9648649,
       "rank_from": 30461,
       "rank_to": 58247
     },
@@ -38,7 +38,7 @@
       "chunk": 5,
       "file": "chunks/dictionary-5.json",
       "count": 30000,
-      "size_bytes": 11340273,
+      "size_bytes": 11382385,
       "rank_from": 58248,
       "rank_to": 76004
     },
@@ -46,7 +46,7 @@
       "chunk": 6,
       "file": "chunks/dictionary-6.json",
       "count": 24735,
-      "size_bytes": 9290357,
+      "size_bytes": 9323387,
       "rank_from": null,
       "rank_to": null
     }
