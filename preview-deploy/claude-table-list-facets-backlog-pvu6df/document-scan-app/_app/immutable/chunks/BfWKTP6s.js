@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_ibh9ko?.base??"/preview-build/preview-deploy/claude-table-list-facets-backlog-pvu6df/document-scan-app",e=globalThis.__sveltekit_ibh9ko?.assets??s??"";export{e as a,s as b};
