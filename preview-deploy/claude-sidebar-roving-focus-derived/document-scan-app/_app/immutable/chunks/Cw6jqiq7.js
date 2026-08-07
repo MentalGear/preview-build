@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1ur31cl?.base??"/preview-build/preview-deploy/claude-sidebar-roving-focus-derived/document-scan-app",s=globalThis.__sveltekit_1ur31cl?.assets??e??"";export{s as a,e as b};

@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-sidebar-roving-focus-derived/photos-app/sw.js', { scope: '/preview-build/preview-deploy/claude-sidebar-roving-focus-derived/photos-app/' })})}
