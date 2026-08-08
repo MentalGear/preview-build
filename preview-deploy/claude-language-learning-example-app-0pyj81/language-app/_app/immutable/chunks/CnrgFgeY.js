@@ -1,1 +1,0 @@
-import"./DsnmJJEf.js";import{f as t,k as i,t as m,b as p,d as f,r as l}from"./qbi6-nDV.js";import{s as d}from"./DAOeoSEB.js";import{p as c}from"./Bc9hFa-t.js";var n=t("<div><!></div>");function x(e,s){let o=c(s,"class",3,"");var a=n(),r=f(a);i(r,()=>s.children),l(a),m(()=>d(a,1,`min-h-0 flex-1 overflow-y-auto ${o()??""}`)),p(e,a)}export{x as P};

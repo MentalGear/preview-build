@@ -1,0 +1,1 @@
+const a=globalThis.__sveltekit_919maf?.base??"/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/language-app",e=globalThis.__sveltekit_919maf?.assets??a??"";export{e as a,a as b};
