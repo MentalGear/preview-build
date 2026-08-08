@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_17rvye4?.base??"/preview-build/preview-deploy/claude-zoomstage-gesture-coverage/document-scan-app",s=globalThis.__sveltekit_17rvye4?.assets??e??"";export{s as a,e as b};
