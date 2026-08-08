@@ -1,0 +1,1 @@
+import{ab as c,g as i,J as n,a1 as f,j as u,ac as a,a6 as o}from"./Dys4woqp.js";function m(s){let e=0,r=f(0),t;return()=>{c()&&(i(r),n(()=>(e===0&&(t=u(()=>s(()=>a(r)))),e+=1,()=>{o(()=>{e-=1,e===0&&(t?.(),t=void 0,a(r))})})))}}export{m as c};
