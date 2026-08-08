@@ -1,1 +1,0 @@
-import{ac as c,g as i,_ as n,K as f,d as u,ad as s,a7 as o}from"./C5VwVCWI.js";function _(a){let e=0,r=n(0),t;return()=>{c()&&(i(r),f(()=>(e===0&&(t=u(()=>a(()=>s(r)))),e+=1,()=>{o(()=>{e-=1,e===0&&(t?.(),t=void 0,s(r))})})))}}export{_ as c};
