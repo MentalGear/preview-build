@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-app-menu-sidebar-resize-3peh3f/sw.js', { scope: '/preview-build/preview-deploy/claude-app-menu-sidebar-resize-3peh3f/' })})}
