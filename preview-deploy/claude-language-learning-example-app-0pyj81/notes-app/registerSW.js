@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/notes-app/sw.js', { scope: '/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/notes-app/' })})}
