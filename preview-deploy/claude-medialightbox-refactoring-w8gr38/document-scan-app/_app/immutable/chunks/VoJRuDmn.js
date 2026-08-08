@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1dww387?.base??"/preview-build/preview-deploy/claude-medialightbox-refactoring-w8gr38/document-scan-app",s=globalThis.__sveltekit_1dww387?.assets??e??"";export{s as a,e as b};
