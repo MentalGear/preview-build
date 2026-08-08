@@ -1,0 +1,1 @@
+const t=null,o=null,e=globalThis.__vitest_worker__?.ctx?.pool;throw new Error("vitest/browser can be imported only inside the Browser Mode. "+(e?`Your test is running in ${e} pool. Make sure your regular tests are excluded from the "test.include" glob pattern.`:"Instead, it was imported outside of Vitest."));export{t as page,o as userEvent};

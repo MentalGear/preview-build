@@ -1,0 +1,1 @@
+import{m as s,r as n}from"./iframe-DoUpZrGJ.js";import{I as p}from"./Icon-Bw7N4Q7c.js";function i(o,r){let e=n(r,["$$slots","$$events","$$legacy"]);const t=[["path",{d:"m9 18 6-6-6-6"}]];p(o,s({name:"chevron-right"},()=>e,{get iconNode(){return t}}))}export{i as C};
