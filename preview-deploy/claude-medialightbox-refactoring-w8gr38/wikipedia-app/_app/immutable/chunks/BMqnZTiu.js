@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_155rx33?.base??"/preview-build/preview-deploy/claude-medialightbox-refactoring-w8gr38/wikipedia-app",s=globalThis.__sveltekit_155rx33?.assets??e??"";export{s as a,e as b};
