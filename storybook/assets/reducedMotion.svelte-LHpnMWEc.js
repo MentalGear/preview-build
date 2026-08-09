@@ -1,0 +1,1 @@
+import{g as d,e as s,d as r}from"./iframe-CneAOyCj.js";let e=s(!1);if(typeof matchMedia<"u"){const t=matchMedia("(prefers-reduced-motion: reduce)");r(e,t.matches,!0),t.addEventListener("change",a=>r(e,a.matches,!0))}function n(){return d(e)}export{n as p};

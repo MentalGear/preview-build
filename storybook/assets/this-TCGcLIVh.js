@@ -1,1 +1,0 @@
-import{L as b,I as h,H as k,M as L,S as M}from"./iframe-DoUpZrGJ.js";function u(r,i){return r===i||r?.[M]===i}function c(r={},i,a,S){return b(()=>{var f,s;return h(()=>{f=s,s=S?.()||[],k(()=>{r!==a(...s)&&(i(r,...s),f&&u(a(...f),r)&&i(null,...f))})}),()=>{L(()=>{s&&u(a(...s),r)&&i(null,...s)})}}),r}export{c as b};
