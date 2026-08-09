@@ -1,1 +1,0 @@
-import{b as n}from"./ChUIchya.js";const r=s=>`${n}${s}`,h=s=>s.slice(n.length)||"/";function f(s){return s.map(e=>({...e,items:e.items.map(a=>"href"in a?{...a,href:r(a.href)}:a)}))}export{r as h,f as n,h as s};
