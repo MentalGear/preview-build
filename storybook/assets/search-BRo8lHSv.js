@@ -1,1 +1,0 @@
-import{m as c,r as t}from"./iframe-CneAOyCj.js";import{I as p}from"./Icon-6JA8irOf.js";function m(r,o){let e=t(o,["$$slots","$$events","$$legacy"]);const s=[["path",{d:"m21 21-4.34-4.34"}],["circle",{cx:"11",cy:"11",r:"8"}]];p(r,c({name:"search"},()=>e,{get iconNode(){return s}}))}export{m as S};
