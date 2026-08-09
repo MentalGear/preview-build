@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hsk-extract &middot; annotate</title>
+<!-- An explicit empty favicon stops the browser's automatic /favicon.ico
+     request from 404ing -- harmless, but it shows up as a console error and
+     the browser test suite asserts the page loads with none. -->
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div id="brand">hsk-extract <span>annotate</span></div>
+    <label>Book
+      <select id="bookSelect"></select>
+    </label>
+    <div id="pagenav">
+      <button id="prevPage" title="Previous page">&larr;</button>
+      <input id="pageInput" type="number" min="1" value="1">
+      <span id="pageOf"></span>
+      <button id="nextPage" title="Next page">&rarr;</button>
+    </div>
+    <div id="pending"></div>
+    <div id="exportWrap">
+      <button id="exportToggle">Export &#9662;</button>
+      <div id="exportMenu" hidden>
+        <button id="exportCorrections">corrections.json (current book)</button>
+        <button id="exportComponent">per-component JSON (selected type)</button>
+        <button id="exportCsv">regions.csv (all books)</button>
+        <button id="exportAll">all corrections (every page, every book)</button>
+      </div>
+    </div>
+  </header>
+
+  <nav id="components">
+    <h2>Components</h2>
+    <div id="componentCount"></div>
+    <ol id="componentList"></ol>
+    <div id="instancePanel" hidden>
+      <h2 id="instanceHeading"></h2>
+      <button id="clearFilter">&larr; all components</button>
+      <ol id="instanceList"></ol>
+    </div>
+  </nav>
+
+  <main id="stage">
+    <div id="wrap">
+      <img id="page" alt="page render">
+    </div>
+  </main>
+
+  <aside id="inspector">
+    <h2>Selected</h2>
+    <select id="role"></select>
+    <table id="info"></table>
+    <button id="del">Delete / restore <kbd>Del</kbd></button>
+    <h2>Actions</h2>
+    <button id="add">Add box <kbd>N</kbd></button>
+    <h2>Keys</h2>
+    <ul>
+      <li><kbd>click</kbd> select &middot; <kbd>drag</kbd> move &middot; corner to resize</li>
+      <li><kbd>N</kbd> new box &middot; <kbd>Del</kbd> delete</li>
+      <li><kbd>[</kbd> / <kbd>]</kbd> prev / next page &middot; <kbd>Esc</kbd> deselect</li>
+    </ul>
+  </aside>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
