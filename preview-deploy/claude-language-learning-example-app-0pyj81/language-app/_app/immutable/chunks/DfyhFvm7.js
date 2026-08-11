@@ -1,1 +1,0 @@
-import{s as t,r as p}from"./CeoJZaoL.js";import{I as c}from"./AACC8d1w.js";function $(o,e){let s=p(e,["$$slots","$$events","$$legacy"]);const r=[["path",{d:"M20 6 9 17l-5-5"}]];c(o,t({name:"check"},()=>s,{get iconNode(){return r}}))}export{$ as C};
