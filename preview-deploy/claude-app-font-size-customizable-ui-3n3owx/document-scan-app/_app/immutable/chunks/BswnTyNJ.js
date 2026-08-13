@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_fpqdry?.base??"/preview-build/preview-deploy/claude-app-font-size-customizable-ui-3n3owx/document-scan-app",e=globalThis.__sveltekit_fpqdry?.assets??s??"";export{e as a,s as b};
