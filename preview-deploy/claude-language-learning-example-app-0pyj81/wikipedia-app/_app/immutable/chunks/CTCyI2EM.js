@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_125np5o?.base??"/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/wikipedia-app",a=globalThis.__sveltekit_125np5o?.assets??e??"";export{a,e as b};

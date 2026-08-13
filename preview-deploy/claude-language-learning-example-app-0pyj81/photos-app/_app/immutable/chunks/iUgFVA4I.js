@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1mp9tf4?.base??"/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/photos-app",s=globalThis.__sveltekit_1mp9tf4?.assets??e??"";export{s as a,e as b};
