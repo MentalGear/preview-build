@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_v5k0bg?.base??"/preview-build/preview-deploy/claude-app-menu-sidebar-resize-3peh3f/document-scan-app",s=globalThis.__sveltekit_v5k0bg?.assets??e??"";export{s as a,e as b};
