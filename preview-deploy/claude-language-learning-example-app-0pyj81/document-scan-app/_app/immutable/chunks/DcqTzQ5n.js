@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_vm1jbm?.base??"/preview-build/preview-deploy/claude-language-learning-example-app-0pyj81/document-scan-app",a=globalThis.__sveltekit_vm1jbm?.assets??e??"";export{a,e as b};
