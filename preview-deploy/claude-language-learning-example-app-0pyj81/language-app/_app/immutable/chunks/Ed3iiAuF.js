@@ -1,0 +1,1 @@
+import{b as e}from"./D7xX_nTC.js";const n=s=>`${e}${s}`,h=()=>e?e.replace(/\/[^/]+$/,"/"):"/",f=s=>s.slice(e.length)||"/";function c(s){return s.map(r=>({...r,items:r.items.map(a=>"href"in a?{...a,href:n(a.href)}:a)}))}export{h as a,n as h,c as n,f as s};
