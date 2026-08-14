@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_580g2e?.base??"/preview-build/preview-deploy/claude-app-font-size-customizable-ui-3n3owx/photos-app",s=globalThis.__sveltekit_580g2e?.assets??e??"";export{s as a,e as b};

@@ -1,0 +1,1 @@
+const s=globalThis.__sveltekit_1f53app?.base??"/preview-build/preview-deploy/claude-app-font-size-customizable-ui-3n3owx/document-scan-app",e=globalThis.__sveltekit_1f53app?.assets??s??"";export{e as a,s as b};
