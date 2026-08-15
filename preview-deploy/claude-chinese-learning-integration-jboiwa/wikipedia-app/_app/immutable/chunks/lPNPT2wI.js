@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_cuvqxo?.base??"/preview-build/preview-deploy/claude-chinese-learning-integration-jboiwa/wikipedia-app",s=globalThis.__sveltekit_cuvqxo?.assets??e??"";export{s as a,e as b};
