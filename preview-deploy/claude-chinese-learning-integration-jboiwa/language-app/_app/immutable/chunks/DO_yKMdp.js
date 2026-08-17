@@ -1,1 +1,0 @@
-import{s,r as e}from"./DK9X2eY3.js";import{I as r}from"./7tAnG5Vr.js";function h(a,t){let o=e(t,["$$slots","$$events","$$legacy"]);const p=[["path",{d:"m5 8 6 6"}],["path",{d:"m4 14 6-6 2-3"}],["path",{d:"M2 5h12"}],["path",{d:"M7 2h1"}],["path",{d:"m22 22-5-10-5 10"}],["path",{d:"M14 18h6"}]];r(a,s({name:"languages"},()=>o,{get iconNode(){return p}}))}export{h as L};
