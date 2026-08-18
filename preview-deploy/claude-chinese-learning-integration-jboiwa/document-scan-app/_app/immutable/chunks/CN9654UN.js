@@ -1,0 +1,1 @@
+const s=globalThis.__sveltekit_1xussfq?.base??"/preview-build/preview-deploy/claude-chinese-learning-integration-jboiwa/document-scan-app",e=globalThis.__sveltekit_1xussfq?.assets??s??"";export{e as a,s as b};
