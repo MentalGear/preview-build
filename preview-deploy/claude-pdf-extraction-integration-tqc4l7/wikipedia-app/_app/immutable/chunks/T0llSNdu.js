@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_olpzdh?.base??"/preview-build/preview-deploy/claude-pdf-extraction-integration-tqc4l7/wikipedia-app",s=globalThis.__sveltekit_olpzdh?.assets??e??"";export{s as a,e as b};
