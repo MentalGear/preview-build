@@ -1,1 +1,0 @@
-import"./B9d4kuIH.js";import{f as d,m as i,a as s,c as t,r as p}from"./DifzN-NR.js";var m=d('<div data-page-body="" class="min-h-0 flex-1 overflow-y-auto"><!></div>');function f(o,r){var a=m(),e=t(a);i(e,()=>r.children),p(a),s(o,a)}export{f as P};
