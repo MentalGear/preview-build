@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/language-app/sw.js', { scope: '/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/language-app/' })})}
