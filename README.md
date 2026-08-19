@@ -10,6 +10,10 @@ caches itself — see rule 3.
 
 ## Deployment rules
 
+### 0. Release Build
+
+To publish a release build, deploy them directly under `release/` e.g. `release/app-kit`.
+
 ### 1. One stable path per branch
 
 Deploy to `preview-deploy/<branch-slug>/`, overwriting in place. Do not append
