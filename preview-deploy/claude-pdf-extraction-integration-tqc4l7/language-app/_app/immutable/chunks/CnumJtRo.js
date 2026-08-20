@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_1qwf8gh?.base??"/preview-build/preview-deploy/claude-pdf-extraction-integration-tqc4l7/language-app",s=globalThis.__sveltekit_1qwf8gh?.assets??e??"";export{s as a,e as b};

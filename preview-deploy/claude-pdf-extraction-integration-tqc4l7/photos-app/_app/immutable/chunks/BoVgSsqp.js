@@ -1,1 +1,0 @@
-const e=globalThis.__sveltekit_1bt3q9f?.base??"/preview-build/preview-deploy/claude-pdf-extraction-integration-tqc4l7/photos-app",s=globalThis.__sveltekit_1bt3q9f?.assets??e??"";export{s as a,e as b};
