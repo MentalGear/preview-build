@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_jzs6e0?.base??"/preview-build/preview-deploy/claude-chinese-reader-data-sources-u5p0g5/wikipedia-app",s=globalThis.__sveltekit_jzs6e0?.assets??e??"";export{s as a,e as b};
