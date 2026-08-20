@@ -1,0 +1,1 @@
+const s=globalThis.__sveltekit_1opytdo?.base??"/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/photos-app",e=globalThis.__sveltekit_1opytdo?.assets??s??"";export{e as a,s as b};

@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1ibq8nx?.base??"/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/document-scan-app",s=globalThis.__sveltekit_1ibq8nx?.assets??e??"";export{s as a,e as b};
