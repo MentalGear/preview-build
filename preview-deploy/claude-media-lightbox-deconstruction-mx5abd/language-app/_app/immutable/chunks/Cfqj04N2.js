@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_1pzmsb4?.base??"/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/language-app",e=globalThis.__sveltekit_1pzmsb4?.assets??s??"";export{e as a,s as b};

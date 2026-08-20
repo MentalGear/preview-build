@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_1jgdhyy?.base??"/preview-build/preview-deploy/claude-media-lightbox-deconstruction-mx5abd/wikipedia-app",s=globalThis.__sveltekit_1jgdhyy?.assets??e??"";export{s as a,e as b};
