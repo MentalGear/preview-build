@@ -1,1 +1,0 @@
-const s=globalThis.__sveltekit_1rijq0g?.base??"/preview-build/preview-deploy/claude-flashcard-ui-scheduler-89nau4/document-scan-app",e=globalThis.__sveltekit_1rijq0g?.assets??s??"";export{e as a,s as b};
