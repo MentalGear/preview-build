@@ -1,0 +1,1 @@
+const e=globalThis.__sveltekit_p3j7qw?.base??"/preview-build/preview-deploy/claude-chinese-reader-data-sources-u5p0g5/document-scan-app",s=globalThis.__sveltekit_p3j7qw?.assets??e??"";export{s as a,e as b};

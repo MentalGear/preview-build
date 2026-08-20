@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/preview-build/preview-deploy/claude-chinese-reader-data-sources-u5p0g5/language-app/sw.js', { scope: '/preview-build/preview-deploy/claude-chinese-reader-data-sources-u5p0g5/language-app/' })})}
