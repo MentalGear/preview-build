@@ -1,1 +1,0 @@
-import{s as c,r as p}from"./CFoBMZRG.js";import{I as n}from"./CZIz0W4W.js";function a(e,r){let o=p(r,["$$slots","$$events","$$legacy"]);const s=[["circle",{cx:"12",cy:"12",r:"10"}],["line",{x1:"10",x2:"10",y1:"15",y2:"9"}],["line",{x1:"14",x2:"14",y1:"15",y2:"9"}]];n(e,c({name:"circle-pause"},()=>o,{get iconNode(){return s}}))}export{a as C};
