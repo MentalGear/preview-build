@@ -1,0 +1,1 @@
+import"./CFoBMZRG.js";import{f as d,z as i,a as s,c as t,r as p}from"./B7FzpGqO.js";var n=d('<div data-page-body="" class="min-h-0 flex-1 overflow-y-auto"><!></div>');function l(o,r){var a=n(),e=t(a);i(e,()=>r.children),p(a),s(o,a)}export{l as P};
