@@ -1,0 +1,1 @@
+const s=globalThis.__sveltekit_1c1syft?.base??"/preview-build/preview-deploy/claude-pdf-extraction-integration-tqc4l7/document-scan-app",e=globalThis.__sveltekit_1c1syft?.assets??s??"";export{e as a,s as b};
