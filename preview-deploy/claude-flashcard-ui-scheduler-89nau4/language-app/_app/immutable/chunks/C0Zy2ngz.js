@@ -1,1 +1,0 @@
-import{s as e,r as p}from"./CFoBMZRG.js";import{I as a}from"./BGL1HeyM.js";function i(o,r){let s=p(r,["$$slots","$$events","$$legacy"]);const t=[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2"}],["path",{d:"M21 9H3"}],["path",{d:"M21 15H3"}]];a(o,e({name:"rows-3"},()=>s,{get iconNode(){return t}}))}export{i as R};

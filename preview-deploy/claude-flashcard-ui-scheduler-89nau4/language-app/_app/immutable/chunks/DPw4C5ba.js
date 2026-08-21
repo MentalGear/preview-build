@@ -1,0 +1,1 @@
+import{s,r as t}from"./CFoBMZRG.js";import{I as p}from"./CZIz0W4W.js";function i(c,e){let r=t(e,["$$slots","$$events","$$legacy"]);const o=[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"m9 12 2 2 4-4"}]];p(c,s({name:"circle-check"},()=>r,{get iconNode(){return o}}))}export{i as C};
