@@ -29,15 +29,15 @@
     --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.4);
   }
   *{box-sizing:border-box}
-  html{overflow-x:hidden}                 /* the page never scrolls sideways; demo 3's overflow lives inside its frame */
-  body{margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden}
-  .wrap{max-width:760px; margin:0 auto; padding:24px 16px calc(40px + env(safe-area-inset-bottom))}
+  /* NB: the page is deliberately NOT overflow-clipped — demo 3's "before" must be able to overflow the REAL page so the bug is verifiable on a device. Every other element is width-contained, so nothing else scrolls sideways. */
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px; margin:0 auto; padding:24px 16px calc(96px + env(safe-area-inset-bottom))}
   .eyebrow{font-family:"JetBrains Mono",monospace; font-weight:500; font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--accent-ink); margin:0 0 8px}
   h1{font-weight:700; font-size:clamp(23px,6.4vw,28px); line-height:1.1; letter-spacing:-.015em; margin:0; text-wrap:balance}
   .lede{color:var(--muted); margin:12px 0 0; font-size:14.5px; max-width:60ch}
-  .lede code,.diag code,.foot code{font-family:"JetBrains Mono",monospace; font-size:.82em; background:var(--surface-2); padding:1px 5px; border-radius:4px; color:var(--ink); overflow-wrap:anywhere}
+  .lede code,.diag code,.foot code,.demo-note code{font-family:"JetBrains Mono",monospace; font-size:.82em; background:var(--surface-2); padding:1px 5px; border-radius:4px; color:var(--ink); overflow-wrap:anywhere}
   .cards{display:flex; flex-direction:column; gap:18px; margin-top:24px}
-  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow); overflow:hidden}
+  .card{background:var(--surface); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow); overflow:visible}
   .card-h{padding:15px 16px 14px; border-bottom:1px solid var(--border)}
   .num{font-family:"JetBrains Mono",monospace; font-weight:700; font-size:12px; color:var(--faint); margin-right:8px}
   .card-h h2{display:inline; font-size:16px; font-weight:600; letter-spacing:-.01em}
@@ -79,27 +79,26 @@
   .acc-after .acc-body{display:grid; grid-template-rows:0fr; transition:grid-template-rows 320ms ease}
   .acc-after .acc-item[data-open="true"] .acc-body{grid-template-rows:1fr}
   .acc-after .acc-body > *{overflow:hidden; min-height:0}
-  /* ── 3 · dropdown overflow, inside a simulated small screen ── */
-  .viewport{container-type:inline-size; position:relative; max-width:320px; margin:2px auto 0; border:1px dashed var(--border-strong); border-radius:12px; background:var(--surface-2); overflow:auto; min-height:196px}
-  .vp-cap{font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.04em; color:var(--faint); padding:7px 10px 0}
-  .vp-bar{display:flex; justify-content:flex-start; padding:10px}   /* left-aligned: isolates the width-driven overflow max-width actually fixes */
-  .dd{position:relative}
-  .dd-trigger{display:inline-flex; align-items:center; gap:7px; padding:9px 12px; border:1px solid var(--border-strong); border-radius:9px; background:var(--surface); color:var(--ink); font-family:inherit; font-size:13.5px; font-weight:500; cursor:pointer; white-space:nowrap}
+  /* ── 3 · dropdown overflow, ON THE REAL PAGE (open it to make the page actually scroll sideways) ── */
+  .dd{position:relative; display:inline-block}
+  .dd-trigger{display:inline-flex; align-items:center; gap:7px; padding:9px 13px; border:1px solid var(--border-strong); border-radius:9px; background:var(--surface-2); color:var(--ink); font-family:inherit; font-size:14px; font-weight:500; cursor:pointer; white-space:nowrap}
   .dd-menu{position:absolute; top:calc(100% + 6px); left:0; z-index:5; min-width:200px; background:var(--surface); border:1px solid var(--border-strong); border-radius:10px; box-shadow:var(--shadow); padding:6px; display:none}
   .dd.open .dd-menu{display:block}
-  .dd-after .dd-menu{max-width:calc(100cqw - 1.5rem)}   /* the fix, as a container-relative analog of max-width: calc(100vw - 2rem) */
-  .dd-opt{padding:9px 11px; border-radius:7px; font-size:13.5px; color:var(--ink); white-space:nowrap}
+  .dd-after .dd-menu{max-width:calc(100vw - 2rem)}   /* the fix: clamp to the viewport */
+  .dd-opt{padding:9px 11px; border-radius:7px; font-size:14px; color:var(--ink); white-space:nowrap}
   .dd-after .dd-opt{white-space:normal}   /* clamped width → let the long label wrap instead of forcing width */
   .dd-opt:hover{background:var(--surface-2)}
-  .vp-readout{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--faint); margin-top:9px; display:flex; align-items:center; gap:7px}
-  .vp-readout .rd{width:8px; height:8px; border-radius:50%; background:var(--good); flex:none}
-  .vp-readout.bad{color:var(--bad-ink); font-weight:700}
-  .vp-readout.bad .rd{background:var(--bad); animation:pulse 1s ease-in-out infinite}
-  @keyframes pulse{50%{opacity:.3}}
-  .demo-note{font-size:12px; color:var(--muted); margin:14px 16px 0; line-height:1.45}
+  .demo-note{font-size:12px; color:var(--muted); margin:14px 16px 2px; line-height:1.45}
   .css{font-family:"JetBrains Mono",monospace; font-size:11px; line-height:1.5; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 11px; margin:0 16px 16px; overflow-x:auto; white-space:pre; color:var(--muted); -webkit-overflow-scrolling:touch}
   .css .add{color:var(--good-ink)} .css .del{color:var(--bad-ink)}
   .foot{margin-top:28px; padding-top:18px; border-top:1px solid var(--border); color:var(--faint); font-size:12px; line-height:1.55}
+  /* live PAGE overflow monitor */
+  .monitor{position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom)); transform:translateX(-50%); z-index:50; display:flex; align-items:center; gap:9px; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; padding:9px 15px; border-radius:11px; border:1px solid var(--border-strong); background:var(--surface); box-shadow:var(--shadow); transition:color .2s, border-color .2s, background .2s; max-width:calc(100vw - 24px)}
+  .monitor.ok{color:var(--good-ink); border-color:var(--good)}
+  .monitor.bad{color:var(--bad-ink); border-color:var(--bad); background:var(--bad-weak)}
+  .monitor .mdot{width:9px; height:9px; border-radius:50%; background:currentColor; flex:none}
+  .monitor.bad .mdot{animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.3}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
 </style>
 
@@ -167,35 +166,27 @@
 <span class="add">+ .content[data-open="true"] { grid-template-rows: 1fr }   /* one prop, both ends, gentle curve */</span></div>
     </section>
 
-    <!-- 3 · dropdown overflow -->
+    <!-- 3 · dropdown overflow (real page) -->
     <section class="card">
       <div class="card-h">
-        <span class="num">03</span><h2>Wide dropdowns overflow small screens</h2>
-        <p class="diag"><b>Current:</b> select/dropdown content sets no <code>max-width</code>, so a menu with a long option grows wider than the screen and pushes the page sideways. <b>Fix:</b> clamp overlay width to the viewport.</p>
-        <p class="how"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12h18M14 7l5 5-5 5"/></svg><span>Open each menu. The left one spills past the phone frame (it scrolls sideways, readout turns <b style="color:var(--bad-ink)">red</b>); the right one clamps and wraps.</span></p>
+        <span class="num">03</span><h2>Wide dropdowns overflow the page</h2>
+        <p class="diag"><b>Current:</b> select/dropdown content sets no <code>max-width</code>, so a menu with a long option grows wider than the screen and pushes the whole page sideways. <b>Fix:</b> clamp overlay width to the viewport.</p>
+        <p class="how"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M3 12h18M14 7l5 5-5 5"/></svg><span><b>On a phone (or narrow window):</b> open the left menu — the whole page scrolls sideways and the monitor turns <b style="color:var(--bad-ink)">red</b>. The right one clamps to the viewport and wraps.</span></p>
       </div>
       <div class="pair">
         <div class="side">
           <span class="tag bad"><span class="dot bad"></span>Current</span>
-          <div class="viewport" data-vp>
-            <div class="vp-cap">▸ simulated ~320px screen</div>
-            <div class="vp-bar"><div class="dd dd-before" data-dd>
-              <button class="dd-trigger" data-dd-btn>Sort by<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
-              <div class="dd-menu"><div class="dd-opt">Most recently updated</div><div class="dd-opt">Date the note was last modified — newest to oldest, all folders</div><div class="dd-opt">Alphabetical (A → Z)</div></div>
-            </div></div>
+          <div class="dd dd-before" data-dd>
+            <button class="dd-trigger" data-dd-btn>Sort by<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div class="dd-menu"><div class="dd-opt">Most recently updated</div><div class="dd-opt">Date the note was last modified — newest to oldest, across every folder and tag</div><div class="dd-opt">Alphabetical (A → Z)</div></div>
           </div>
-          <div class="vp-readout" data-readout><span class="rd"></span>screen overflow: none</div>
         </div>
         <div class="side">
           <span class="tag good"><span class="dot good"></span>Fixed</span>
-          <div class="viewport" data-vp>
-            <div class="vp-cap">▸ simulated ~320px screen</div>
-            <div class="vp-bar"><div class="dd dd-after" data-dd>
-              <button class="dd-trigger" data-dd-btn>Sort by<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
-              <div class="dd-menu"><div class="dd-opt">Most recently updated</div><div class="dd-opt">Date the note was last modified — newest to oldest, all folders</div><div class="dd-opt">Alphabetical (A → Z)</div></div>
-            </div></div>
+          <div class="dd dd-after" data-dd>
+            <button class="dd-trigger" data-dd-btn>Sort by<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div class="dd-menu"><div class="dd-opt">Most recently updated</div><div class="dd-opt">Date the note was last modified — newest to oldest, across every folder and tag</div><div class="dd-opt">Alphabetical (A → Z)</div></div>
           </div>
-          <div class="vp-readout" data-readout><span class="rd"></span>screen overflow: none</div>
         </div>
       </div>
       <p class="demo-note">The <code>max-width</code> clamp stops <i>width-driven</i> overflow like this. A normal-width menu opened hard against the right edge still needs collision-aware repositioning — the larger upstream fix in <code>dioxus-primitives</code> (D-40).</p>
@@ -210,6 +201,10 @@
     (S16 / S17 / S18, decision D-45).</p>
 </div>
 
+<div class="monitor ok" id="monitor" role="status" aria-live="polite">
+  <span class="mdot"></span><span id="mtext">page overflow-x: none</span>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -220,16 +215,7 @@
       item.dataset.open = item.dataset.open === "true" ? "false" : "true";
     });
   });
-  // dropdowns — each lives in its own simulated screen; measure THAT frame's overflow
-  function measure(vp){
-    if(!vp) return;
-    var over = vp.scrollWidth - vp.clientWidth;
-    var readout = vp.parentElement.querySelector("[data-readout]");
-    if(!readout) return;
-    if(over > 1){ readout.className = "vp-readout bad"; readout.lastChild.textContent = "screen overflow: +" + Math.round(over) + "px →"; }
-    else { readout.className = "vp-readout"; readout.lastChild.textContent = "screen overflow: none"; }
-  }
-  function measureAll(){ document.querySelectorAll("[data-vp]").forEach(measure); }
+  // dropdowns
   document.querySelectorAll("[data-dd-btn]").forEach(function(btn){
     btn.addEventListener("click", function(e){
       e.stopPropagation();
@@ -237,14 +223,23 @@
       var wasOpen = dd.classList.contains("open");
       document.querySelectorAll("[data-dd]").forEach(function(d){ d.classList.remove("open"); });
       if(!wasOpen) dd.classList.add("open");
-      setTimeout(measureAll, 30);
+      setTimeout(checkOverflow, 30);
     });
   });
   document.addEventListener("click", function(){
     document.querySelectorAll("[data-dd]").forEach(function(d){ d.classList.remove("open"); });
-    setTimeout(measureAll, 30);
+    setTimeout(checkOverflow, 30);
   });
-  window.addEventListener("resize", measureAll);
-  measureAll();
+  // live PAGE overflow monitor — the honest test: does the document scroll wider than the viewport?
+  var mon = document.getElementById("monitor"), mtext = document.getElementById("mtext");
+  function checkOverflow(){
+    var de = document.documentElement;
+    var over = Math.max(de.scrollWidth - de.clientWidth, document.body.scrollWidth - de.clientWidth);
+    if(over > 1){ mon.className = "monitor bad"; mtext.textContent = "page overflow-x: +" + Math.round(over) + "px →"; }
+    else { mon.className = "monitor ok"; mtext.textContent = "page overflow-x: none"; }
+  }
+  window.addEventListener("resize", checkOverflow);
+  window.addEventListener("scroll", checkOverflow, {passive:true});
+  checkOverflow();
 })();
 </script>
