@@ -431,10 +431,56 @@
   .loadbar { height: 3px; background: #1B2534; border-radius: 2px; overflow: hidden; margin-top: 8px; }
   .loadbar i { display: block; height: 100%; width: 0; background: var(--cyan); transition: width .3s; }
 
+  /* ---------- start gate ---------- */
+  .gate {
+    position: fixed; inset: 0; z-index: 50;
+    background: rgba(10,14,20,.94);
+    display: grid; place-items: center; padding: 24px;
+  }
+  .gate[hidden] { display: none; }
+  .gate .card {
+    max-width: 520px; text-align: center;
+    border: 1px solid var(--rule); background: var(--panel);
+    border-radius: var(--r); padding: 30px 34px;
+  }
+  .gate h2 {
+    font-family: var(--f-display); font-weight: 700; font-size: 20px;
+    letter-spacing: .18em; text-transform: uppercase; margin: 0 0 4px; color: var(--ink);
+  }
+  .gate h2 span { color: var(--amber); }
+  .gate .reg {
+    font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .12em;
+    color: var(--dim); display: block; margin-bottom: 16px;
+  }
+  .gate p { font-size: 13.5px; line-height: 1.6; color: var(--dim); margin: 0 0 20px; }
+  .gate p b { color: var(--ink); font-weight: 500; }
+
+  /* ---------- diagnostics ---------- */
+  #diagBox {
+    width: 100%; min-height: 260px; margin-top: 10px;
+    background: var(--panel2); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: var(--r);
+    font-family: var(--f-mono); font-size: 11px; line-height: 1.5;
+    padding: 10px; resize: vertical;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   }
 </style>
+
+<div class="gate" id="gate">
+  <div class="card">
+    <h2>ISV <span>Meridian</span></h2>
+    <span class="reg">EXPLORER / NCC&#8209;4471 &nbsp;·&nbsp; DEEP RANGE PATROL &nbsp;·&nbsp; DAY 41</span>
+    <p>Two unidentified contacts have shadowed you since the Calder buoy. Neither answers a
+       transponder query. You have five officers and one ship.<br><br>
+       <b>Speak or type your orders.</b> Try <b>&ldquo;status&rdquo;</b>,
+       <b>&ldquo;science, scan the nearest contact&rdquo;</b>, or
+       <b>&ldquo;red alert, shields up&rdquo;</b>.</p>
+    <button class="primary" id="startBtn">Take the conn</button>
+  </div>
+</div>
 
 <div class="frame">
 
@@ -525,6 +571,19 @@
         </label>
       </div>
       <div class="loadbar" id="slmBar" hidden><i></i></div>
+
+      <h3 style="margin-top:22px">Diagnostics</h3>
+      <p class="note">
+        If something misbehaves — distorted voices, an order misread — capture the state here and
+        send it on. Nothing leaves the page until you copy it.
+      </p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="mini" id="diagRun">Capture diagnostics</button>
+        <button class="mini" id="diagCopy">Copy</button>
+        <button class="mini" id="diagVoice">Test the voices</button>
+      </div>
+      <textarea id="diagBox" readonly spellcheck="false"
+                placeholder="Capture diagnostics writes a report here that you can copy."></textarea>
 
       <div class="opt" style="margin-top:10px">
         <input type="checkbox" id="fastPath" checked>
@@ -1253,6 +1312,7 @@ let kokoroSeq = 0;
 const kokoroPending = new Map();
 
 let kokoroUseGpu = false;
+let lastVoiceError = null;
 function kokoroGpuAvailable() { return typeof navigator !== "undefined" && !!navigator.gpu; }
 
 const kokoroCache = new Map();   // voice|speed|text -> {audio, sampling_rate}
@@ -1398,6 +1458,7 @@ function startKokoro() {
       const box = document.getElementById("engGpu");
       if (box) box.checked = false;
       paintGpuNote();
+      lastVoiceError = (err && err.message) || String(err);
       status("WebGPU gave distorted audio on this machine. Falling back to the CPU path.");
       if (voiceEngine === "kokoro") startKokoro().catch(() => {});
       return;
@@ -1761,11 +1822,31 @@ function splitClauses(t) {
    "target the kestrel and fire" fires at the kestrel. */
 const STATION_LEAD = /^(?:mister\s+|mr\.?\s+|ms\.?\s+)?(?:helm(?:sman)?|conn|tactical|weapons officer|weapons|guns|science officer|science|sensors|engineering|engineer|chief|comms|coms|communications)\b[,:]?\s*/;
 
+/* Polarity is a property of the CLAUSE, not of any one verb.
+   The earlier code guarded only `fire`, because `fire` is the verb the test
+   corpus happened to cover — so "don't raise shields" raised them, "belay the
+   red alert" sounded it, and "never divert power" diverted it. Checking once,
+   ahead of every rule, fixes the whole class and cannot be forgotten when a new
+   verb is added.
+
+   Some words that look like negators head perfectly good orders ("all stop",
+   "hold station", "stop following"), so those idioms are recognised first. */
+const POSITIVE_IDIOM =
+  /\b(?:all stop|full stop|stop (?:all )?engines?|hold (?:station|position)|stop following|stop pursuit|break off|break pursuit)\b/;
+const NEGATOR =
+  /\b(?:don'?t|dont|do\s+not|never|belay|cancel|abort|disregard|without|refrain\s+from|negative\s+on|no\s+need\s+to|cease|hold\s+off)\b|\bhold\s+(?:\w+\s+){0,2}?fire\b|\bcheck\s+fir(?:e|ing)\b|\bweapons\s+(?:tight|hold|safe)\b|\bhold\s+what\s+you\s+have\b/;
+
+function clauseIsNegative(t) {
+  if (POSITIVE_IDIOM.test(t)) return false;
+  return NEGATOR.test(t);
+}
+
 function parseClause(clause, wholeTarget) {
   // The station says who answers. It must never take part in slot detection —
   // "engineering" contains "engine", which silently hijacked power routing.
   const lead = clause.match(STATION_LEAD);
   const t = lead ? clause.slice(lead[0].length) : clause;
+  if (clauseIsNegative(t)) return [];   // a negative clause commands nothing
   const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
   const tgt = named ? named.name : wholeTarget;
 
@@ -1799,9 +1880,7 @@ function parseClause(clause, wholeTarget) {
   add(at(/shields?\s*(?:down|off)\b|\b(?:lower|drop|take down)\s+(?:the\s+)?shields?/), "TAC",
       "Lowering shields, Captain.", { do: "shields", up: false });
 
-  // Negated or withheld fire never fires — it escalates instead.
-  const WITHHOLD = /\b(?:don'?t|do not|cease|hold|check|belay|never|stop|no|negative on)\s+(?:\w+\s+){0,2}?(?:fire|firing|shoot|shooting|attack|weapons)\b|\bweapons\s+(?:tight|hold|safe)\b|\bhold\s+what\s+you\s+have\b/;
-  if (!WITHHOLD.test(t)) {
+  {
     const torp = /\btorped/.test(t);
     add(at(/\bopen fire\b|\bfire\b|\bshoot\b|\bengage\b/), "TAC",
         torp ? "Torpedo away." : "Firing phasers.",
@@ -1847,7 +1926,7 @@ function parseClause(clause, wholeTarget) {
     }
   }
 
-  add(at(/\ball stop\b|\bfull stop\b|\bhold position\b|\bhold station\b/), "HELM",
+  add(at(/\ball stop\b|\bfull stop\b|\bhold position\b|\bhold station\b|\bstop (?:all )?engines?\b|\bstop the engines?\b|\bfinished with engines?\b/), "HELM",
       "All stop, aye.", { do: "speed", speed: 0 });
 
   const hdg = parseHeading(t);
@@ -1950,7 +2029,17 @@ async function askSlm(order) {
    than any model — and free. Only what it does not know reaches the brain.  */
 
 let brain = "local";       // "claude" | "local" | "slm"
+
+/* The last few orders and what became of them. This is the single most useful
+   thing to have when someone reports "it misheard me" — it shows the utterance
+   as received, which brain answered, and the actions produced. */
+const traceLog = [];
+function trace(entry) {
+  traceLog.push({ t: Math.round(elapsed), ...entry });
+  while (traceLog.length > 12) traceLog.shift();
+}
 let fastPathOn = true;
+let traceRoute = null;
 
 async function submitOrder() {
   const order = orderInput.value.trim();
@@ -1987,6 +2076,12 @@ async function submitOrder() {
       }
     }
 
+    trace({
+      say: order,
+      route: traceRoute || "none",
+      actions: (replies || []).map(r => r && r.act).filter(Boolean)
+    });
+    traceRoute = null;
     await deliver(replies && replies.length ? replies : didNotCatch());
   } finally {
     busy = false;
@@ -1997,6 +2092,7 @@ async function submitOrder() {
 
 /* Show which brain answered, so the cost of an order is never a mystery. */
 function markRoute(kind) {
+  traceRoute = kind;
   const el = document.getElementById("routeNote");
   if (!el) return;
   el.textContent = kind === "parser" ? "answered by the ship parser · free"
@@ -2378,6 +2474,83 @@ function buildQuick() {
 }
 
 /* ============================== BOOTSTRAP ================================= */
+/* ========================== DIAGNOSTICS ==================================
+   Everything a bug report needs, gathered in one place and never sent
+   anywhere on its own. WebGPU adapter details are async, so the report is
+   built as a promise. */
+async function buildDiagnostics() {
+  const L = [];
+  const add = (k, v) => L.push(k.padEnd(22) + " " + v);
+
+  add("captured", new Date().toISOString());
+  add("page", location.href.split("?")[0]);
+  add("userAgent", navigator.userAgent);
+  add("platform", navigator.platform || "(none)");
+  add("cores", navigator.hardwareConcurrency || "?");
+  add("crossOriginIsolated", String(self.crossOriginIsolated) + (self.crossOriginIsolated ? "" : "  (no SharedArrayBuffer -> wasm is single-threaded)"));
+
+  L.push("");
+  L.push("── voice ──");
+  add("engine", voiceEngine);
+  add("speechOn", String(speechOn));
+  add("kokoro loaded", String(!!kokoroWorker && !!kokoroReady));
+  add("kokoro cache", kokoroCache.size + " clips");
+  add("webgpu available", String(kokoroGpuAvailable()));
+  add("webgpu requested", String(kokoroUseGpu));
+  add("webgpu marked bad", String(gpuMarkedBad()));
+  add("last voice error", lastVoiceError || "(none)");
+  add("browser voices", (voices || []).length + " installed");
+  for (const k of ORDER_OF_STATIONS) {
+    const c = voiceCfg[k] || {};
+    add("  " + OFFICERS[k].station, (voiceEngine === "kokoro" ? kokoroVoiceFor(k) : (c.voiceURI || "(default)"))
+        + "  rate " + (c.rate || 1).toFixed(2));
+  }
+  if (kokoroGpuAvailable()) {
+    try {
+      const ad = await navigator.gpu.requestAdapter();
+      const info = ad && (ad.info || (ad.requestAdapterInfo ? await ad.requestAdapterInfo() : null));
+      add("gpu adapter", info ? [info.vendor, info.architecture, info.device, info.description]
+            .filter(Boolean).join(" / ") || "(no details exposed)" : "(none)");
+    } catch (e) { add("gpu adapter", "query failed: " + e.message); }
+  }
+
+  L.push("");
+  L.push("── input ──");
+  add("SpeechRecognition", SR ? "available" : "not available");
+  add("mic state", listening ? "listening" : "idle");
+
+  L.push("");
+  L.push("── crew ──");
+  add("brain", brain);
+  add("parser first", String(fastPathOn));
+  add("claude available", String(crewOnline));
+
+  L.push("");
+  L.push("── ship ──");
+  add("condition", ship.alert);
+  add("hull", Math.round(ship.hull) + "%");
+  add("shields", ship.shieldsUp ? "up" : "DOWN");
+  add("heading/speed", fmtHdg(ship.heading) + " @ " + ship.speed.toFixed(1) + " km/s");
+  add("target", ship.target || "(none)");
+  add("following", ship.following || "(none)");
+  add("contacts", contacts.map(c => c.name + (c.hostile && c.scanned ? "*" : "")).join(", ") || "(none)");
+  add("plot range", Math.round(plotRange) + " km");
+
+  L.push("");
+  L.push("── last orders (newest last) ──");
+  if (!traceLog.length) L.push("  (none yet)");
+  for (const e of traceLog) {
+    L.push("  T+" + String(e.t).padStart(4) + "  [" + e.route.padEnd(6) + "] " + JSON.stringify(e.say));
+    L.push("            -> " + (e.actions.length ? JSON.stringify(e.actions) : "escalated / no action"));
+  }
+
+  L.push("");
+  L.push("── bridge log (last 10) ──");
+  for (const e of logEntries.slice(-10)) L.push("  " + e.who + ": " + e.text);
+
+  return L.join("\n");
+}
+
 /* ============================ SETTINGS WIRING ============================= */
 function wireSettings() {
   const btn = document.getElementById("settingsBtn");
@@ -2468,6 +2641,34 @@ function wireSettings() {
     });
   }
 
+  const diagBox = document.getElementById("diagBox");
+  document.getElementById("diagRun").addEventListener("click", async () => {
+    diagBox.value = "gathering…";
+    try { diagBox.value = await buildDiagnostics(); }
+    catch (e) { diagBox.value = "diagnostics failed: " + (e && e.message); }
+  });
+  document.getElementById("diagCopy").addEventListener("click", async () => {
+    if (!diagBox.value) diagBox.value = await buildDiagnostics().catch(e => "failed: " + e.message);
+    diagBox.select();
+    let ok = false;
+    try { await navigator.clipboard.writeText(diagBox.value); ok = true; }
+    catch (e) { try { ok = document.execCommand("copy"); } catch (e2) {} }
+    status(ok ? "Diagnostics copied to the clipboard."
+              : "Could not reach the clipboard — the text is selected, copy it by hand.");
+  });
+  /* Speaks one line per officer through whichever engine is live. The fastest
+     way to hear a distorted-voice problem and confirm which engine caused it. */
+  document.getElementById("diagVoice").addEventListener("click", async () => {
+    status("Testing " + (voiceEngine === "kokoro" ? "Kokoro" : "browser") + " voices…");
+    for (const k of ORDER_OF_STATIONS) {
+      logLine(k, TEST_LINES[k]);
+      speak(k, TEST_LINES[k]);
+      flashOfficer(k, TEST_LINES[k]);
+      await pause(voiceEngine === "kokoro" ? 2600 : 1700);
+    }
+    status("Voice test complete.");
+  });
+
   document.getElementById("fastPath").addEventListener("change", e => {
     fastPathOn = e.target.checked;
   });
@@ -2507,7 +2708,23 @@ function seed() {
   officerEls.TAC.querySelector(".last").textContent = "Recommend condition yellow.";
 
   render();
-  setInterval(tick, TICK_MS);
+}
+
+/* Time does not run until the captain takes the conn. This also gives the
+   AudioContext the user gesture it needs before any officer speaks. */
+let simTimer = null;
+function startGame() {
+  const gate = document.getElementById("gate");
+  if (gate) gate.hidden = true;
+  if (simTimer) return;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) { audioCtx = audioCtx || new Ctx(); audioCtx.resume(); }
+  } catch (e) {}
+  simTimer = setInterval(tick, TICK_MS);
+  orderInput.focus();
+  status(crewOnline ? "Bridge standing by. Speak or type your order, Captain."
+                    : "Bridge standing by. Try \u201cred alert\u201d or \u201ccome about to 090\u201d.");
 }
 
 sendBtn.addEventListener("click", submitOrder);
@@ -2515,6 +2732,10 @@ orderInput.addEventListener("keydown", e => { if (e.key === "Enter") submitOrder
 micBtn.addEventListener("click", () => { listening ? stopListening() : startListening(); });
 
 seed();
+document.getElementById("startBtn").addEventListener("click", startGame);
+// Enter on the gate starts too, so the keyboard alone is enough.
+document.getElementById("gate").addEventListener("keydown", e => { if (e.key === "Enter") startGame(); });
+document.getElementById("startBtn").focus();
 
 /* Bring the crew online if this page is running inside a Claude viewer.
    Absence is the normal case, not an error: the local parser already works. */
