@@ -2171,8 +2171,11 @@ const RULES = [
       const system = slotSystem(c);
       if (!system) return null;
       let amount = 55;
-      for (const [seqs, v] of [[[["cut"], ["reduce"], ["drop"], ["decrease"], ["minimal"]], 15],
-                               [[["boost"], ["increase"], ["maximum"], ["max"], ["all"], ["everything"]], 75]]) {
+      // "more"/"less" belong here: without them the frame still completes and
+      // the amount silently falls back to the neutral 55, so "more power to
+      // engines" quietly meant "leave it alone" instead of escalating.
+      for (const [seqs, v] of [[[["cut"], ["reduce"], ["drop"], ["decrease"], ["minimal"], ["less"]], 15],
+                               [[["boost"], ["increase"], ["maximum"], ["max"], ["all"], ["everything"], ["more"]], 75]]) {
         for (const s of seqs) { const i = c.find(s); if (i >= 0) { c.take(i, 1); amount = v; } }
       }
       return { do: "power", system, amount };
