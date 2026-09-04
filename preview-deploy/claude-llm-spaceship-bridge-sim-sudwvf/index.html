@@ -657,7 +657,9 @@ const OFFICERS = {
 const ORDER_OF_STATIONS = ["HELM", "TAC", "SCI", "ENG", "COMM"];
 
 /* -------------------------------- state ---------------------------------- */
-const RANGE_KM = 40000;          // plot radius
+let plotRange = 40000;           // plot radius — changed by the wheel
+const PLOT_MIN = 4000, PLOT_MAX = 160000;
+const WORLD_CULL_KM = 64000;     // fixed: what the SIM keeps, regardless of zoom
 const TICK_MS  = 50;             // 20 Hz
 
 const ship = {
@@ -883,7 +885,7 @@ function tick() {
     }
   }
 
-  contacts = contacts.filter(c => !c.destroyed && rangeTo(c) < RANGE_KM * 1.6);
+  contacts = contacts.filter(c => !c.destroyed && rangeTo(c) < WORLD_CULL_KM);
   if (ship.target && !contacts.some(c => c.id === ship.target)) ship.target = null;
 
   render();
@@ -1634,7 +1636,13 @@ function splitClauses(t) {
 /* Rules for ONE clause. Returns zero or more {officer, line, act}.
    `wholeTarget` lets a later clause inherit a contact named earlier, so
    "target the kestrel and fire" fires at the kestrel. */
-function parseClause(t, wholeTarget) {
+const STATION_LEAD = /^(?:mister\s+|mr\.?\s+|ms\.?\s+)?(?:helm(?:sman)?|conn|tactical|weapons officer|weapons|guns|science officer|science|sensors|engineering|engineer|chief|comms|coms|communications)\b[,:]?\s*/;
+
+function parseClause(clause, wholeTarget) {
+  // The station says who answers. It must never take part in slot detection —
+  // "engineering" contains "engine", which silently hijacked power routing.
+  const lead = clause.match(STATION_LEAD);
+  const t = lead ? clause.slice(lead[0].length) : clause;
   const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
   const tgt = named ? named.name : wholeTarget;
 
@@ -1652,15 +1660,15 @@ function parseClause(t, wholeTarget) {
       : /\bweapon|\btorped|\bphaser/.test(t)   ? "weapons"
       : /\bheading\b|\bcourse\b|\bposition\b|\bspeed\b|\bwhere are we\b/.test(t) ? "navigation"
       : /\bcontact|\bsensor/.test(t)           ? "contacts"
-      : scopeForStation(t);
+      : scopeForStation(clause);
     add(si, officerForScope(scope), null, { do: "status", scope });
   }
 
-  add(at(/\bred alert\b|\bbattle stations\b/), "TAC",
+  add(at(/\bred alert\b|\bbattle stations\b|\bgeneral quarters\b|\bcondition red\b/), "TAC",
       "Red alert. All hands to battle stations.", { do: "alert", level: "red" });
-  add(at(/\byellow alert\b/), "TAC",
+  add(at(/\byellow alert\b|\bcondition yellow\b/), "TAC",
       "Condition yellow, Captain.", { do: "alert", level: "yellow" });
-  add(at(/\bstand down\b|\bgreen alert\b|\bcondition green\b/), "TAC",
+  add(at(/\bstand down\b|\bgreen alert\b|\bcondition green\b|\bsecure from alert\b/), "TAC",
       "Standing down to condition green.", { do: "alert", level: "green" });
 
   add(at(/shields?\s*(?:up|on)\b|\b(?:raise|put up|bring up)\s+(?:the\s+)?shields?/), "TAC",
@@ -1678,7 +1686,7 @@ function parseClause(t, wholeTarget) {
 
   add(at(/\bscan\b|\banaly[sz]e\b|\bidentify\b/), "SCI",
       "Running a full spectrum scan now.", { do: "scan", target: tgt });
-  add(at(/\bhail\b|\bopen a channel\b|\bcontact them\b/), "COMM",
+  add(at(/\bhail\b|\bopen a channel\b|\bsignal\b|\bcontact them\b/), "COMM",
       "Opening a channel, Captain.", { do: "hail", target: tgt });
   if (tgt) add(at(/\btarget\b|\block on\b|\block onto\b/), "TAC",
       "Locked on " + tgt + ".", { do: "target", target: tgt });
@@ -2021,6 +2029,8 @@ function render() {
   const t = contacts.find(c => c.id === ship.target);
   document.getElementById("tgtV").textContent = t ? t.name : "None";
 
+  document.getElementById("plotScale").textContent =
+    "Range " + Math.round(plotRange).toLocaleString("en-GB").replace(/,/g, " ") + " km";
   document.getElementById("contactCount").textContent =
     contacts.length + (contacts.length === 1 ? " contact" : " contacts");
   const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
@@ -2038,7 +2048,7 @@ function drawPlot() {
   const W = cv.width, H = cv.height;
   const cxp = W / 2, cyp = H / 2;
   const R = Math.min(W, H) / 2 - 26;
-  const scale = R / RANGE_KM;
+  const scale = R / plotRange;
 
   cx.clearRect(0, 0, W, H);
   cx.fillStyle = "#0A1018";
@@ -2185,6 +2195,14 @@ function drawPlot() {
   cx.stroke();
   cx.setLineDash([]);
 }
+
+/* Wheel zoom on the plot. Exponential, so a notch feels the same at any
+   scale, and clamped so the ship never fills the scope or vanishes. */
+cv.addEventListener("wheel", e => {
+  e.preventDefault();
+  plotRange = clamp(plotRange * Math.exp(e.deltaY * 0.0012), PLOT_MIN, PLOT_MAX);
+  render();
+}, { passive: false });
 
 /* ============================ QUICK ORDERS ================================ */
 const QUICK = [
