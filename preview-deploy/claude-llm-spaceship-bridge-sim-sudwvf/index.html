@@ -1765,29 +1765,423 @@ async function askCrew(order) {
    Deliberately narrow — it recognises orders, it does not converse.          */
 const NUMWORDS = { zero:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9, niner:9 };
 
-function parseHeading(t) {
-  // A bare "to <n>" is not a heading — "set shields to 100" is not a turn.
-  // Require a navigation word to claim the number.
-  if (/\bshield|\bpower\b|\bthrottle\b|\bpercent\b|\bcoolant\b/.test(t)) return null;
-  let m = t.match(/\b(?:bearing|heading|course|come about to|come to|bring us to|steer to|steer|set course for|set course to)\s+(\d{1,3})\b/);
-  if (m) return Number(m[1]);
-  const words = t.match(/\b(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)\b/);
-  if (words) return NUMWORDS[words[1]] * 100 + NUMWORDS[words[2]] * 10 + NUMWORDS[words[3]];
-  m = t.match(/\b(\d{1,3})\s*degrees?\b/);
-  if (m) return Number(m[1]);
+
+/* ===== ORDER PARSER — BEGIN PURE =====================================
+   A tokenising, claim-based parser. Pure: no game state, no DOM. Everything
+   it needs arrives as arguments, so it is unit-testable in node.
+
+   WHY THIS SHAPE. The previous parser matched regexes against a shared
+   string, so nothing owned anything, and five separate bugs were all that
+   one fact wearing different clothes: "engineering" matched /engine/,
+   "set shields to 100" lost its number to the heading rule, "maximum power
+   to weapons" also ordered full impulse, an unknown system silently became
+   shields, and negation was guarded on one verb only.
+
+   Four construction rules remove those classes rather than testing for them:
+
+     1. TOKENISE FIRST, match whole tokens. A substring can never collide.
+     2. CLAIM TOKENS. What one rule consumes is invisible to every later
+        rule, so two rules can never take the same number.
+     3. WHOLE FRAME OR NOTHING. A rule fires only if every required slot is
+        filled from unclaimed tokens. There is no partial fill and no
+        default value, so a silent fallback cannot be written by accident.
+     4. POLARITY IS CLAUSE-LEVEL, checked once before any rule runs, so it
+        cannot be forgotten when a verb is added.
+
+   Adapted from the concurrent-parse-machine design in Space Nerds In Space
+   (GPL-2.0-or-later) — reimplemented from its published design notes, not
+   ported. One deliberate divergence: SNIS matches tokens exactly, which it
+   can afford because it drives a vocabulary-constrained recogniser. Browser
+   SpeechRecognition is unconstrained, so exact matching alone would make us
+   MORE brittle; a normalisation pass handles plurals and common mishearings
+   before matching.
+   ==================================================================== */
+
+/* Mishearings and inflections, folded before matching. Unconstrained ASR
+   returns "shield", "sheilds" and "phasors"; refusing them is not rigour. */
+const NORMALISE = {
+  shield: "shields", sheilds: "shields", sheild: "shields", shels: "shields",
+  phaser: "phasers", phasor: "phasers", phasors: "phasers", lasers: "phasers", laser: "phasers",
+  torpedo: "torpedoes", torpedos: "torpedoes", torps: "torpedoes", torp: "torpedoes",
+  engine: "engines", motor: "engines", motors: "engines", propulsion: "engines",
+  weapon: "weapons", gun: "weapons", guns: "weapons",
+  sensor: "sensors", contact: "contacts",
+  dont: "don't", cant: "can't", wont: "won't",
+  niner: "nine", oh: "zero", o: "zero",
+  degrees: "degree", klicks: "km", kilometres: "km", kilometers: "km"
+};
+
+const DIGIT_WORD = {
+  zero: 0, one: 1, two: 2, three: 3, four: 4,
+  five: 5, six: 6, seven: 7, eight: 8, nine: 9
+};
+
+function tokenize(text) {
+  const raw = String(text).toLowerCase().match(/[a-z0-9']+|[,;]/g) || [];
+  return raw.map(w => NORMALISE[w] || w);
+}
+
+/* Clause boundaries. A clause that is only a station name introduces the
+   next one rather than standing alone. */
+const CLAUSE_BREAK = new Set([",", ";", "and", "then"]);
+const STATIONS = {
+  helm: "HELM", helmsman: "HELM", conn: "HELM",
+  tactical: "TAC", weapons: "TAC",
+  science: "SCI", sensors: "SCI",
+  engineering: "ENG", engineer: "ENG", chief: "ENG",
+  comms: "COMM", coms: "COMM", communications: "COMM"
+};
+const FILLER = new Set(["please", "now", "immediately", "mister", "mr", "ms",
+                        "the", "a", "an", "our", "your", "my", "us", "we",
+                        "lets", "let's", "would", "you", "kindly", "right", "away"]);
+
+function splitClauses(tokens) {
+  const out = [];
+  let cur = [];
+  for (const t of tokens) {
+    if (CLAUSE_BREAK.has(t)) { if (cur.length) out.push(cur); cur = []; }
+    else cur.push(t);
+  }
+  if (cur.length) out.push(cur);
+
+  // carry a bare station onto the clause it introduces
+  const merged = [];
+  for (const c of out) {
+    const bare = c.filter(w => !FILLER.has(w));
+    if (bare.length === 1 && STATIONS[bare[0]] && merged.length >= 0) {
+      merged.push({ carry: bare[0] });
+    } else merged.push({ tokens: c });
+  }
+  const res = [];
+  let carry = null;
+  for (const m of merged) {
+    if (m.carry) { carry = m.carry; continue; }
+    res.push(carry ? [carry, ...m.tokens] : m.tokens);
+    carry = null;
+  }
+  return res.length ? res : (tokens.length ? [tokens] : []);
+}
+
+/* Polarity: a property of the CLAUSE, checked once for every verb. */
+const POSITIVE_IDIOM = [
+  ["all", "stop"], ["full", "stop"], ["stop", "engines"], ["stop", "all", "engines"],
+  ["hold", "station"], ["hold", "position"], ["stop", "following"],
+  ["break", "off"], ["break", "pursuit"], ["stop", "pursuit"]
+];
+const NEGATOR = new Set(["don't", "not", "never", "belay", "cancel", "abort",
+                         "disregard", "without", "cease", "refrain", "negative"]);
+
+function hasSeq(tokens, seq) {
+  outer: for (let i = 0; i + seq.length <= tokens.length; i++) {
+    for (let k = 0; k < seq.length; k++) if (tokens[i + k] !== seq[k]) continue outer;
+    return true;
+  }
+  return false;
+}
+
+function clauseIsNegative(tokens) {
+  for (const idiom of POSITIVE_IDIOM) if (hasSeq(tokens, idiom)) return false;
+  if (hasSeq(tokens, ["hold", "fire"]) || hasSeq(tokens, ["check", "fire"])) return true;
+  // "hold your fire", "hold all fire" — hold ... fire within a short window
+  const h = tokens.indexOf("hold"), f = tokens.indexOf("fire");
+  if (h >= 0 && f > h && f - h <= 3) return true;
+  if (hasSeq(tokens, ["weapons", "tight"]) || hasSeq(tokens, ["weapons", "hold"])) return true;
+  if (hasSeq(tokens, ["no", "need"])) return true;
+  if (hasSeq(tokens, ["hold", "off"])) return true;
+  return tokens.some(t => NEGATOR.has(t));
+}
+
+/* ---------------------------------------------------------------- claims */
+function makeClaim(tokens) {
+  const used = new Array(tokens.length).fill(false);
+  return {
+    tokens, used,
+    /* First unclaimed occurrence of a phrase, skipping filler words between
+       its parts — "raise the shields" must match ["raise","shields"], or every
+       rule needs its own article handling and they drift apart. Returns the
+       full span walked, so claiming removes the fillers too. */
+    span(seq) {
+      outer: for (let i = 0; i < tokens.length; i++) {
+        if (used[i] || tokens[i] !== seq[0]) continue;
+        let k = 1, j = i + 1;
+        while (k < seq.length && j < tokens.length) {
+          if (used[j]) continue outer;
+          if (tokens[j] === seq[k]) { k++; j++; }
+          else if (FILLER.has(tokens[j])) j++;
+          else continue outer;
+        }
+        if (k === seq.length) return { at: i, len: j - i };
+      }
+      return null;
+    },
+    find(seq) { const s = this.span(seq); return s ? s.at : -1; },
+    findAny(seqs) {
+      let best = null;
+      for (const s of seqs) {
+        const sp = this.span(s);
+        if (sp && (!best || sp.at < best.at || (sp.at === best.at && sp.len > best.len)))
+          best = { at: sp.at, len: sp.len, seq: s };
+      }
+      return best;
+    },
+    take(i, len) { for (let k = 0; k < len; k++) if (i + k < used.length) used[i + k] = true; },
+    /* index of first unclaimed token matching a predicate */
+    where(pred) {
+      for (let i = 0; i < tokens.length; i++)
+        if (!used[i] && pred(tokens[i], i)) return i;
+      return -1;
+    },
+    unclaimed() { return tokens.filter((_, i) => !used[i] && !FILLER.has(tokens[i])); }
+  };
+}
+
+/* ------------------------------------------------------------ slot types */
+/* Every slot returns a value or null. A rule that needs a null slot does not
+   fire — there is nowhere to put a default. */
+
+function slotHeading(c) {
+  // digits: 0-359
+  let i = c.where(t => /^\d{1,3}$/.test(t) && Number(t) <= 359);
+  if (i >= 0) { c.take(i, 1); return Number(c.tokens[i]); }
+  // spoken digits: two or three in a row
+  for (let n = 3; n >= 2; n--) {
+    const j = c.where((t, idx) => {
+      for (let k = 0; k < n; k++) {
+        if (idx + k >= c.tokens.length || c.used[idx + k]) return false;
+        if (!(c.tokens[idx + k] in DIGIT_WORD)) return false;
+      }
+      return true;
+    });
+    if (j >= 0) {
+      let v = 0;
+      for (let k = 0; k < n; k++) v = v * 10 + DIGIT_WORD[c.tokens[j + k]];
+      c.take(j, n);
+      return v;
+    }
+  }
   return null;
 }
 
-/* Which officer answers a status request of a given scope, and — for a bare
-   "report" — which scope a named station implies. This is the one place a
-   station prefix changes meaning rather than just hinting. */
-function scopeForStation(t) {
-  if (/\bhelm\b|\bconn\b/.test(t)) return "navigation";
-  if (/\btactical\b|\bweapons officer\b|\bguns\b/.test(t)) return "weapons";
-  if (/\bscience\b|\bsensors\b/.test(t)) return "contacts";
-  if (/\bengineering\b|\bengineer\b|\bchief\b/.test(t)) return "hull";
-  return "all";
+const SYSTEMS = { engines: "engines", shields: "shields", weapons: "weapons",
+                  deflector: "shields", impulse: "engines", drive: "engines",
+                  phasers: "weapons", torpedoes: "weapons" };
+function slotSystem(c) {
+  const i = c.where(t => t in SYSTEMS);
+  if (i < 0) return null;
+  c.take(i, 1);
+  return SYSTEMS[c.tokens[i]];
 }
+
+function slotWeapon(c) {
+  const i = c.where(t => t === "phasers" || t === "torpedoes");
+  if (i < 0) return null;
+  c.take(i, 1);
+  return c.tokens[i];
+}
+
+function slotTarget(c, names) {
+  for (const name of names) {
+    const seq = tokenize(name);
+    const i = c.find(seq);
+    if (i >= 0) { c.take(i, seq.length); return name; }
+  }
+  const i = c.where(t => t === "it" || t === "them" || t === "him" || t === "her" || t === "target");
+  if (i >= 0) { c.take(i, 1); return "__current__"; }
+  return null;
+}
+
+const SPEEDS = [
+  [["full", "impulse"], "full"], [["full", "speed"], "full"], [["full", "ahead"], "full"],
+  [["flank", "speed"], "full"], [["maximum", "speed"], "full"], [["maximum"], "full"],
+  [["half", "impulse"], "half"], [["half", "speed"], "half"],
+  [["quarter", "impulse"], "quarter"], [["quarter", "speed"], "quarter"]
+];
+function slotSpeed(c) {
+  for (const [seq, val] of SPEEDS) {
+    const i = c.find(seq);
+    if (i >= 0) { c.take(i, seq.length); return val; }
+  }
+  return null;
+}
+
+const SCOPES = [
+  [["shields"], "shields"], [["hull"], "hull"], [["damage"], "hull"],
+  [["power"], "power"], [["reactor"], "power"],
+  [["weapons"], "weapons"], [["torpedoes"], "weapons"], [["phasers"], "weapons"],
+  [["heading"], "navigation"], [["course"], "navigation"], [["position"], "navigation"],
+  [["speed"], "navigation"], [["contacts"], "contacts"], [["sensors"], "contacts"]
+];
+function slotScope(c) {
+  for (const [seq, val] of SCOPES) {
+    const i = c.find(seq);
+    if (i >= 0) { c.take(i, seq.length); return val; }
+  }
+  return null;
+}
+
+/* ------------------------------------------------------------------ rules
+   Order matters only for which rule gets first claim on a shared token.
+   More specific frames come first. */
+const RULES = [
+  { name: "status",
+    triggers: [["status", "report"], ["damage", "report"], ["situation", "report"],
+               ["sitrep"], ["status"], ["report"], ["where", "are", "we"],
+               ["what's"], ["what", "is"], ["how", "are"], ["how", "is"], ["how's"]],
+    run(c, ctx) {
+      // The trigger may already name the scope ("damage report"), in which
+      // case its tokens are claimed and slotScope can no longer see them.
+      const fromTrigger = ctx.trigger.includes("damage") ? "hull" : null;
+      const scope = fromTrigger || slotScope(c);
+      // A bare question word with no scope is not a status order.
+      if (!scope && /what|how|where/.test(ctx.trigger[0])) return ctx.trigger[0] === "where"
+        ? { do: "status", scope: "navigation" } : null;
+      return { do: "status", scope: scope || ctx.stationScope || "all" };
+    } },
+
+  { name: "alert",
+    triggers: [["red", "alert"], ["battle", "stations"], ["general", "quarters"],
+               ["condition", "red"], ["yellow", "alert"], ["condition", "yellow"],
+               ["green", "alert"], ["condition", "green"], ["stand", "down"],
+               ["secure", "from", "alert"]],
+    run(c, ctx) {
+      const t = ctx.trigger.join(" ");
+      const level = /red|battle|quarters/.test(t) ? "red"
+                  : /yellow/.test(t) ? "yellow" : "green";
+      return { do: "alert", level };
+    } },
+
+  { name: "shields",
+    triggers: [["shields", "up"], ["shields", "on"], ["raise", "shields"],
+               ["put", "up", "shields"], ["bring", "up", "shields"],
+               ["shields", "down"], ["shields", "off"], ["lower", "shields"],
+               ["drop", "shields"], ["take", "down", "shields"]],
+    run(c, ctx) {
+      const t = ctx.trigger.join(" ");
+      return { do: "shields", up: !/down|off|lower|drop/.test(t) };
+    } },
+
+  { name: "stop",
+    triggers: [["all", "stop"], ["full", "stop"], ["hold", "position"], ["hold", "station"],
+               ["stop", "all", "engines"], ["stop", "engines"], ["stop", "the", "engines"],
+               ["finished", "with", "engines"], ["come", "to", "a", "stop"]],
+    run() { return { do: "speed", speed: 0 }; } },
+
+  { name: "follow-stop",
+    triggers: [["break", "off"], ["break", "pursuit"], ["stop", "following"],
+               ["stop", "pursuit"], ["disengage"]],
+    run() { return { do: "follow", stop: true }; } },
+
+  { name: "follow",
+    triggers: [["follow"], ["pursue"], ["chase"], ["intercept"], ["shadow"],
+               ["stay", "on"], ["stay", "with"], ["stay", "behind"], ["keep", "after"], ["match"]],
+    run(c, ctx) {
+      const target = slotTarget(c, ctx.names);
+      // Only an explicit mention of speed makes this a speed match; "match
+      // course" and "match them" hold the bearing alone.
+      const si = c.find(["speed"]) >= 0 ? c.find(["speed"]) : c.find(["velocity"]);
+      const match = si >= 0;
+      if (match) c.take(si, 1);
+      return { do: "follow", target: target || undefined, match };
+    } },
+
+  { name: "power",
+    triggers: [["divert", "power"], ["reroute", "power"], ["route", "power"],
+               ["shift", "power"], ["transfer", "power"], ["power", "to"], ["power"],
+               ["divert"], ["reroute"], ["shift"], ["transfer"]],
+    run(c) {
+      // REQUIRED slot. No system means no order — never a silent default.
+      const system = slotSystem(c);
+      if (!system) return null;
+      let amount = 55;
+      for (const [seqs, v] of [[[["cut"], ["reduce"], ["drop"], ["decrease"], ["minimal"]], 15],
+                               [[["boost"], ["increase"], ["maximum"], ["max"], ["all"], ["everything"]], 75]]) {
+        for (const s of seqs) { const i = c.find(s); if (i >= 0) { c.take(i, 1); amount = v; } }
+      }
+      return { do: "power", system, amount };
+    } },
+
+  { name: "fire",
+    triggers: [["open", "fire"], ["fire"], ["shoot"], ["engage"]],
+    run(c, ctx) {
+      const weapon = slotWeapon(c) || "phasers";
+      const target = slotTarget(c, ctx.names);
+      return { do: "fire", weapon, target: target || undefined };
+    } },
+
+  { name: "target",
+    triggers: [["target"], ["lock", "onto"], ["lock", "on", "to"], ["lock", "on"], ["acquire"]],
+    run(c, ctx) {
+      const target = slotTarget(c, ctx.names);
+      if (!target) return null;          // targeting nothing is not an order
+      return { do: "target", target };
+    } },
+
+  { name: "scan",
+    triggers: [["scan"], ["analyse"], ["analyze"], ["identify"]],
+    run(c, ctx) { return { do: "scan", target: slotTarget(c, ctx.names) || undefined }; } },
+
+  { name: "hail",
+    triggers: [["hail"], ["open", "a", "channel"], ["open", "channel"], ["signal"]],
+    run(c, ctx) { return { do: "hail", target: slotTarget(c, ctx.names) || undefined }; } },
+
+  { name: "course",
+    triggers: [["come", "about", "to"], ["come", "about"], ["come", "to"], ["bring", "us", "to"],
+               ["set", "course", "for"], ["set", "course"], ["set", "a", "course", "for"],
+               ["steer"], ["new", "heading"], ["heading"], ["bearing"], ["course"]],
+    run(c) {
+      const heading = slotHeading(c);
+      if (heading === null) return null;  // a course order with no course is not one
+      const speed = slotSpeed(c);
+      return speed ? { do: "course", heading, speed } : { do: "course", heading };
+    } },
+
+  { name: "speed",
+    triggers: SPEEDS.map(([seq]) => seq),
+    run(c, ctx) { return { do: "speed", speed: ctx.trigger.join(" ").includes("half") ? "half"
+                                        : ctx.trigger.join(" ").includes("quarter") ? "quarter" : "full" }; } }
+];
+
+/* Parse one utterance into zero or more actions, in the order spoken. */
+function parseOrders(text, contactNames) {
+  const names = (contactNames || []).slice();
+  const all = [];
+
+  for (const clauseTokens of splitClauses(tokenize(text))) {
+    if (clauseIsNegative(clauseTokens)) continue;   // a negative clause commands nothing
+
+    const c = makeClaim(clauseTokens);
+
+    // A leading station names who answers; for a bare status it also narrows scope.
+    let station = null;
+    const s0 = c.where(t => t in STATIONS);
+    if (s0 >= 0 && clauseTokens.slice(0, s0).every(t => FILLER.has(t))) {
+      station = STATIONS[clauseTokens[s0]];
+      c.take(s0, 1);
+    }
+    const stationScope = { HELM: "navigation", TAC: "weapons", SCI: "contacts",
+                           ENG: "hull", COMM: "contacts" }[station] || null;
+
+    const found = [];
+    for (const rule of RULES) {
+      const hit = c.findAny(rule.triggers);
+      if (!hit) continue;
+      const before = c.used.slice();
+      c.take(hit.at, hit.len);
+      const act = rule.run(c, { trigger: hit.seq, names, stationScope });
+      if (!act) { c.used.splice(0, c.used.length, ...before); continue; }  // whole frame or nothing
+      found.push({ at: hit.at, act, station });
+    }
+    found.sort((a, b) => a.at - b.at);
+    for (const f of found) all.push(f);
+  }
+  return all;
+}
+/* ===== ORDER PARSER — END PURE ======================================= */
+
+/* ---- presentation: turn actions into officers and lines -----------------
+   The parser above is pure and knows nothing about the ship. Everything that
+   needs game state lives here. */
+
 function officerForScope(scope) {
   if (scope === "navigation") return "HELM";
   if (scope === "contacts") return "SCI";
@@ -1795,178 +2189,75 @@ function officerForScope(scope) {
   return "TAC";
 }
 
-/* Split an utterance into clauses on conjunctions, so each rule sees only
-   its own clause. Without this, "damage report and shields up" reports on
-   SHIELDS, because the later clause poisons the earlier clause's scope.
-   A clause that is nothing but a station name ("engineering,") is carried
-   forward onto the clause it introduces. */
-const STATION_ONLY =
-  /^(?:mister\s+|mr\.?\s+|ms\.?\s+)?(?:helm(?:sman)?|conn|tactical|weapons(?: officer)?|guns|science(?: officer)?|sensors|engineering|engineer|chief|comms|coms|communications)$/;
-
-function splitClauses(t) {
-  const parts = t.split(/\s*(?:,|;|\band then\b|\bthen\b|\band\b)\s*/)
-                 .map(s => s.trim()).filter(Boolean);
-  const merged = [];
-  let carry = "";
-  for (const part of parts) {
-    if (STATION_ONLY.test(part)) { carry = part + " "; continue; }
-    merged.push(carry + part);
-    carry = "";
+function officerForAction(act) {
+  switch (act.do) {
+    case "course": case "speed": case "follow": return "HELM";
+    case "scan":   return "SCI";
+    case "power":  return "ENG";
+    case "hail":   return "COMM";
+    case "status": return officerForScope(act.scope);
+    default:       return "TAC";
   }
-  if (carry && !merged.length) merged.push(carry.trim());
-  return merged.length ? merged : [t];
 }
 
-/* Rules for ONE clause. Returns zero or more {officer, line, act}.
-   `wholeTarget` lets a later clause inherit a contact named earlier, so
-   "target the kestrel and fire" fires at the kestrel. */
-const STATION_LEAD = /^(?:mister\s+|mr\.?\s+|ms\.?\s+)?(?:helm(?:sman)?|conn|tactical|weapons officer|weapons|guns|science officer|science|sensors|engineering|engineer|chief|comms|coms|communications)\b[,:]?\s*/;
-
-/* Polarity is a property of the CLAUSE, not of any one verb.
-   The earlier code guarded only `fire`, because `fire` is the verb the test
-   corpus happened to cover — so "don't raise shields" raised them, "belay the
-   red alert" sounded it, and "never divert power" diverted it. Checking once,
-   ahead of every rule, fixes the whole class and cannot be forgotten when a new
-   verb is added.
-
-   Some words that look like negators head perfectly good orders ("all stop",
-   "hold station", "stop following"), so those idioms are recognised first. */
-const POSITIVE_IDIOM =
-  /\b(?:all stop|full stop|stop (?:all )?engines?|hold (?:station|position)|stop following|stop pursuit|break off|break pursuit)\b/;
-const NEGATOR =
-  /\b(?:don'?t|dont|do\s+not|never|belay|cancel|abort|disregard|without|refrain\s+from|negative\s+on|no\s+need\s+to|cease|hold\s+off)\b|\bhold\s+(?:\w+\s+){0,2}?fire\b|\bcheck\s+fir(?:e|ing)\b|\bweapons\s+(?:tight|hold|safe)\b|\bhold\s+what\s+you\s+have\b/;
-
-function clauseIsNegative(t) {
-  if (POSITIVE_IDIOM.test(t)) return false;
-  return NEGATOR.test(t);
+function lineForAction(act) {
+  switch (act.do) {
+    case "alert":
+      return act.level === "red"    ? "Red alert. All hands to battle stations."
+           : act.level === "yellow" ? "Condition yellow, Captain."
+                                    : "Standing down to condition green.";
+    case "shields": return act.up ? "Shields up." : "Lowering shields, Captain.";
+    case "fire":    return act.weapon === "torpedoes" ? "Torpedo away." : "Firing phasers.";
+    case "target":  return "Locked on " + act.target + ".";
+    case "scan":    return "Running a full spectrum scan now.";
+    case "hail":    return "Opening a channel, Captain.";
+    case "power":   return act.amount <= 20
+                      ? "Cutting power to " + act.system + "."
+                      : "Rerouting to " + act.system + ". It will cost us elsewhere.";
+    case "follow":  return act.stop ? "Breaking off, aye."
+                    : act.match ? "Matching course and speed, aye."
+                                : "Falling in behind them, aye.";
+    case "course":  return "Coming to " + fmtHdg(act.heading) + ", aye.";
+    case "speed":   return act.speed === 0 ? "All stop, aye."
+                    : act.speed === "half" ? "Half impulse, aye."
+                    : act.speed === "quarter" ? "Quarter impulse, aye."
+                                              : "Full impulse, aye.";
+    case "status":  return null;   // the report itself is the line
+    default:        return null;
+  }
 }
 
-function parseClause(clause, wholeTarget) {
-  // The station says who answers. It must never take part in slot detection —
-  // "engineering" contains "engine", which silently hijacked power routing.
-  const lead = clause.match(STATION_LEAD);
-  const t = lead ? clause.slice(lead[0].length) : clause;
-  if (clauseIsNegative(t)) return [];   // a negative clause commands nothing
-  const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
-  const tgt = named ? named.name : wholeTarget;
-
-  const out = [];
-  const at = re => t.search(re);
-  const add = (i, officer, line, act) => { if (i >= 0) out.push({ i, officer, line, act }); };
-
-  // Status is a pure read of local state — never worth a model round trip.
-  const si = at(/\b(status|report|sitrep)\b|\bwhere are we\b|\bwhat(?:'?s| is)\s+(?:our|the|my)\b|\bhow(?:'?s| is| are)\s+(?:our|the|my)\b/);
-  if (si >= 0) {
-    const scope =
-        /\bshield/.test(t)                     ? "shields"
-      : /\bhull\b|\bdamage\b/.test(t)          ? "hull"
-      : /\bpower\b|\breactor\b/.test(t)        ? "power"
-      : /\bweapon|\btorped|\bphaser/.test(t)   ? "weapons"
-      : /\bheading\b|\bcourse\b|\bposition\b|\bspeed\b|\bwhere are we\b/.test(t) ? "navigation"
-      : /\bcontact|\bsensor/.test(t)           ? "contacts"
-      : scopeForStation(clause);
-    add(si, officerForScope(scope), null, { do: "status", scope });
+/* Resolve the parser's placeholder target against live state, and translate
+   symbolic speeds into the sim's units. */
+function bindAction(act) {
+  const out = { ...act };
+  if (out.target === "__current__") {
+    const cur = contacts.find(c => c.id === ship.target);
+    out.target = cur ? cur.name : undefined;
   }
-
-  add(at(/\bred alert\b|\bbattle stations\b|\bgeneral quarters\b|\bcondition red\b/), "TAC",
-      "Red alert. All hands to battle stations.", { do: "alert", level: "red" });
-  add(at(/\byellow alert\b|\bcondition yellow\b/), "TAC",
-      "Condition yellow, Captain.", { do: "alert", level: "yellow" });
-  add(at(/\bstand down\b|\bgreen alert\b|\bcondition green\b|\bsecure from alert\b/), "TAC",
-      "Standing down to condition green.", { do: "alert", level: "green" });
-
-  add(at(/shields?\s*(?:up|on)\b|\b(?:raise|put up|bring up)\s+(?:the\s+)?shields?/), "TAC",
-      "Shields up.", { do: "shields", up: true });
-  add(at(/shields?\s*(?:down|off)\b|\b(?:lower|drop|take down)\s+(?:the\s+)?shields?/), "TAC",
-      "Lowering shields, Captain.", { do: "shields", up: false });
-
-  {
-    const torp = /\btorped/.test(t);
-    add(at(/\bopen fire\b|\bfire\b|\bshoot\b|\bengage\b/), "TAC",
-        torp ? "Torpedo away." : "Firing phasers.",
-        { do: "fire", weapon: torp ? "torpedoes" : "phasers", target: tgt });
+  if (out.do === "speed" || out.speed !== undefined) {
+    const map = { full: ship.maxSpeed, half: ship.maxSpeed / 2, quarter: ship.maxSpeed / 4 };
+    if (typeof out.speed === "string" && map[out.speed] !== undefined) out.speed = map[out.speed];
   }
-
-  add(at(/\bbreak off\b|\bbreak pursuit\b|\bstop following\b|\bdisengage\b/), "HELM",
-      "Breaking off, aye.", { do: "follow", stop: true });
-  {
-    const pi2 = at(/\bfollow\b|\bpursue\b|\bchase\b|\bintercept\b|\bshadow\b|\bstay (?:on|with|behind)\b|\bmatch\b|\bkeep after\b/);
-    if (pi2 >= 0 && !/\bbreak off\b|\bstop following\b/.test(t)) {
-      const match = /\bspeed\b|\bvelocity\b|\bmatch (?:them|him|her|it)\b/.test(t);
-      add(pi2, "HELM", match ? "Matching course and speed, aye." : "Falling in behind them, aye.",
-          { do: "follow", target: tgt, match });
-    }
-  }
-
-  add(at(/\bscan\b|\banaly[sz]e\b|\bidentify\b/), "SCI",
-      "Running a full spectrum scan now.", { do: "scan", target: tgt });
-  add(at(/\bhail\b|\bopen a channel\b|\bsignal\b|\bcontact them\b/), "COMM",
-      "Opening a channel, Captain.", { do: "hail", target: tgt });
-  if (tgt) add(at(/\btarget\b|\block on\b|\block onto\b/), "TAC",
-      "Locked on " + tgt + ".", { do: "target", target: tgt });
-
-  const pi = at(/\bpower to\b|\bdivert\b|\breroute\b|\bshift power\b/);
-  if (pi >= 0) {
-    // The ship has exactly three power buses. An unrecognised destination must
-    // ESCALATE, not silently become shields — "power to the tractor beam"
-    // should get an officer explaining we have no tractor beam.
-    const sys = /\bengines?\b|\bpropulsion\b|\bimpulse\b|\bdrive\b/.test(t) ? "engines"
-              : /\bweapons?\b|\bphasers?\b|\btorpedo/.test(t)                 ? "weapons"
-              : /\bshields?\b|\bdeflector\b|\bshield grid\b/.test(t)          ? "shields"
-              : null;
-    if (sys) {
-      // Direction matters: "cut power to shields" is not "boost power to shields".
-      const down = /\bcut\b|\breduce\b|\bdrop\b|\bless\b|\bdecrease\b|\bminimal\b|\bkill\b/.test(t);
-      const up   = /\bboost\b|\bincrease\b|\bmore\b|\bmax(?:imum)?\b|\bfull\b|\beverything\b|\ball\b/.test(t);
-      const amount = down ? 15 : up ? 75 : 55;
-      add(pi, "ENG",
-          down ? "Cutting power to " + sys + "."
-               : "Rerouting to " + sys + ". It will cost us elsewhere.",
-          { do: "power", system: sys, amount });
-    }
-  }
-
-  add(at(/\ball stop\b|\bfull stop\b|\bhold position\b|\bhold station\b|\bstop (?:all )?engines?\b|\bstop the engines?\b|\bfinished with engines?\b/), "HELM",
-      "All stop, aye.", { do: "speed", speed: 0 });
-
-  const hdg = parseHeading(t);
-  // "maximum power to weapons" is not an order to go to full impulse. A clause
-  // that is plainly about power does not also set speed.
-  const powerContext = /\bpower\b|\bdivert\b|\breroute\b|\bcoolant\b/.test(t);
-  const full = !powerContext && /\bfull (?:impulse|speed|ahead)\b|\bflank speed\b|\bmaximum\b/.test(t);
-  const half = !powerContext && /\bhalf (?:impulse|speed)\b/.test(t);
-  if (hdg !== null) {
-    add(at(/\b(?:bearing|heading|course|come about|come to|steer)\b|\d/), "HELM",
-        "Coming to " + fmtHdg(hdg) + ", aye.",
-        { do: "course", heading: hdg, speed: full ? 12 : half ? 6 : undefined });
-  } else if (full) {
-    add(at(/\bfull\b|\bflank\b|\bmaximum\b/), "HELM", "Full impulse, aye.", { do: "speed", speed: 12 });
-  } else if (half) {
-    add(at(/\bhalf\b/), "HELM", "Half impulse, aye.", { do: "speed", speed: 6 });
-  }
-
-  return out.sort((a, b) => a.i - b.i).map(({ officer, line, act }) => ({ officer, line, act }));
+  return out;
 }
 
-/* Parses a whole utterance clause by clause, in the order spoken. The old
-   version returned on first match, which silently dropped every compound
-   order and obeyed cascade order rather than sentence order. */
 function localParse(order) {
-  const t = order.toLowerCase();
-  const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
-  const wholeTarget = named ? named.name : undefined;
+  const names = contacts.map(c => c.name).filter(Boolean);
+  const found = parseOrders(order, names);
+  if (!found.length) return null;         // nothing confident — the caller escalates
 
   const out = [];
   const kinds = new Set();
-  for (const clause of splitClauses(t)) {
-    for (const r of parseClause(clause, wholeTarget)) {
-      if (r.act && kinds.has(r.act.do)) continue;   // one action of each kind
-      if (r.act) kinds.add(r.act.do);
-      out.push(r);
-    }
+  for (const f of found) {
+    if (kinds.has(f.act.do)) continue;    // one action of each kind per utterance
+    kinds.add(f.act.do);
+    const act = bindAction(f.act);
+    out.push({ officer: f.station || officerForAction(act), line: lineForAction(act), act });
   }
-  return out.length ? out : null;   // nothing confident — the caller escalates
+  return out.length ? out : null;
 }
+
 
 /* What the crew says when nothing at all can interpret the order. */
 function didNotCatch() {
