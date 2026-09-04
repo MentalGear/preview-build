@@ -1705,7 +1705,10 @@ async function askCrew(order) {
 const NUMWORDS = { zero:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9, niner:9 };
 
 function parseHeading(t) {
-  let m = t.match(/\b(?:bearing|heading|course|come about to|to)\s+(\d{1,3})\b/);
+  // A bare "to <n>" is not a heading — "set shields to 100" is not a turn.
+  // Require a navigation word to claim the number.
+  if (/\bshield|\bpower\b|\bthrottle\b|\bpercent\b|\bcoolant\b/.test(t)) return null;
+  let m = t.match(/\b(?:bearing|heading|course|come about to|come to|bring us to|steer to|steer|set course for|set course to)\s+(\d{1,3})\b/);
   if (m) return Number(m[1]);
   const words = t.match(/\b(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)\b/);
   if (words) return NUMWORDS[words[1]] * 100 + NUMWORDS[words[2]] * 10 + NUMWORDS[words[3]];
@@ -1797,7 +1800,8 @@ function parseClause(clause, wholeTarget) {
       "Lowering shields, Captain.", { do: "shields", up: false });
 
   // Negated or withheld fire never fires — it escalates instead.
-  if (!/\b(?:don'?t|do not|cease|hold|belay|no)\s+(?:fire|firing|shoot)/.test(t)) {
+  const WITHHOLD = /\b(?:don'?t|do not|cease|hold|check|belay|never|stop|no|negative on)\s+(?:\w+\s+){0,2}?(?:fire|firing|shoot|shooting|attack|weapons)\b|\bweapons\s+(?:tight|hold|safe)\b|\bhold\s+what\s+you\s+have\b/;
+  if (!WITHHOLD.test(t)) {
     const torp = /\btorped/.test(t);
     add(at(/\bopen fire\b|\bfire\b|\bshoot\b|\bengage\b/), "TAC",
         torp ? "Torpedo away." : "Firing phasers.",
@@ -1822,19 +1826,36 @@ function parseClause(clause, wholeTarget) {
   if (tgt) add(at(/\btarget\b|\block on\b|\block onto\b/), "TAC",
       "Locked on " + tgt + ".", { do: "target", target: tgt });
 
-  const pi = at(/\bpower to\b|\bdivert\b|\breroute\b/);
+  const pi = at(/\bpower to\b|\bdivert\b|\breroute\b|\bshift power\b/);
   if (pi >= 0) {
-    const sys = /engine/.test(t) ? "engines" : /weapon|phaser/.test(t) ? "weapons" : "shields";
-    add(pi, "ENG", "Rerouting to " + sys + ". It will cost us elsewhere.",
-        { do: "power", system: sys, amount: 55 });
+    // The ship has exactly three power buses. An unrecognised destination must
+    // ESCALATE, not silently become shields — "power to the tractor beam"
+    // should get an officer explaining we have no tractor beam.
+    const sys = /\bengines?\b|\bpropulsion\b|\bimpulse\b|\bdrive\b/.test(t) ? "engines"
+              : /\bweapons?\b|\bphasers?\b|\btorpedo/.test(t)                 ? "weapons"
+              : /\bshields?\b|\bdeflector\b|\bshield grid\b/.test(t)          ? "shields"
+              : null;
+    if (sys) {
+      // Direction matters: "cut power to shields" is not "boost power to shields".
+      const down = /\bcut\b|\breduce\b|\bdrop\b|\bless\b|\bdecrease\b|\bminimal\b|\bkill\b/.test(t);
+      const up   = /\bboost\b|\bincrease\b|\bmore\b|\bmax(?:imum)?\b|\bfull\b|\beverything\b|\ball\b/.test(t);
+      const amount = down ? 15 : up ? 75 : 55;
+      add(pi, "ENG",
+          down ? "Cutting power to " + sys + "."
+               : "Rerouting to " + sys + ". It will cost us elsewhere.",
+          { do: "power", system: sys, amount });
+    }
   }
 
   add(at(/\ball stop\b|\bfull stop\b|\bhold position\b|\bhold station\b/), "HELM",
       "All stop, aye.", { do: "speed", speed: 0 });
 
   const hdg = parseHeading(t);
-  const full = /\bfull (?:impulse|speed|ahead)\b|\bflank speed\b|\bmaximum\b/.test(t);
-  const half = /\bhalf (?:impulse|speed)\b/.test(t);
+  // "maximum power to weapons" is not an order to go to full impulse. A clause
+  // that is plainly about power does not also set speed.
+  const powerContext = /\bpower\b|\bdivert\b|\breroute\b|\bcoolant\b/.test(t);
+  const full = !powerContext && /\bfull (?:impulse|speed|ahead)\b|\bflank speed\b|\bmaximum\b/.test(t);
+  const half = !powerContext && /\bhalf (?:impulse|speed)\b/.test(t);
   if (hdg !== null) {
     add(at(/\b(?:bearing|heading|course|come about|come to|steer)\b|\d/), "HELM",
         "Coming to " + fmtHdg(hdg) + ", aye.",
