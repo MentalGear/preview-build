@@ -471,6 +471,14 @@
           download — this needs a self-hosted copy.</span>
         </label>
       </div>
+      <div class="opt" style="padding-left:26px;border-top:0">
+        <input type="checkbox" id="engGpu" disabled>
+        <label for="engGpu">
+          <span class="optname">Run it on WebGPU</span>
+          <span class="optwhy" id="gpuWhy">Far faster generation. Costs a bigger download — about 330&nbsp;MB
+          instead of 86&nbsp;MB — because the GPU path wants full precision. Needs a browser with WebGPU.</span>
+        </label>
+      </div>
       <div class="loadbar" id="ttsBar" hidden><i></i></div>
 
       <p class="note" id="voiceNote" style="margin-top:12px">
@@ -1012,6 +1020,7 @@ function loadPrefs() {
     if (saved && typeof saved === "object") {
       if (typeof saved.speechOn === "boolean") speechOn = saved.speechOn;
       if (saved.engine === "kokoro" || saved.engine === "browser") voiceEngine = saved.engine;
+      if (typeof saved.gpu === "boolean") kokoroUseGpu = saved.gpu;
       for (const k of ORDER_OF_STATIONS) {
         const s = saved[k];
         if (!s) continue;
@@ -1026,7 +1035,7 @@ function loadPrefs() {
 
 function savePrefs() {
   try {
-    const out = { speechOn, engine: voiceEngine };
+    const out = { speechOn, engine: voiceEngine, gpu: kokoroUseGpu };
     for (const k of ORDER_OF_STATIONS) out[k] = { ...voiceCfg[k] };
     localStorage.setItem(PREFS_KEY, JSON.stringify(out));
   } catch (e) { /* not being able to remember is not an error worth showing */ }
@@ -1126,58 +1135,121 @@ const KOKORO_VOICE_IDS = [
 ];
 
 let voiceEngine = "browser";      // "browser" | "kokoro"
-let kokoro = null;                // the loaded model
-let kokoroLoading = null;         // in-flight load promise
 let audioCtx = null;
 
-/* Generated audio is cached by voice+text. The sim's templated callouts
-   repeat constantly ("Shields up.", "Firing phasers."), so after the first
-   utterance most lines play instantly. */
-const kokoroCache = new Map();
+/* Inference runs in a Web Worker. On the main thread it blocks the 20 Hz sim
+   tick and freezes the plot for the whole generation. The worker does not make
+   generation faster — it keeps the bridge responsive while it happens.
+
+   Speed context: ONNX Runtime Web can only use threads with SharedArrayBuffer,
+   which needs COOP/COEP headers. GitHub Pages cannot set those, so the wasm
+   path is pinned to a single core there. WebGPU is the way out, at the cost of
+   a much larger download. */
+let kokoroWorker = null;
+let kokoroReady = null;
+let kokoroSeq = 0;
+const kokoroPending = new Map();
+
+let kokoroUseGpu = false;
+function kokoroGpuAvailable() { return typeof navigator !== "undefined" && !!navigator.gpu; }
+
+const kokoroCache = new Map();   // voice|speed|text -> {audio, sampling_rate}
 const KOKORO_CACHE_MAX = 60;
+let kokoroQueue = Promise.resolve();   // one line at a time; no overlapping officers
 
-/* One line at a time, so two officers never talk over each other. */
-let kokoroQueue = Promise.resolve();
+function kokoroWorkerSource() {
+  return 'import { KokoroTTS } from ' + JSON.stringify(KOKORO_CDN) + ';\n' + `
+let tts = null;
+self.onmessage = async (e) => {
+  const m = e.data;
+  try {
+    if (m.type === "load") {
+      tts = await KokoroTTS.from_pretrained(m.model, {
+        dtype: m.dtype,
+        device: m.device,
+        progress_callback: p => {
+          if (p && p.status === "progress" && p.total) {
+            self.postMessage({ type: "progress", loaded: p.loaded, total: p.total });
+          }
+        }
+      });
+      self.postMessage({ type: "ready" });
+    } else if (m.type === "gen") {
+      const raw = await tts.generate(m.text, { voice: m.voice, speed: m.speed });
+      const audio = raw.audio;
+      self.postMessage({ type: "audio", id: m.id, audio, rate: raw.sampling_rate }, [audio.buffer]);
+    }
+  } catch (err) {
+    self.postMessage({ type: "error", id: m.id, message: String((err && err.message) || err) });
+  }
+};
+`;
+}
 
-function kokoroAvailable() { return typeof AudioContext !== "undefined" || typeof webkitAudioContext !== "undefined"; }
-
-async function loadKokoro() {
-  if (kokoro) return kokoro;
-  if (kokoroLoading) return kokoroLoading;
+function startKokoro() {
+  if (kokoroReady) return kokoroReady;
 
   const bar = document.getElementById("ttsBar");
   const fill = bar ? bar.querySelector("i") : null;
+  const gpu = kokoroUseGpu && kokoroGpuAvailable();
 
-  kokoroLoading = (async () => {
-    if (bar) bar.hidden = false;
-    status("Downloading crew voices. About 86 megabytes, once.");
-    const { KokoroTTS } = await import(KOKORO_CDN);
-    const tts = await KokoroTTS.from_pretrained(KOKORO_MODEL, {
-      dtype: "q8",          // ~86 MB; fp32 is ~330 MB and not worth it here
-      device: "wasm",       // works everywhere; WebGPU is the later upgrade
-      progress_callback: p => {
-        if (fill && p && p.status === "progress" && p.total) {
-          fill.style.width = Math.round(100 * (p.loaded / p.total)) + "%";
-        }
+  kokoroReady = new Promise((resolve, reject) => {
+    try {
+      const url = URL.createObjectURL(new Blob([kokoroWorkerSource()], { type: "text/javascript" }));
+      kokoroWorker = new Worker(url, { type: "module" });
+    } catch (err) { reject(err); return; }
+
+    kokoroWorker.onerror = ev => reject(new Error((ev && ev.message) || "voice worker failed to start"));
+    kokoroWorker.onmessage = ev => {
+      const m = ev.data;
+      if (m.type === "progress") {
+        if (fill && m.total) fill.style.width = Math.round(100 * (m.loaded / m.total)) + "%";
+      } else if (m.type === "ready") {
+        if (bar) bar.hidden = true;
+        status("Crew voices ready.");
+        resolve(kokoroWorker);
+      } else if (m.type === "audio") {
+        const p = kokoroPending.get(m.id);
+        if (p) { kokoroPending.delete(m.id); p.resolve({ audio: m.audio, sampling_rate: m.rate }); }
+      } else if (m.type === "error") {
+        if (m.id === undefined || m.id === null) { reject(new Error(m.message)); return; }
+        const p = kokoroPending.get(m.id);
+        if (p) { kokoroPending.delete(m.id); p.reject(new Error(m.message)); }
       }
-    });
-    kokoro = tts;
-    if (bar) bar.hidden = true;
-    status("Crew voices ready.");
-    return tts;
-  })();
+    };
 
-  try { return await kokoroLoading; }
-  catch (err) {
-    kokoroLoading = null;
-    if (bar) bar.hidden = true;
+    if (bar) bar.hidden = false;
+    status(gpu ? "Downloading crew voices for WebGPU. About 330 megabytes, once."
+               : "Downloading crew voices. About 86 megabytes, once.");
+    kokoroWorker.postMessage({
+      type: "load",
+      model: KOKORO_MODEL,
+      dtype:  gpu ? "fp32"   : "q8",
+      device: gpu ? "webgpu" : "wasm"
+    });
+  });
+
+  kokoroReady.catch(() => {
+    const b = document.getElementById("ttsBar");
+    if (b) b.hidden = true;
+    if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; }
+    kokoroReady = null;
     voiceEngine = "browser";
-    const browserRadio = document.getElementById("engBrowser");
-    if (browserRadio) browserRadio.checked = true;
+    const r = document.getElementById("engBrowser");
+    if (r) r.checked = true;
     buildVoiceRows();
     status("Could not load the crew voices here — using the browser's own.");
-    throw err;
-  }
+  });
+
+  return kokoroReady;
+}
+
+function generateKokoro(text, voice, speed) {
+  return startKokoro().then(w => new Promise((resolve, reject) => {
+    const id = ++kokoroSeq;
+    kokoroPending.set(id, { resolve, reject });
+    w.postMessage({ type: "gen", id, text, voice, speed });
+  }));
 }
 
 function playRaw(raw) {
@@ -1195,16 +1267,15 @@ function playRaw(raw) {
 
 function speakKokoro(who, line) {
   const voice = kokoroVoiceFor(who);
-  const key = voice + "|" + ((voiceCfg[who] && voiceCfg[who].rate) || 1) + "|" + line;
+  const speed = (voiceCfg[who] && voiceCfg[who].rate) || 1;
+  const key = voice + "|" + speed + "|" + line;
 
   kokoroQueue = kokoroQueue.then(async () => {
     if (!speechOn) return;
     try {
       let raw = kokoroCache.get(key);
       if (!raw) {
-        const tts = await loadKokoro();
-        const speed = (voiceCfg[who] && voiceCfg[who].rate) || 1;
-        raw = await tts.generate(line, { voice, speed });
+        raw = await generateKokoro(line, voice, speed);
         if (kokoroCache.size >= KOKORO_CACHE_MAX) kokoroCache.delete(kokoroCache.keys().next().value);
         kokoroCache.set(key, raw);
       }
@@ -2068,6 +2139,23 @@ function wireSettings() {
   };
   paintNote();
 
+  const gpuBox = document.getElementById("engGpu");
+  if (kokoroGpuAvailable()) {
+    gpuBox.disabled = false;
+  } else {
+    document.getElementById("gpuWhy").textContent =
+      "This browser reports no WebGPU, so the voices run on a single CPU core via WebAssembly.";
+  }
+  gpuBox.checked = kokoroUseGpu;
+  gpuBox.addEventListener("change", () => {
+    kokoroUseGpu = gpuBox.checked;
+    savePrefs();
+    // Precision and device are fixed when the weights load, so a change means
+    // starting over rather than reconfiguring in place.
+    if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; kokoroReady = null; kokoroCache.clear(); }
+    if (voiceEngine === "kokoro") startKokoro().catch(() => {});
+  });
+
   for (const r of document.querySelectorAll('input[name="engine"]')) {
     r.checked = (r.value === voiceEngine);
     r.addEventListener("change", () => {
@@ -2076,7 +2164,7 @@ function wireSettings() {
       savePrefs();
       paintNote();
       buildVoiceRows();
-      if (voiceEngine === "kokoro") loadKokoro().catch(() => {});
+      if (voiceEngine === "kokoro") startKokoro().catch(() => {});
       else status("Bridge standing by.");
     });
   }
