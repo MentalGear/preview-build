@@ -1,0 +1,2191 @@
+<title>ISV Meridian Bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+  /* ISV Meridian — a bridge at night. Single committed dark instrument world:
+     every colour is painted explicitly so the page holds on any host ground. */
+  :root {
+    --void:   #0A0E14;
+    --panel:  #121926;
+    --panel2: #0E1520;
+    --rule:   #1E2A3C;
+    --ink:    #C6D4E4;
+    --dim:    #6B7C93;
+    --amber:  #FFB454;
+    --cyan:   #4FD6E0;
+    --alert:  #FF5C5C;
+    --good:   #7FD98C;
+
+    --f-display: "Chakra Petch", "Eurostile", sans-serif;
+    --f-body: "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --gap: 14px;
+    --r: 3px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--void);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    /* faint instrument glow from below, as if from the consoles */
+    background-image:
+      radial-gradient(120% 70% at 50% 118%, rgba(255,180,84,.10), transparent 62%),
+      radial-gradient(90% 60% at 50% -14%, rgba(79,214,224,.06), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  .frame {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 18px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ship {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0;
+  }
+  .ship span { color: var(--amber); }
+  .registry {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: .12em;
+  }
+  .masthead .spacer { flex: 1 1 auto; }
+
+  .pill {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    color: var(--dim);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill b { font-weight: 600; color: var(--ink); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex: none; }
+  .dot.on   { background: var(--good); }
+  .dot.warn { background: var(--amber); }
+  .dot.off  { background: #3A4759; }
+
+  /* alert condition strip */
+  .condition {
+    font-family: var(--f-display);
+    font-weight: 700;
+    letter-spacing: .18em;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: var(--r);
+    border: 1px solid;
+  }
+  .condition[data-level="green"] { color: var(--good);  border-color: rgba(127,217,140,.35); background: rgba(127,217,140,.07); }
+  .condition[data-level="yellow"]{ color: var(--amber); border-color: rgba(255,180,84,.40);  background: rgba(255,180,84,.09); }
+  .condition[data-level="red"]   { color: var(--alert); border-color: rgba(255,92,92,.45);   background: rgba(255,92,92,.10); }
+
+  /* ---------- main three-column console ---------- */
+  .console {
+    display: grid;
+    grid-template-columns: 268px minmax(0, 1fr) 268px;
+    gap: var(--gap);
+    align-items: start;
+  }
+  @media (max-width: 1080px) {
+    .console { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  .rail { display: flex; flex-direction: column; gap: 10px; }
+
+  .plate {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 10.5px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0 0 2px;
+  }
+
+  /* ---------- officer cards ---------- */
+  .officer {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-left: 2px solid #2A3A4E;
+    border-radius: var(--r);
+    padding: 9px 11px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 8px;
+    transition: border-left-color .25s, background .25s;
+  }
+  .officer .station {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    transition: color .25s;
+  }
+  .officer .name {
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    color: var(--ink);
+    grid-column: 1 / -1;
+  }
+  .officer .last {
+    grid-column: 1 / -1;
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--dim);
+    margin-top: 3px;
+    min-height: 1.5em;
+    transition: color .25s;
+  }
+  .officer .vu {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #2A3A4E; align-self: center;
+    transition: background .2s, box-shadow .2s;
+  }
+  .officer.speaking { border-left-color: var(--amber); background: #17202F; }
+  .officer.speaking .station { color: var(--amber); }
+  .officer.speaking .last { color: var(--ink); }
+  .officer.speaking .vu { background: var(--amber); box-shadow: 0 0 7px var(--amber); }
+
+  /* ---------- tactical plot ---------- */
+  .plot-wrap {
+    background: var(--panel2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .plot-head {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .plot-head .spacer { flex: 1 1 auto; }
+  canvas#plot { width: 100%; height: auto; display: block; border-radius: 2px; }
+
+  /* ---------- readouts ---------- */
+  .readout {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    padding: 11px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 8px;
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+  }
+  .row .k { color: var(--dim); letter-spacing: .06em; text-transform: uppercase; font-size: 10.5px; }
+  .row .v { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 500; }
+  .row .v.hot { color: var(--alert); }
+  .row .v.warm { color: var(--amber); }
+
+  .meter { grid-column: 1 / -1; height: 3px; background: #1B2534; border-radius: 2px; overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--cyan); transition: width .4s ease, background .4s; }
+  .meter i.warm { background: var(--amber); }
+  .meter i.hot  { background: var(--alert); }
+
+  .quad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+  }
+  .quad div { text-align: center; }
+  .quad .qk { color: var(--dim); letter-spacing: .08em; }
+  .quad .qv { color: var(--ink); font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 500; }
+  .quad .qv.warm { color: var(--amber); }
+  .quad .qv.hot  { color: var(--alert); }
+
+  hr.sep { border: 0; border-top: 1px solid var(--rule); margin: 1px 0; width: 100%; }
+
+  /* ---------- bridge log ---------- */
+  .log {
+    background: var(--panel2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    padding: 10px 12px;
+    height: 176px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: 13px;
+    scrollbar-width: thin;
+    scrollbar-color: #2A3A4E transparent;
+  }
+  .log::-webkit-scrollbar { width: 7px; }
+  .log::-webkit-scrollbar-thumb { background: #2A3A4E; border-radius: 4px; }
+
+  .entry { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 10px; }
+  .entry .who {
+    font-family: var(--f-display); font-weight: 700; font-size: 10px;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--dim);
+    padding-top: 3px;
+  }
+  .entry .said { color: var(--ink); }
+  .entry.captain .who { color: var(--amber); }
+  .entry.captain .said { color: var(--amber); }
+  .entry.system .who { color: #4A5A70; }
+  .entry.system .said { font-family: var(--f-mono); font-size: 11.5px; color: var(--dim); }
+  .entry.alert .who { color: var(--alert); }
+  .entry.alert .said { color: var(--alert); }
+
+  /* ---------- order bar ---------- */
+  .order {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .order input[type="text"] {
+    flex: 1 1 320px;
+    min-width: 0;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 14px;
+    padding: 11px 13px;
+  }
+  .order input[type="text"]::placeholder { color: #4A5A70; }
+  .order input[type="text"]:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 1px;
+  }
+
+  button {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: background .18s, border-color .18s, color .18s;
+    white-space: nowrap;
+  }
+  button:hover:not(:disabled) { background: #1A2435; border-color: #33465E; }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  button.primary { color: #0A0E14; background: var(--amber); border-color: var(--amber); }
+  button.primary:hover:not(:disabled) { background: #FFC576; border-color: #FFC576; }
+  button.mic.live { color: var(--void); background: var(--alert); border-color: var(--alert); }
+
+  .hint {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    color: var(--dim);
+    letter-spacing: .04em;
+  }
+  .hint b { color: var(--ink); font-weight: 500; }
+
+  .quickorders { display: flex; gap: 6px; flex-wrap: wrap; }
+  .quickorders button { padding: 6px 10px; font-size: 10px; letter-spacing: .1em; }
+
+  footer.colophon {
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    color: #4A5A70;
+    line-height: 1.75;
+    letter-spacing: .03em;
+  }
+  footer.colophon b { color: var(--dim); font-weight: 500; }
+
+  /* ---------- settings drawer ---------- */
+  .drawer {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    padding: 14px 16px 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px 26px;
+    align-items: start;
+  }
+  .drawer[hidden] { display: none; }
+  .drawer h3 {
+    font-family: var(--f-display);
+    font-weight: 600; font-size: 10.5px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--amber);
+    margin: 0 0 10px;
+  }
+  .drawer .note {
+    font-size: 12px; line-height: 1.55; color: var(--dim); margin: 0 0 12px;
+  }
+  .drawer .note code {
+    font-family: var(--f-mono); font-size: 11px; color: var(--ink);
+    background: #1A2435; padding: 1px 4px; border-radius: 2px;
+  }
+
+  .vrow {
+    display: grid;
+    grid-template-columns: 82px minmax(0,1fr) auto;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .vrow:first-of-type { border-top: 0; }
+  .vrow .vstation {
+    font-family: var(--f-display); font-weight: 700; font-size: 10px;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--dim);
+  }
+  .vrow .knobs { grid-column: 2 / -1; display: flex; gap: 12px; align-items: center; }
+
+  select, .drawer input[type="range"] { accent-color: var(--amber); }
+  select {
+    background: var(--panel2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    color: var(--ink);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    padding: 6px 7px;
+    min-width: 0;
+    width: 100%;
+  }
+  select:focus-visible, input[type="range"]:focus-visible { outline: 2px solid var(--amber); outline-offset: 1px; }
+
+  .knob { display: flex; align-items: center; gap: 5px; }
+  .knob label {
+    font-family: var(--f-mono); font-size: 9.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .knob input[type="range"] { width: 62px; height: 3px; }
+  .knob output {
+    font-family: var(--f-mono); font-size: 10px; color: var(--ink);
+    font-variant-numeric: tabular-nums; min-width: 22px;
+  }
+  button.mini {
+    padding: 5px 9px; font-size: 9.5px; letter-spacing: .1em;
+  }
+
+  .opt {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 7px 0; font-size: 12.5px; line-height: 1.5;
+    border-top: 1px solid var(--rule);
+  }
+  .opt:first-of-type { border-top: 0; }
+  .opt input[type="radio"], .opt input[type="checkbox"] { margin-top: 3px; accent-color: var(--amber); flex: none; }
+  .opt label { cursor: pointer; }
+  .opt .optname {
+    font-family: var(--f-display); font-weight: 600; font-size: 11px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink);
+    display: block;
+  }
+  .opt .optwhy { color: var(--dim); font-size: 12px; }
+  .opt input:disabled + label { opacity: .45; cursor: not-allowed; }
+
+  .loadbar { height: 3px; background: #1B2534; border-radius: 2px; overflow: hidden; margin-top: 8px; }
+  .loadbar i { display: block; height: 100%; width: 0; background: var(--cyan); transition: width .3s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+
+<div class="frame">
+
+  <header class="masthead">
+    <h1 class="ship">ISV <span>Meridian</span></h1>
+    <span class="registry">EXPLORER / NCC&#8209;4471 &nbsp;·&nbsp; DEEP RANGE PATROL</span>
+    <span class="spacer"></span>
+    <span class="condition" id="condition" data-level="green">Condition Green</span>
+    <span class="pill" id="crewPill"><span class="dot off" id="crewDot"></span><b id="crewMode">Standing by</b></span>
+    <span class="pill" id="voicePill"><span class="dot off" id="voiceDot"></span>Voice <b id="voiceMode">off</b></span>
+    <button class="mini" id="settingsBtn" aria-expanded="false" aria-controls="drawer">Settings</button>
+  </header>
+
+  <!-- ============ settings drawer ============ -->
+  <section class="drawer" id="drawer" hidden aria-label="Voice and crew settings">
+
+    <div>
+      <h3>Officer Voices</h3>
+
+      <div class="opt">
+        <input type="radio" name="engine" id="engBrowser" value="browser" checked>
+        <label for="engBrowser">
+          <span class="optname">Browser voices</span>
+          <span class="optwhy">Instant and free, but they come from your operating system — the crew sounds
+          different on every machine, and some systems have no voices at all.</span>
+        </label>
+      </div>
+      <div class="opt">
+        <input type="radio" name="engine" id="engKokoro" value="kokoro">
+        <label for="engKokoro">
+          <span class="optname">Kokoro, on this device</span>
+          <span class="optwhy">An 82M-parameter Apache-2.0 model running in the page. The same five voices
+          everywhere. Downloads about 86&nbsp;MB once, then caches. A published Artifact blocks that
+          download — this needs a self-hosted copy.</span>
+        </label>
+      </div>
+      <div class="loadbar" id="ttsBar" hidden><i></i></div>
+
+      <p class="note" id="voiceNote" style="margin-top:12px">
+        Pitch and rate separate two officers sharing a voice.
+      </p>
+      <div id="voiceRows"></div>
+      <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
+        <button class="mini" id="voiceReset">Reset voices</button>
+        <button class="mini" id="voiceTestAll">Test all five</button>
+        <button class="mini" id="speechToggle">Mute officers</button>
+      </div>
+    </div>
+
+    <div>
+      <h3>Who Answers the Captain</h3>
+      <p class="note">
+        The simulation always flies the ship. This only chooses what writes the officers' lines and picks the action.
+      </p>
+
+      <div class="opt">
+        <input type="radio" name="brain" id="brainClaude" value="claude">
+        <label for="brainClaude">
+          <span class="optname">Claude, quick tier</span>
+          <span class="optwhy">Natural language, compound orders, officers in character. One round, about one to two
+          seconds. Runs on your Claude account.</span>
+        </label>
+      </div>
+
+      <div class="opt">
+        <input type="radio" name="brain" id="brainLocal" value="local">
+        <label for="brainLocal">
+          <span class="optname">Ship parser</span>
+          <span class="optwhy">A hand-written grammar for standard bridge orders. Instant, free, offline, and it
+          never invents anything. It does not converse.</span>
+        </label>
+      </div>
+
+      <div class="opt">
+        <input type="radio" name="brain" id="brainSlm" value="slm" disabled>
+        <label for="brainSlm">
+          <span class="optname">Small model, on this device</span>
+          <span class="optwhy" id="slmWhy">Qwen2.5 0.5B through WebGPU. Needs a self-hosted copy: this sandbox
+          blocks the weight download.</span>
+        </label>
+      </div>
+      <div class="loadbar" id="slmBar" hidden><i></i></div>
+
+      <div class="opt" style="margin-top:10px">
+        <input type="checkbox" id="fastPath" checked>
+        <label for="fastPath">
+          <span class="optname">Parser handles standard orders first</span>
+          <span class="optwhy">Recognised orders like “red alert” or “come about to 270” resolve instantly and for
+          free. Anything the grammar does not know escalates to the model above.</span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <div class="console">
+
+    <!-- ============ officer roster ============ -->
+    <section class="rail" aria-label="Bridge officers">
+      <h2 class="plate">Bridge Crew</h2>
+      <div id="roster"></div>
+
+      <h2 class="plate" style="margin-top:8px">Standing Orders</h2>
+      <div class="readout" style="gap:7px">
+        <div class="row"><span class="k">Patrol</span><span class="v">Calder Reach</span></div>
+        <div class="row"><span class="k">Day</span><span class="v">41 of 60</span></div>
+        <div class="row"><span class="k">Rules of engagement</span><span class="v">Defensive</span></div>
+        <hr class="sep">
+        <p style="margin:0;font-size:12px;line-height:1.55;color:var(--dim)">
+          Do not fire first. Identify every contact before it closes inside ten thousand kilometres.
+          The Meridian is a survey ship, not a warship &mdash; she has one refit left in her.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ tactical plot ============ -->
+    <section class="plot-wrap" aria-label="Tactical plot">
+      <div class="plot-head">
+        <span>Tactical Plot &nbsp;·&nbsp; North Up</span>
+        <span class="spacer"></span>
+        <span id="plotScale">Range 40 000 km</span>
+      </div>
+      <canvas id="plot" width="720" height="520" role="img"
+              aria-label="Top-down tactical plot showing the Meridian and nearby contacts"></canvas>
+      <div class="plot-head">
+        <span id="contactCount">0 contacts</span>
+        <span class="spacer"></span>
+        <span id="clock">T+00:00</span>
+      </div>
+    </section>
+
+    <!-- ============ systems readout ============ -->
+    <section class="rail" aria-label="Ship systems">
+      <h2 class="plate">Ship Systems</h2>
+      <div class="readout">
+        <div class="row"><span class="k">Hull integrity</span><span class="v" id="hullV">100%</span>
+          <span class="meter"><i id="hullM" style="width:100%"></i></span></div>
+        <hr class="sep">
+        <div class="row"><span class="k">Shields</span><span class="v" id="shieldState">Raised</span></div>
+        <div class="quad" id="quads"></div>
+        <hr class="sep">
+        <div class="row"><span class="k">Reactor output</span><span class="v" id="reactorV">100%</span>
+          <span class="meter"><i id="reactorM" style="width:100%"></i></span></div>
+        <div class="row"><span class="k">Engines</span><span class="v" id="pEng">34%</span></div>
+        <div class="row"><span class="k">Shield grid</span><span class="v" id="pShl">33%</span></div>
+        <div class="row"><span class="k">Weapons</span><span class="v" id="pWpn">33%</span></div>
+      </div>
+      <div class="readout">
+        <div class="row"><span class="k">Heading</span><span class="v" id="hdgV">000°</span></div>
+        <div class="row"><span class="k">Velocity</span><span class="v" id="spdV">0.0 km/s</span></div>
+        <hr class="sep">
+        <div class="row"><span class="k">Phaser charge</span><span class="v" id="phV">100%</span>
+          <span class="meter"><i id="phM" style="width:100%"></i></span></div>
+        <div class="row"><span class="k">Torpedoes</span><span class="v" id="torpV">8</span></div>
+        <div class="row"><span class="k">Locked target</span><span class="v" id="tgtV">None</span></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ bridge log ============ -->
+  <section aria-label="Bridge log">
+    <h2 class="plate">Bridge Log</h2>
+    <div class="log" id="log" aria-live="polite"></div>
+  </section>
+
+  <!-- ============ captain's order bar ============ -->
+  <section aria-label="Captain's orders">
+    <div class="order">
+      <input type="text" id="orderInput" autocomplete="off" spellcheck="false"
+             placeholder="Give the order, Captain — “Helm, come about to two-seven-zero and give me full impulse.”">
+      <button class="mic" id="micBtn" title="Hold the bridge channel open">Speak</button>
+      <button class="primary" id="sendBtn">Transmit</button>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:9px">
+      <div class="quickorders" id="quickOrders"></div>
+      <span class="spacer" style="flex:1 1 auto"></span>
+      <span class="hint" id="routeNote"></span>
+      <span class="hint" id="statusLine">Bridge standing by.</span>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <b>How this works.</b> A deterministic simulation owns the ship — physics, damage, weapons, sensors. Claude never
+    flies the Meridian; it reads your order plus the current state, then answers with the officers' lines and one
+    structured action the page validates and applies. Impossible orders fail in the simulation and the officer says so.<br>
+    <b>Voice.</b> Officers speak through your browser's own speech synthesiser, so their replies cost nothing and are
+    instant. Speech input uses the browser's recogniser where it is available — Chrome, Edge and Safari — and the typed
+    order line always works. Damage callouts are spoken from templates the moment the simulation raises them, never
+    waiting on a model.
+  </footer>
+</div>
+
+<script>
+/* ============================================================================
+   ISV MERIDIAN — an LLM bridge-crew prototype that runs entirely in the browser.
+
+   Three independent pieces:
+     1. SIM      a deterministic ship/contact simulation ticking at 20 Hz
+     2. VOICE    browser speech synthesis out, browser speech recognition in
+     3. CREW     one Claude call per captain order -> officer lines + one action
+
+   The sim is the authority. The model only chooses words and one action.
+   ========================================================================== */
+
+/* ------------------------------ officers --------------------------------- */
+const OFFICERS = {
+  HELM: { station: "Helm",        name: "Lt. Aris Vane",    pitch: 1.0,  rate: 1.06 },
+  TAC:  { station: "Tactical",    name: "Cdr. Iona Reyes",  pitch: 0.86, rate: 1.10 },
+  SCI:  { station: "Science",     name: "Dr. Sef Okoro",    pitch: 1.14, rate: 0.98 },
+  ENG:  { station: "Engineering", name: "Chief Mara Dunn",  pitch: 0.92, rate: 1.00 },
+  COMM: { station: "Comms",       name: "Ens. Tobi Lang",   pitch: 1.22, rate: 1.08 }
+};
+const ORDER_OF_STATIONS = ["HELM", "TAC", "SCI", "ENG", "COMM"];
+
+/* -------------------------------- state ---------------------------------- */
+const RANGE_KM = 40000;          // plot radius
+const TICK_MS  = 50;             // 20 Hz
+
+const ship = {
+  hull: 100,
+  shields: { fore: 100, aft: 100, port: 100, starboard: 100 },
+  shieldsUp: true,
+  reactor: 100,
+  power: { engines: 34, shields: 33, weapons: 33 },
+  heading: 0,          // degrees, 0 = north
+  desiredHeading: 0,
+  speed: 0,            // km/s
+  desiredSpeed: 0,
+  maxSpeed: 12,
+  alert: "green",
+  phaser: 100,         // charge %
+  torpedoes: 8,
+  target: null,        // contact id
+  x: 0, y: 0
+};
+
+let contacts = [];
+let elapsed = 0;
+let nextId = 1;
+let busy = false;
+
+/* ------------------------------ utilities -------------------------------- */
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const rad = d => d * Math.PI / 180;
+const deg = r => r * 180 / Math.PI;
+const norm360 = d => ((d % 360) + 360) % 360;
+const fmtHdg = d => String(Math.round(norm360(d))).padStart(3, "0") + "°";
+
+function bearingTo(c) {
+  return norm360(deg(Math.atan2(c.x - ship.x, c.y - ship.y)));
+}
+function rangeTo(c) {
+  return Math.hypot(c.x - ship.x, c.y - ship.y);
+}
+function findContact(q) {
+  if (q === null || q === undefined) return null;
+  const s = String(q).trim().toLowerCase();
+  if (!s) return null;
+  return contacts.find(c => c.id.toLowerCase() === s)
+      || contacts.find(c => c.name.toLowerCase() === s)
+      || contacts.find(c => c.name.toLowerCase().includes(s))
+      || contacts.find(c => s.includes(c.name.toLowerCase()))
+      || null;
+}
+
+/* --------------------------- contact spawning ---------------------------- */
+const HOSTILE_NAMES = ["Kestrel", "Sable", "Vulture", "Corvid", "Harrier"];
+const NEUTRAL_NAMES = ["Perdita", "Ostrava", "Lantern", "Wayfarer", "Calder"];
+
+function spawnContact(hostile, distance) {
+  const ang = Math.random() * 360;
+  const d = distance || (14000 + Math.random() * 20000);
+  const pool = hostile ? HOSTILE_NAMES : NEUTRAL_NAMES;
+  const free = pool.filter(n => !contacts.some(c => c.name === n));
+  const from = free.length ? free : pool;
+  const nm = from[Math.floor(Math.random() * from.length)];
+  const c = {
+    id: "C" + String(nextId++).padStart(2, "0"),
+    name: nm,
+    hostile: hostile,
+    scanned: false,
+    hull: hostile ? 60 + Math.random() * 40 : 100,
+    shields: hostile ? 70 + Math.random() * 30 : 100,
+    x: ship.x + Math.sin(rad(ang)) * d,
+    y: ship.y + Math.cos(rad(ang)) * d,
+    heading: norm360(ang + 180 + (Math.random() * 40 - 20)),
+    speed: hostile ? 3 + Math.random() * 3 : 1.5 + Math.random() * 2,
+    cooldown: 4 + Math.random() * 4,
+    destroyed: false
+  };
+  contacts.push(c);
+  return c;
+}
+
+/* -------------------------- damage & resolution --------------------------- */
+function quadrantFor(bearingDeg) {
+  const rel = norm360(bearingDeg - ship.heading);
+  if (rel >= 315 || rel < 45) return "fore";
+  if (rel < 135) return "starboard";
+  if (rel < 225) return "aft";
+  return "port";
+}
+
+function damageShip(amount, fromBearing) {
+  const q = quadrantFor(fromBearing);
+  if (ship.shieldsUp && ship.shields[q] > 0) {
+    const absorbed = Math.min(ship.shields[q], amount);
+    ship.shields[q] = clamp(ship.shields[q] - absorbed, 0, 100);
+    amount -= absorbed * 0.86;          // shields leak a little
+    if (ship.shields[q] <= 0) {
+      raise("alert", "TAC", capitalize(q) + " shield has collapsed, Captain.");
+    } else if (ship.shields[q] < 40) {
+      raiseThrottled("shield-" + q, "TAC",
+        capitalize(q) + " shields at " + Math.round(ship.shields[q]) + " percent.");
+    }
+  }
+  if (amount > 0) {
+    const before = ship.hull;
+    ship.hull = clamp(ship.hull - amount, 0, 100);
+    if (before > 60 && ship.hull <= 60) raise("alert", "ENG", "Hull breach on deck four. Sealing it now.");
+    else if (before > 30 && ship.hull <= 30) raise("alert", "ENG", "Hull at thirty percent, Captain. She cannot take much more.");
+    if (ship.hull <= 0) raise("alert", "ENG", "All hands, abandon ship.");
+  }
+}
+
+const throttle = {};
+function raiseThrottled(key, who, line) {
+  const now = elapsed;
+  if (throttle[key] && now - throttle[key] < 12) return;
+  throttle[key] = now;
+  raise("alert", who, line);
+}
+
+/* Sim-raised callouts. These NEVER wait on the model — templated and instant. */
+function raise(kind, who, line) {
+  logLine(who, line, kind === "alert" ? "alert" : "");
+  speak(who, line);
+  flashOfficer(who, line);
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+/* -------------------------------- the tick -------------------------------- */
+function tick() {
+  const dt = TICK_MS / 1000;
+  elapsed += dt;
+
+  // helm: turn toward desired heading, accelerate toward desired speed
+  const turnRate = 22 * (ship.power.engines / 34) * dt;
+  let diff = norm360(ship.desiredHeading - ship.heading);
+  if (diff > 180) diff -= 360;
+  if (Math.abs(diff) <= turnRate) ship.heading = ship.desiredHeading;
+  else ship.heading = norm360(ship.heading + Math.sign(diff) * turnRate);
+
+  const accel = 2.4 * (ship.power.engines / 34) * dt;
+  if (Math.abs(ship.desiredSpeed - ship.speed) <= accel) ship.speed = ship.desiredSpeed;
+  else ship.speed += Math.sign(ship.desiredSpeed - ship.speed) * accel;
+
+  ship.x += Math.sin(rad(ship.heading)) * ship.speed * dt * 60;
+  ship.y += Math.cos(rad(ship.heading)) * ship.speed * dt * 60;
+
+  // regeneration, scaled by power allocation
+  ship.phaser = clamp(ship.phaser + (ship.power.weapons / 33) * 9 * dt, 0, 100);
+  if (ship.shieldsUp) {
+    for (const q of ["fore", "aft", "port", "starboard"]) {
+      ship.shields[q] = clamp(ship.shields[q] + (ship.power.shields / 33) * 1.7 * dt, 0, 100);
+    }
+  }
+  ship.reactor = clamp(ship.reactor + 1.2 * dt, 0, 100);
+
+  // contacts
+  for (const c of contacts) {
+    if (c.destroyed) continue;
+    if (c.hostile) {
+      // steer toward the Meridian and close
+      const want = norm360(deg(Math.atan2(ship.x - c.x, ship.y - c.y)));
+      let d2 = norm360(want - c.heading);
+      if (d2 > 180) d2 -= 360;
+      c.heading = norm360(c.heading + clamp(d2, -30 * dt, 30 * dt));
+      const r = rangeTo(c);
+      if (r < 6000) c.speed = Math.max(0, c.speed - 1.5 * dt);
+      else c.speed = Math.min(6, c.speed + 1.0 * dt);
+
+      c.cooldown -= dt;
+      if (r < 12000 && c.cooldown <= 0) {
+        c.cooldown = 5 + Math.random() * 4;
+        const dmg = 6 + Math.random() * 7;
+        damageShip(dmg, bearingTo(c));
+        raiseThrottled("incoming", "TAC",
+          "Taking fire from " + c.name + ", bearing " + fmtHdg(bearingTo(c)) + ".");
+      }
+    }
+    c.x += Math.sin(rad(c.heading)) * c.speed * dt * 60;
+    c.y += Math.cos(rad(c.heading)) * c.speed * dt * 60;
+  }
+
+  contacts = contacts.filter(c => !c.destroyed && rangeTo(c) < RANGE_KM * 1.6);
+  if (ship.target && !contacts.some(c => c.id === ship.target)) ship.target = null;
+
+  render();
+}
+
+/* ============================ ACTIONS ====================================
+   Every action returns a short plain-language result. That result is what the
+   officer's line is checked against, and what a failure reports. The model
+   proposes; these functions decide.
+   ======================================================================== */
+const ACTIONS = {
+  course(a) {
+    const h = Number(a.heading);
+    if (!Number.isFinite(h)) return "No heading given.";
+    ship.desiredHeading = norm360(h);
+    if (a.speed !== undefined && a.speed !== null) ACTIONS.speed({ speed: a.speed });
+    return "Coming to " + fmtHdg(ship.desiredHeading) + ".";
+  },
+  speed(a) {
+    let s = a.speed;
+    if (typeof s === "string") {
+      const t = s.toLowerCase();
+      if (t.includes("full")) s = ship.maxSpeed;
+      else if (t.includes("half")) s = ship.maxSpeed / 2;
+      else if (t.includes("quarter")) s = ship.maxSpeed / 4;
+      else if (t.includes("stop") || t.includes("hold") || t.includes("all stop")) s = 0;
+      else s = parseFloat(t);
+    }
+    s = Number(s);
+    if (!Number.isFinite(s)) return "No velocity given.";
+    ship.desiredSpeed = clamp(s, 0, ship.maxSpeed);
+    return ship.desiredSpeed === 0 ? "All stop."
+      : "Ahead " + ship.desiredSpeed.toFixed(1) + " kilometres per second.";
+  },
+  shields(a) {
+    const up = a.up === undefined ? true : !!a.up;
+    if (ship.shieldsUp === up) return "Shields already " + (up ? "raised" : "lowered") + ".";
+    ship.shieldsUp = up;
+    return "Shields " + (up ? "raised" : "lowered") + ".";
+  },
+  alert(a) {
+    const lv = String(a.level || "").toLowerCase();
+    if (!["green", "yellow", "red"].includes(lv)) return "Unrecognised alert condition.";
+    ship.alert = lv;
+    if (lv === "red") ship.shieldsUp = true;
+    return "Condition " + lv + " set.";
+  },
+  target(a) {
+    const c = findContact(a.target);
+    if (!c) return "No such contact on the plot.";
+    ship.target = c.id;
+    return "Locked on " + c.name + ".";
+  },
+  fire(a) {
+    const c = findContact(a.target) || contacts.find(x => x.id === ship.target);
+    if (!c) return "No target locked. Nothing to fire at.";
+    ship.target = c.id;
+    const r = rangeTo(c);
+    const weapon = String(a.weapon || "phasers").toLowerCase();
+
+    if (weapon.includes("torp")) {
+      if (ship.torpedoes <= 0) return "Torpedo bays are empty.";
+      if (r > 22000) return c.name + " is out of torpedo range at " + Math.round(r / 1000) + " thousand kilometres.";
+      ship.torpedoes--;
+      return resolveHit(c, 34 + Math.random() * 16, "Torpedo away");
+    }
+    if (ship.phaser < 12) return "Phasers have not recharged — " + Math.round(ship.phaser) + " percent.";
+    if (r > 14000) return c.name + " is beyond phaser range at " + Math.round(r / 1000) + " thousand kilometres.";
+    const power = ship.phaser;
+    ship.phaser = 0;
+    return resolveHit(c, (power / 100) * (18 + Math.random() * 10), "Phasers fired");
+  },
+  scan(a) {
+    const c = findContact(a.target) || contacts.find(x => x.id === ship.target);
+    if (!c) return "No contact selected to scan.";
+    c.scanned = true;
+    return c.name + ": " + (c.hostile ? "armed raider" : "civilian transport")
+      + ", hull " + Math.round(c.hull) + " percent, shields " + Math.round(c.shields)
+      + " percent, bearing " + fmtHdg(bearingTo(c))
+      + ", range " + Math.round(rangeTo(c) / 1000) + " thousand kilometres.";
+  },
+  power(a) {
+    const sysRaw = String(a.system || "").toLowerCase();
+    const sys = sysRaw.includes("eng") ? "engines"
+              : sysRaw.includes("shield") ? "shields"
+              : sysRaw.includes("weap") || sysRaw.includes("phas") ? "weapons" : null;
+    if (!sys) return "Unknown system. I can shift power to engines, shields or weapons.";
+    const amt = clamp(Number(a.amount) || 55, 10, 80);
+    const rest = (100 - amt) / 2;
+    ship.power = { engines: rest, shields: rest, weapons: rest };
+    ship.power[sys] = amt;
+    return "Power rebalanced — " + Math.round(amt) + " percent to " + sys + ".";
+  },
+  hail(a) {
+    const c = findContact(a.target) || contacts.find(x => x.id === ship.target);
+    if (!c) return "No one to hail.";
+    if (c.hostile) return c.name + " is jamming us. No response.";
+    return c.name + " answers — a freighter out of Calder Station, no distress.";
+  },
+  /* A status report is a READ. It mutates nothing — it formats live state,
+     which is why it must never cost a model round trip. Scope is already
+     narrowed by the parser (a named station implies what that officer
+     reports on), so this just renders. */
+  status(a) {
+    const scope = String(a.scope || "all").toLowerCase();
+    const s = ship.shields;
+    const pct = n => Math.round(n) + " percent";
+    const part = {
+      hull: "Hull at " + pct(ship.hull) + ".",
+      shields: ship.shieldsUp
+        ? "Shields holding. Fore " + Math.round(s.fore) + ", aft " + Math.round(s.aft)
+          + ", port " + Math.round(s.port) + ", starboard " + Math.round(s.starboard) + "."
+        : "Shields are down, Captain.",
+      power: "Reactor at " + pct(ship.reactor) + ". Engines " + Math.round(ship.power.engines)
+        + ", shield grid " + Math.round(ship.power.shields)
+        + ", weapons " + Math.round(ship.power.weapons) + ".",
+      weapons: "Phasers at " + pct(ship.phaser) + ". " + ship.torpedoes + " torpedo"
+        + (ship.torpedoes === 1 ? "" : "es") + " in the tubes.",
+      navigation: "Heading " + fmtHdg(ship.heading) + ", making "
+        + ship.speed.toFixed(1) + " kilometres per second.",
+      contacts: contacts.length
+        ? contacts.length + " contact" + (contacts.length === 1 ? "" : "s") + " on the plot. "
+          + contacts.map(c => c.name + " bearing " + fmtHdg(bearingTo(c))
+              + ", range " + Math.round(rangeTo(c) / 1000) + " thousand").join(". ") + "."
+        : "The plot is clear, Captain."
+    };
+    if (part[scope]) return part[scope];
+    return "Condition " + ship.alert + ". " + part.hull + " " + part.shields + " "
+         + part.weapons + " " + part.navigation + " " + part.contacts;
+  },
+
+  none() { return "Acknowledged."; }
+};
+
+function resolveHit(c, dmg, verb) {
+  const absorbed = Math.min(c.shields, dmg);
+  c.shields -= absorbed;
+  const through = dmg - absorbed * 0.8;
+  if (through > 0) c.hull -= through;
+  if (c.hull <= 0) {
+    c.destroyed = true;
+    if (ship.target === c.id) ship.target = null;
+    return verb + ". " + c.name + " is destroyed.";
+  }
+  return verb + ". Direct hit — " + c.name + " at " + Math.max(0, Math.round(c.hull))
+    + " percent hull, shields " + Math.max(0, Math.round(c.shields)) + " percent.";
+}
+
+function applyAction(act) {
+  if (!act || typeof act !== "object") return null;
+  const kind = String(act.do || act.type || "none").toLowerCase();
+  const fn = ACTIONS[kind];
+  if (!fn) return null;
+  try { return fn(act); }
+  catch (err) { return "That order could not be carried out."; }
+}
+
+/* ============================== VOICE OUT =================================
+   Every officer has a voice, a pitch and a rate the captain can change. The
+   available voice list is whatever the operating system installed, so it
+   differs per device: assign sensible defaults, then let the settings drawer
+   override them and remember the choice.                                    */
+
+const PREFS_KEY = "meridian.voices.v1";
+let voices = [];
+let speechOn = true;
+
+/* who -> {voiceURI, pitch, rate}. Seeded from OFFICERS, overridden by prefs. */
+const voiceCfg = {};
+for (const k of ORDER_OF_STATIONS) {
+  voiceCfg[k] = { voiceURI: null, kokoro: null, pitch: OFFICERS[k].pitch, rate: OFFICERS[k].rate };
+}
+
+function loadPrefs() {
+  try {
+    const raw = localStorage.getItem(PREFS_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved && typeof saved === "object") {
+      if (typeof saved.speechOn === "boolean") speechOn = saved.speechOn;
+      if (saved.engine === "kokoro" || saved.engine === "browser") voiceEngine = saved.engine;
+      for (const k of ORDER_OF_STATIONS) {
+        const s = saved[k];
+        if (!s) continue;
+        if (typeof s.voiceURI === "string") voiceCfg[k].voiceURI = s.voiceURI;
+        if (typeof s.kokoro === "string") voiceCfg[k].kokoro = s.kokoro;
+        if (Number.isFinite(s.pitch)) voiceCfg[k].pitch = clamp(s.pitch, 0.5, 2);
+        if (Number.isFinite(s.rate))  voiceCfg[k].rate  = clamp(s.rate, 0.5, 2);
+      }
+    }
+  } catch (e) { /* a private window or blocked storage is fine — use defaults */ }
+}
+
+function savePrefs() {
+  try {
+    const out = { speechOn, engine: voiceEngine };
+    for (const k of ORDER_OF_STATIONS) out[k] = { ...voiceCfg[k] };
+    localStorage.setItem(PREFS_KEY, JSON.stringify(out));
+  } catch (e) { /* not being able to remember is not an error worth showing */ }
+}
+
+/* Spread the officers across distinct voices so they are told apart before
+   anyone touches a slider. English voices first where the system has them. */
+function assignDefaultVoices() {
+  if (!voices.length) return;
+  const en = voices.filter(v => /^en(-|_|$)/i.test(v.lang));
+  const pool = en.length ? en : voices;
+  ORDER_OF_STATIONS.forEach((k, i) => {
+    voiceCfg[k].voiceURI = pool[i % pool.length].voiceURI;
+  });
+}
+
+function kokoroVoiceFor(who) {
+  return (voiceCfg[who] && voiceCfg[who].kokoro) || KOKORO_CAST[who] || "af_heart";
+}
+
+function voiceObjFor(who) {
+  const uri = voiceCfg[who] && voiceCfg[who].voiceURI;
+  if (!uri) return null;
+  return voices.find(v => v.voiceURI === uri) || null;
+}
+
+let voicesInitialised = false;
+function loadVoices() {
+  if (!("speechSynthesis" in window)) return;
+  voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) return;
+  if (!voicesInitialised) {
+    voicesInitialised = true;
+    const hadSaved = ORDER_OF_STATIONS.some(k => voiceCfg[k].voiceURI);
+    if (!hadSaved) assignDefaultVoices();
+    // A saved voice can vanish when the captain moves to another machine.
+    for (const k of ORDER_OF_STATIONS) {
+      if (voiceCfg[k].voiceURI && !voiceObjFor(k)) voiceCfg[k].voiceURI = null;
+    }
+    if (ORDER_OF_STATIONS.some(k => !voiceCfg[k].voiceURI)) assignDefaultVoices();
+  }
+  buildVoiceRows();
+  setVoicePill();
+}
+
+function speakBrowser(who, line) {
+  if (!speechOn || !("speechSynthesis" in window) || !line) return;
+  try {
+    const u = new SpeechSynthesisUtterance(String(line).slice(0, 320));
+    const cfg = voiceCfg[who] || { pitch: 1, rate: 1 };
+    u.pitch = cfg.pitch;
+    u.rate = cfg.rate;
+    const v = voiceObjFor(who);
+    if (v) u.voice = v;
+    u.volume = 0.95;
+    window.speechSynthesis.speak(u);
+  } catch (e) { /* speech is a courtesy, never a dependency */ }
+}
+
+/* Routes to whichever engine is selected. Kokoro falls back to the browser
+   on any failure, so the bridge is never silent. */
+function speak(who, line) {
+  if (!speechOn || !line) return;
+  if (voiceEngine === "kokoro") speakKokoro(who, String(line).slice(0, 320));
+  else speakBrowser(who, line);
+}
+
+/* ========================= KOKORO, A REAL VOICE ==========================
+   `speechSynthesis` uses whatever voices the operating system happens to
+   have, so the crew sounds different on every machine — and on some Linux
+   builds and every headless browser, there are none at all. Kokoro-82M is
+   an Apache-2.0 model that runs entirely in the page via ONNX, giving the
+   same five voices everywhere and, later, the phoneme timing that lip-sync
+   needs (`tts.stream()` yields phonemes alongside audio).
+
+   It downloads ~86 MB of weights on first use, so it is opt-in, and it
+   CANNOT work inside a published Artifact — the sandbox blocks the fetch,
+   exactly as it blocks the local model. On a plain static host it works.  */
+
+const KOKORO_MODEL = "onnx-community/Kokoro-82M-v1.0-ONNX";
+const KOKORO_CDN   = "https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/+esm";
+
+/* Cast to the crew. A spread of accent and register so the officers stay
+   distinguishable without relying on pitch tricks. */
+const KOKORO_CAST = {
+  HELM: "am_michael",   // American male, steady
+  TAC:  "af_bella",     // American female, the strongest-graded voice
+  SCI:  "bm_lewis",     // British male, precise
+  ENG:  "bf_emma",      // British female, blunt
+  COMM: "am_puck"       // American male, younger
+};
+const KOKORO_VOICE_IDS = [
+  "af_heart","af_alloy","af_aoede","af_bella","af_jessica","af_kore","af_nicole",
+  "af_nova","af_river","af_sarah","af_sky","am_adam","am_echo","am_eric","am_fenrir",
+  "am_liam","am_michael","am_onyx","am_puck","am_santa","bf_emma","bf_isabella",
+  "bf_alice","bf_lily","bm_george","bm_lewis","bm_daniel","bm_fable"
+];
+
+let voiceEngine = "browser";      // "browser" | "kokoro"
+let kokoro = null;                // the loaded model
+let kokoroLoading = null;         // in-flight load promise
+let audioCtx = null;
+
+/* Generated audio is cached by voice+text. The sim's templated callouts
+   repeat constantly ("Shields up.", "Firing phasers."), so after the first
+   utterance most lines play instantly. */
+const kokoroCache = new Map();
+const KOKORO_CACHE_MAX = 60;
+
+/* One line at a time, so two officers never talk over each other. */
+let kokoroQueue = Promise.resolve();
+
+function kokoroAvailable() { return typeof AudioContext !== "undefined" || typeof webkitAudioContext !== "undefined"; }
+
+async function loadKokoro() {
+  if (kokoro) return kokoro;
+  if (kokoroLoading) return kokoroLoading;
+
+  const bar = document.getElementById("ttsBar");
+  const fill = bar ? bar.querySelector("i") : null;
+
+  kokoroLoading = (async () => {
+    if (bar) bar.hidden = false;
+    status("Downloading crew voices. About 86 megabytes, once.");
+    const { KokoroTTS } = await import(KOKORO_CDN);
+    const tts = await KokoroTTS.from_pretrained(KOKORO_MODEL, {
+      dtype: "q8",          // ~86 MB; fp32 is ~330 MB and not worth it here
+      device: "wasm",       // works everywhere; WebGPU is the later upgrade
+      progress_callback: p => {
+        if (fill && p && p.status === "progress" && p.total) {
+          fill.style.width = Math.round(100 * (p.loaded / p.total)) + "%";
+        }
+      }
+    });
+    kokoro = tts;
+    if (bar) bar.hidden = true;
+    status("Crew voices ready.");
+    return tts;
+  })();
+
+  try { return await kokoroLoading; }
+  catch (err) {
+    kokoroLoading = null;
+    if (bar) bar.hidden = true;
+    voiceEngine = "browser";
+    const browserRadio = document.getElementById("engBrowser");
+    if (browserRadio) browserRadio.checked = true;
+    buildVoiceRows();
+    status("Could not load the crew voices here — using the browser's own.");
+    throw err;
+  }
+}
+
+function playRaw(raw) {
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  if (!Ctx) return Promise.resolve();
+  audioCtx = audioCtx || new Ctx();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  const buf = audioCtx.createBuffer(1, raw.audio.length, raw.sampling_rate);
+  buf.copyToChannel(raw.audio, 0);
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx.destination);
+  return new Promise(resolve => { src.onended = resolve; src.start(); });
+}
+
+function speakKokoro(who, line) {
+  const voice = kokoroVoiceFor(who);
+  const key = voice + "|" + ((voiceCfg[who] && voiceCfg[who].rate) || 1) + "|" + line;
+
+  kokoroQueue = kokoroQueue.then(async () => {
+    if (!speechOn) return;
+    try {
+      let raw = kokoroCache.get(key);
+      if (!raw) {
+        const tts = await loadKokoro();
+        const speed = (voiceCfg[who] && voiceCfg[who].rate) || 1;
+        raw = await tts.generate(line, { voice, speed });
+        if (kokoroCache.size >= KOKORO_CACHE_MAX) kokoroCache.delete(kokoroCache.keys().next().value);
+        kokoroCache.set(key, raw);
+      }
+      await playRaw(raw);
+    } catch (err) {
+      speakBrowser(who, line);   // never leave the bridge silent
+    }
+  }).catch(() => {});
+  return kokoroQueue;
+}
+
+const TEST_LINES = {
+  HELM: "Helm answering, Captain. Coming to two seven zero.",
+  TAC:  "Tactical. Weapons hot, shields at full.",
+  SCI:  "Science here. I am reading three contacts and something odd behind them.",
+  ENG:  "Engineering. She will hold, but I would not push her.",
+  COMM: "Comms, Captain. Channel is open on all frequencies."
+};
+
+function buildVoiceRows() {
+  const host = document.getElementById("voiceRows");
+  if (!host) return;
+  host.textContent = "";
+
+  const useKokoro = voiceEngine === "kokoro";
+
+  if (!useKokoro && (!("speechSynthesis" in window) || !voices.length)) {
+    const p = document.createElement("p");
+    p.className = "note";
+    p.style.margin = "0";
+    p.textContent = "This browser reports no speech voices, so the officers stay silent. "
+      + "Switch to Kokoro above for voices that do not depend on the operating system.";
+    host.append(p);
+    return;
+  }
+
+  for (const key of ORDER_OF_STATIONS) {
+    const cfg = voiceCfg[key];
+    const row = document.createElement("div");
+    row.className = "vrow";
+
+    const st = document.createElement("span");
+    st.className = "vstation";
+    st.textContent = OFFICERS[key].station;
+
+    const sel = document.createElement("select");
+    sel.setAttribute("aria-label", OFFICERS[key].station + " voice");
+    if (useKokoro) {
+      const current = kokoroVoiceFor(key);
+      for (const id of KOKORO_VOICE_IDS) {
+        const o = document.createElement("option");
+        o.value = id;
+        // af_bella -> "Bella · American female"
+        const region = id[0] === "b" ? "British" : "American";
+        const gender = id[1] === "f" ? "female" : "male";
+        o.textContent = id.slice(3).replace(/^./, c => c.toUpperCase()) + " · " + region + " " + gender;
+        if (id === current) o.selected = true;
+        sel.append(o);
+      }
+      sel.addEventListener("change", () => {
+        cfg.kokoro = sel.value;
+        savePrefs();
+        speak(key, TEST_LINES[key]);
+      });
+    } else {
+      for (const v of voices) {
+        const o = document.createElement("option");
+        o.value = v.voiceURI;
+        o.textContent = v.name + " (" + v.lang + ")";
+        if (v.voiceURI === cfg.voiceURI) o.selected = true;
+        sel.append(o);
+      }
+      sel.addEventListener("change", () => {
+        cfg.voiceURI = sel.value;
+        savePrefs();
+        speak(key, TEST_LINES[key]);
+      });
+    }
+
+    const test = document.createElement("button");
+    test.className = "mini";
+    test.type = "button";
+    test.textContent = "Test";
+    test.addEventListener("click", () => speak(key, TEST_LINES[key]));
+
+    const knobs = document.createElement("div");
+    knobs.className = "knobs";
+    if (!useKokoro) {
+      knobs.append(makeKnob("Pitch", cfg.pitch, 0.5, 2, 0.02, v => { cfg.pitch = v; savePrefs(); }));
+    }
+    knobs.append(makeKnob("Rate", cfg.rate, 0.5, 2, 0.02, v => { cfg.rate = v; savePrefs(); }));
+
+    row.append(st, sel, test, knobs);
+    host.append(row);
+  }
+}
+
+function makeKnob(label, value, min, max, step, onChange) {
+  const wrap = document.createElement("div");
+  wrap.className = "knob";
+  const lb = document.createElement("label");
+  lb.textContent = label;
+  const input = document.createElement("input");
+  input.type = "range";
+  input.min = String(min); input.max = String(max); input.step = String(step);
+  input.value = String(value);
+  const out = document.createElement("output");
+  out.textContent = Number(value).toFixed(2);
+  const id = "knob-" + label + "-" + Math.random().toString(36).slice(2, 7);
+  input.id = id; lb.htmlFor = id;
+  input.addEventListener("input", () => {
+    const v = Number(input.value);
+    out.textContent = v.toFixed(2);
+    onChange(v);
+  });
+  wrap.append(lb, input, out);
+  return wrap;
+}
+
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+}
+
+/* ============================== VOICE IN ================================== */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recog = null, listening = false;
+
+function setupRecognition() {
+  if (!SR) { setVoicePill("unsupported"); return; }
+  try {
+    recog = new SR();
+    recog.lang = "en-US";
+    recog.interimResults = true;
+    recog.continuous = false;
+    recog.onresult = (ev) => {
+      let txt = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) txt += ev.results[i][0].transcript;
+      orderInput.value = txt.trim();
+      if (ev.results[ev.results.length - 1].isFinal) {
+        stopListening();
+        if (orderInput.value) submitOrder();
+      }
+    };
+    recog.onerror = (e) => {
+      stopListening();
+      if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+        setVoicePill("blocked");
+        status("Microphone blocked here — type the order instead.");
+      }
+    };
+    recog.onend = () => stopListening();
+    setVoicePill("ready");
+  } catch (e) { setVoicePill("unsupported"); }
+}
+
+function startListening() {
+  if (!recog || listening) return;
+  try { recog.start(); listening = true; micBtn.classList.add("live"); micBtn.textContent = "Listening"; status("Bridge channel open."); }
+  catch (e) { listening = false; }
+}
+function stopListening() {
+  listening = false;
+  micBtn.classList.remove("live");
+  micBtn.textContent = "Speak";
+  try { recog && recog.stop(); } catch (e) {}
+}
+
+function setVoicePill(state) {
+  const dot = document.getElementById("voiceDot");
+  const label = document.getElementById("voiceMode");
+  if (state === "unsupported") { dot.className = "dot off"; label.textContent = "typed only"; micBtn.disabled = true; micBtn.title = "This browser has no speech recogniser"; }
+  else if (state === "blocked") { dot.className = "dot warn"; label.textContent = "mic blocked"; micBtn.disabled = true; }
+  else if (state === "ready")   { dot.className = "dot on";  label.textContent = "ready"; }
+}
+
+/* ============================== THE CREW ================================== */
+/* One Claude call per order. Not multi-round tool use: a single structured
+   answer is one round (~1-2 s on the quick tier) instead of thirty-plus. */
+
+let sampleFn = null;
+let crewOnline = false;
+
+const BRIEF = [
+  "You write the dialogue for the bridge crew of the starship ISV Meridian in a hard-science-fiction game.",
+  "The player is the Captain. You never narrate, never describe scenery, and never speak as the Captain.",
+  "",
+  "The five officers, and the only speaker codes you may use:",
+  "  HELM — Lt. Aris Vane. Flies the ship. Crisp, economical, confirms headings by reading them back.",
+  "  TAC  — Cdr. Iona Reyes. Weapons, shields, alert condition. Clipped, hard-edged, itching for a fight.",
+  "  SCI  — Dr. Sef Okoro. Sensors and scans. Precise, curious, volunteers the detail nobody asked for.",
+  "  ENG  — Chief Mara Dunn. Reactor, power, damage control. Blunt, tired, defensive of her engines.",
+  "  COMM — Ens. Tobi Lang. Hails and comms. Young, eager, slightly too formal.",
+  "",
+  "Reply with ONLY a JSON object of this shape:",
+  '{"orders":[{"officer":"HELM","line":"Coming to two-seven-zero, aye.","act":{"do":"course","heading":270,"speed":12}}]}',
+  "",
+  "Rules for the reply:",
+  "- One to three entries. Usually one: the officer whose station owns the order.",
+  "- 'line' is what that officer says aloud. One sentence, under twenty words, in character.",
+  "  Address the Captain as 'Captain'. No stage directions, no asterisks, no quotation marks.",
+  "- 'act' is optional and at most one entry may carry one. Omit it for chatter or questions.",
+  "- Valid 'act' shapes, and nothing else:",
+  '    {"do":"course","heading":0-359,"speed":number}   heading in degrees, speed 0-12 km/s',
+  '    {"do":"speed","speed":number|"full"|"half"|"stop"}',
+  '    {"do":"shields","up":true|false}',
+  '    {"do":"alert","level":"green"|"yellow"|"red"}',
+  '    {"do":"target","target":"contact name or id"}',
+  '    {"do":"fire","weapon":"phasers"|"torpedoes","target":"name or id"}',
+  '    {"do":"scan","target":"name or id"}',
+  '    {"do":"power","system":"engines"|"shields"|"weapons","amount":10-80}',
+  '    {"do":"hail","target":"name or id"}',
+  "- If the order is impossible or the Captain is only talking, omit 'act' and have the officer say so.",
+  "- Do not invent contacts, systems or events that are not in the state below."
+].join("\n");
+
+function stateForModel() {
+  const cs = contacts.slice(0, 8).map(c =>
+    "  " + c.id + " " + c.name + " — bearing " + fmtHdg(bearingTo(c))
+    + ", range " + Math.round(rangeTo(c) / 1000) + "k km"
+    + (c.scanned ? (c.hostile ? ", ARMED RAIDER" : ", civilian") : ", unidentified")
+    + (c.id === ship.target ? ", LOCKED" : "")
+  ).join("\n") || "  none on the plot";
+
+  return [
+    "CURRENT STATE",
+    "Condition: " + ship.alert,
+    "Hull: " + Math.round(ship.hull) + "%   Shields " + (ship.shieldsUp ? "raised" : "LOWERED")
+      + " (fore " + Math.round(ship.shields.fore) + ", aft " + Math.round(ship.shields.aft)
+      + ", port " + Math.round(ship.shields.port) + ", starboard " + Math.round(ship.shields.starboard) + ")",
+    "Heading " + fmtHdg(ship.heading) + " at " + ship.speed.toFixed(1) + " km/s (maximum 12)",
+    "Phaser charge " + Math.round(ship.phaser) + "%   Torpedoes " + ship.torpedoes,
+    "Power: engines " + Math.round(ship.power.engines) + "%, shields " + Math.round(ship.power.shields)
+      + "%, weapons " + Math.round(ship.power.weapons) + "%",
+    "Contacts:",
+    cs
+  ].join("\n");
+}
+
+function recentLog(n) {
+  return logEntries.slice(-n).map(e => e.who + ": " + e.text).join("\n") || "(quiet)";
+}
+
+async function askCrew(order) {
+  const prompt = BRIEF + "\n\n" + stateForModel()
+    + "\n\nRECENT BRIDGE CHATTER\n" + recentLog(6)
+    + "\n\nTHE CAPTAIN SAYS: “" + order + "”"
+    + "\n\nReply with only the JSON object.";
+
+  const data = await sampleFn.json(prompt, { modelTier: "quick", cache: false });
+  const list = Array.isArray(data) ? data : (data && Array.isArray(data.orders) ? data.orders : null);
+  if (!list || !list.length) throw Object.assign(new Error("empty"), { code: "invalid_json" });
+  return list.slice(0, 3);
+}
+
+/* ------------------ fallback: a small deterministic parser -----------------
+   Keeps the bridge playable when Claude is unavailable or the viewer declines.
+   Deliberately narrow — it recognises orders, it does not converse.          */
+const NUMWORDS = { zero:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9, niner:9 };
+
+function parseHeading(t) {
+  let m = t.match(/\b(?:bearing|heading|course|come about to|to)\s+(\d{1,3})\b/);
+  if (m) return Number(m[1]);
+  const words = t.match(/\b(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)[\s-]+(zero|one|two|three|four|five|six|seven|eight|niner|nine)\b/);
+  if (words) return NUMWORDS[words[1]] * 100 + NUMWORDS[words[2]] * 10 + NUMWORDS[words[3]];
+  m = t.match(/\b(\d{1,3})\s*degrees?\b/);
+  if (m) return Number(m[1]);
+  return null;
+}
+
+/* Which officer answers a status request of a given scope, and — for a bare
+   "report" — which scope a named station implies. This is the one place a
+   station prefix changes meaning rather than just hinting. */
+function scopeForStation(t) {
+  if (/\bhelm\b|\bconn\b/.test(t)) return "navigation";
+  if (/\btactical\b|\bweapons officer\b|\bguns\b/.test(t)) return "weapons";
+  if (/\bscience\b|\bsensors\b/.test(t)) return "contacts";
+  if (/\bengineering\b|\bengineer\b|\bchief\b/.test(t)) return "hull";
+  return "all";
+}
+function officerForScope(scope) {
+  if (scope === "navigation") return "HELM";
+  if (scope === "contacts") return "SCI";
+  if (scope === "hull" || scope === "power") return "ENG";
+  return "TAC";
+}
+
+/* Split an utterance into clauses on conjunctions, so each rule sees only
+   its own clause. Without this, "damage report and shields up" reports on
+   SHIELDS, because the later clause poisons the earlier clause's scope.
+   A clause that is nothing but a station name ("engineering,") is carried
+   forward onto the clause it introduces. */
+const STATION_ONLY =
+  /^(?:mister\s+|mr\.?\s+|ms\.?\s+)?(?:helm(?:sman)?|conn|tactical|weapons(?: officer)?|guns|science(?: officer)?|sensors|engineering|engineer|chief|comms|coms|communications)$/;
+
+function splitClauses(t) {
+  const parts = t.split(/\s*(?:,|;|\band then\b|\bthen\b|\band\b)\s*/)
+                 .map(s => s.trim()).filter(Boolean);
+  const merged = [];
+  let carry = "";
+  for (const part of parts) {
+    if (STATION_ONLY.test(part)) { carry = part + " "; continue; }
+    merged.push(carry + part);
+    carry = "";
+  }
+  if (carry && !merged.length) merged.push(carry.trim());
+  return merged.length ? merged : [t];
+}
+
+/* Rules for ONE clause. Returns zero or more {officer, line, act}.
+   `wholeTarget` lets a later clause inherit a contact named earlier, so
+   "target the kestrel and fire" fires at the kestrel. */
+function parseClause(t, wholeTarget) {
+  const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
+  const tgt = named ? named.name : wholeTarget;
+
+  const out = [];
+  const at = re => t.search(re);
+  const add = (i, officer, line, act) => { if (i >= 0) out.push({ i, officer, line, act }); };
+
+  // Status is a pure read of local state — never worth a model round trip.
+  const si = at(/\b(status|report|sitrep)\b|\bwhere are we\b|\bwhat(?:'?s| is)\s+(?:our|the|my)\b|\bhow(?:'?s| is| are)\s+(?:our|the|my)\b/);
+  if (si >= 0) {
+    const scope =
+        /\bshield/.test(t)                     ? "shields"
+      : /\bhull\b|\bdamage\b/.test(t)          ? "hull"
+      : /\bpower\b|\breactor\b/.test(t)        ? "power"
+      : /\bweapon|\btorped|\bphaser/.test(t)   ? "weapons"
+      : /\bheading\b|\bcourse\b|\bposition\b|\bspeed\b|\bwhere are we\b/.test(t) ? "navigation"
+      : /\bcontact|\bsensor/.test(t)           ? "contacts"
+      : scopeForStation(t);
+    add(si, officerForScope(scope), null, { do: "status", scope });
+  }
+
+  add(at(/\bred alert\b|\bbattle stations\b/), "TAC",
+      "Red alert. All hands to battle stations.", { do: "alert", level: "red" });
+  add(at(/\byellow alert\b/), "TAC",
+      "Condition yellow, Captain.", { do: "alert", level: "yellow" });
+  add(at(/\bstand down\b|\bgreen alert\b|\bcondition green\b/), "TAC",
+      "Standing down to condition green.", { do: "alert", level: "green" });
+
+  add(at(/shields?\s*(?:up|on)\b|\b(?:raise|put up|bring up)\s+(?:the\s+)?shields?/), "TAC",
+      "Shields up.", { do: "shields", up: true });
+  add(at(/shields?\s*(?:down|off)\b|\b(?:lower|drop|take down)\s+(?:the\s+)?shields?/), "TAC",
+      "Lowering shields, Captain.", { do: "shields", up: false });
+
+  // Negated or withheld fire never fires — it escalates instead.
+  if (!/\b(?:don'?t|do not|cease|hold|belay|no)\s+(?:fire|firing|shoot)/.test(t)) {
+    const torp = /\btorped/.test(t);
+    add(at(/\bopen fire\b|\bfire\b|\bshoot\b|\bengage\b/), "TAC",
+        torp ? "Torpedo away." : "Firing phasers.",
+        { do: "fire", weapon: torp ? "torpedoes" : "phasers", target: tgt });
+  }
+
+  add(at(/\bscan\b|\banaly[sz]e\b|\bidentify\b/), "SCI",
+      "Running a full spectrum scan now.", { do: "scan", target: tgt });
+  add(at(/\bhail\b|\bopen a channel\b|\bcontact them\b/), "COMM",
+      "Opening a channel, Captain.", { do: "hail", target: tgt });
+  if (tgt) add(at(/\btarget\b|\block on\b|\block onto\b/), "TAC",
+      "Locked on " + tgt + ".", { do: "target", target: tgt });
+
+  const pi = at(/\bpower to\b|\bdivert\b|\breroute\b/);
+  if (pi >= 0) {
+    const sys = /engine/.test(t) ? "engines" : /weapon|phaser/.test(t) ? "weapons" : "shields";
+    add(pi, "ENG", "Rerouting to " + sys + ". It will cost us elsewhere.",
+        { do: "power", system: sys, amount: 55 });
+  }
+
+  add(at(/\ball stop\b|\bfull stop\b|\bhold position\b|\bhold station\b/), "HELM",
+      "All stop, aye.", { do: "speed", speed: 0 });
+
+  const hdg = parseHeading(t);
+  const full = /\bfull (?:impulse|speed|ahead)\b|\bflank speed\b|\bmaximum\b/.test(t);
+  const half = /\bhalf (?:impulse|speed)\b/.test(t);
+  if (hdg !== null) {
+    add(at(/\b(?:bearing|heading|course|come about|come to|steer)\b|\d/), "HELM",
+        "Coming to " + fmtHdg(hdg) + ", aye.",
+        { do: "course", heading: hdg, speed: full ? 12 : half ? 6 : undefined });
+  } else if (full) {
+    add(at(/\bfull\b|\bflank\b|\bmaximum\b/), "HELM", "Full impulse, aye.", { do: "speed", speed: 12 });
+  } else if (half) {
+    add(at(/\bhalf\b/), "HELM", "Half impulse, aye.", { do: "speed", speed: 6 });
+  }
+
+  return out.sort((a, b) => a.i - b.i).map(({ officer, line, act }) => ({ officer, line, act }));
+}
+
+/* Parses a whole utterance clause by clause, in the order spoken. The old
+   version returned on first match, which silently dropped every compound
+   order and obeyed cascade order rather than sentence order. */
+function localParse(order) {
+  const t = order.toLowerCase();
+  const named = contacts.find(c => c.name && t.includes(c.name.toLowerCase()));
+  const wholeTarget = named ? named.name : undefined;
+
+  const out = [];
+  const kinds = new Set();
+  for (const clause of splitClauses(t)) {
+    for (const r of parseClause(clause, wholeTarget)) {
+      if (r.act && kinds.has(r.act.do)) continue;   // one action of each kind
+      if (r.act) kinds.add(r.act.do);
+      out.push(r);
+    }
+  }
+  return out.length ? out : null;   // nothing confident — the caller escalates
+}
+
+/* What the crew says when nothing at all can interpret the order. */
+function didNotCatch() {
+  return [{ officer: "COMM", line: "Say again, Captain? The crew did not catch that order.", act: null }];
+}
+
+/* ======================= A SMALL MODEL, ON THIS DEVICE ====================
+   WebLLM compiles a quantised model to WebGPU and runs it in a worker. It is
+   a genuine fit for this game: bridge orders are a closed domain, and the
+   published Artifact already proves the reasoning needed is shallow.
+
+   It cannot run inside the Artifact sandbox — the page's network is blocked,
+   so the weights never download. Self-host the file and this lights up.
+   Unverified in this environment for exactly that reason.               */
+
+const SLM_MODEL = "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
+let slmEngine = null;
+
+function slmAvailable() { return typeof navigator !== "undefined" && !!navigator.gpu; }
+
+async function loadSlm() {
+  if (slmEngine) return slmEngine;
+  const bar = document.getElementById("slmBar");
+  const fill = bar.querySelector("i");
+  bar.hidden = false;
+  status("Bringing the local model online. First load downloads the weights.");
+  const webllm = await import("https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm/+esm");
+  slmEngine = await webllm.CreateMLCEngine(SLM_MODEL, {
+    initProgressCallback: (p) => {
+      fill.style.width = Math.round((p.progress || 0) * 100) + "%";
+      status(p.text || "Loading the local model…");
+    }
+  });
+  bar.hidden = true;
+  status("Local model ready. Bridge standing by.");
+  return slmEngine;
+}
+
+async function askSlm(order) {
+  const engine = await loadSlm();
+  const reply = await engine.chat.completions.create({
+    messages: [
+      { role: "system", content: BRIEF + "\n\n" + stateForModel() },
+      { role: "user", content: order }
+    ],
+    temperature: 0.6,
+    max_tokens: 220,
+    response_format: { type: "json_object" }
+  });
+  const txt = reply.choices[0]?.message?.content || "";
+  const data = JSON.parse(txt);
+  const list = Array.isArray(data) ? data : (data && Array.isArray(data.orders) ? data.orders : null);
+  if (!list || !list.length) throw Object.assign(new Error("empty"), { code: "invalid_json" });
+  return list.slice(0, 3);
+}
+
+/* =========================== ORDER PIPELINE ===============================
+   Routing, cheapest first. The parser is a hand-written grammar over a closed
+   domain, so when it recognises an order it is both faster and more reliable
+   than any model — and free. Only what it does not know reaches the brain.  */
+
+let brain = "local";       // "claude" | "local" | "slm"
+let fastPathOn = true;
+
+async function submitOrder() {
+  const order = orderInput.value.trim();
+  if (!order || busy) return;
+  orderInput.value = "";
+  logLine("CAPTAIN", order, "captain");
+
+  busy = true;
+  sendBtn.disabled = true;
+
+  try {
+    let replies = null;
+
+    if (fastPathOn || brain === "local") {
+      replies = localParse(order);
+      if (replies) markRoute("parser");
+    }
+
+    if (!replies && brain === "claude" && crewOnline) {
+      status("The bridge is working…");
+      try {
+        replies = await askCrew(order);
+        markRoute("claude");
+      } catch (err) {
+        replies = handleCrewError(err) || localParse(order);
+      }
+    } else if (!replies && brain === "slm") {
+      try {
+        replies = await askSlm(order);
+        markRoute("slm");
+      } catch (err) {
+        status("The local model could not answer. Falling back to the ship parser.");
+        replies = null;
+      }
+    }
+
+    await deliver(replies && replies.length ? replies : didNotCatch());
+  } finally {
+    busy = false;
+    sendBtn.disabled = false;
+    orderInput.focus();
+  }
+}
+
+/* Show which brain answered, so the cost of an order is never a mystery. */
+function markRoute(kind) {
+  const el = document.getElementById("routeNote");
+  if (!el) return;
+  el.textContent = kind === "parser" ? "answered by the ship parser · free"
+    : kind === "claude" ? "answered by Claude"
+    : "answered by the local model · free";
+}
+
+function handleCrewError(err) {
+  const code = err && err.code;
+  if (code === "not_granted") {
+    crewOnline = false;
+    setCrewPill("declined");
+    status("Running on the ship's own order parser.");
+  } else if (code === "rate_limited") {
+    status("The bridge is overloaded — give that a moment.");
+  } else if (code === "cancelled") {
+    return [];
+  } else {
+    status("Comms interference. Falling back to standing orders.");
+  }
+  return null;
+}
+
+/* Speak the officers in sequence, apply at most one action, then let the sim
+   report the consequence in its own words. */
+async function deliver(replies) {
+  for (const r of replies) {
+    if (!r || typeof r !== "object") continue;
+    let who = String(r.officer || r.station || "COMM").toUpperCase().slice(0, 4).trim();
+    if (!OFFICERS[who]) who = who.startsWith("HEL") ? "HELM" : who.startsWith("TAC") ? "TAC"
+      : who.startsWith("SCI") ? "SCI" : who.startsWith("ENG") ? "ENG" : "COMM";
+    const line = String(r.line || r.text || "").replace(/^["'“]|["'”]$/g, "").trim();
+
+    if (line) {
+      logLine(who, line);
+      speak(who, line);
+      flashOfficer(who, line);
+    }
+
+    const result = applyAction(r.act || r.action);
+    if (result) {
+      logLine("SYS", result, "system");
+      // A consequence the officer did not already state gets spoken by the sim,
+      // so the captain always hears the outcome, not just the acknowledgement.
+      if (!line || !similar(line, result)) speak(who, result);
+    }
+    await pause(line ? 420 : 60);
+  }
+  status("Bridge standing by.");
+}
+
+function similar(a, b) {
+  const norm = s => s.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+  const A = new Set(norm(a).split(/\s+/).filter(w => w.length > 3));
+  const B = norm(b).split(/\s+/).filter(w => w.length > 3);
+  if (!B.length) return false;
+  let hit = 0;
+  for (const w of B) if (A.has(w)) hit++;
+  return hit / B.length > 0.55;
+}
+
+const pause = ms => new Promise(r => setTimeout(r, ms));
+
+/* ============================== RENDERING ================================= */
+const logEntries = [];
+const logEl = document.getElementById("log");
+const orderInput = document.getElementById("orderInput");
+const sendBtn = document.getElementById("sendBtn");
+const micBtn = document.getElementById("micBtn");
+
+function logLine(who, text, cls) {
+  logEntries.push({ who, text });
+  const div = document.createElement("div");
+  div.className = "entry " + (cls || "");
+  const label = who === "CAPTAIN" ? "Captain"
+    : who === "SYS" ? "Meridian"
+    : (OFFICERS[who] ? OFFICERS[who].station : who);
+  const w = document.createElement("span");
+  w.className = "who";
+  w.textContent = label;
+  const s = document.createElement("span");
+  s.className = "said";
+  s.textContent = text;
+  div.append(w, s);
+  logEl.append(div);
+  while (logEl.children.length > 90) logEl.removeChild(logEl.firstChild);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function status(msg) { document.getElementById("statusLine").textContent = msg; }
+
+const officerEls = {};
+function buildRoster() {
+  const host = document.getElementById("roster");
+  host.style.display = "flex";
+  host.style.flexDirection = "column";
+  host.style.gap = "8px";
+  for (const key of ORDER_OF_STATIONS) {
+    const o = OFFICERS[key];
+    const card = document.createElement("div");
+    card.className = "officer";
+    card.innerHTML =
+      '<span class="station"></span><span class="vu"></span>' +
+      '<span class="name"></span><span class="last"></span>';
+    card.querySelector(".station").textContent = o.station;
+    card.querySelector(".name").textContent = o.name;
+    card.querySelector(".last").textContent = "—";
+    host.append(card);
+    officerEls[key] = card;
+  }
+}
+
+const flashTimers = {};
+function flashOfficer(who, line) {
+  const el = officerEls[who];
+  if (!el) return;
+  el.querySelector(".last").textContent = line;
+  el.classList.add("speaking");
+  clearTimeout(flashTimers[who]);
+  flashTimers[who] = setTimeout(() => el.classList.remove("speaking"), 2600);
+}
+
+function setCrewPill(state) {
+  const dot = document.getElementById("crewDot");
+  const label = document.getElementById("crewMode");
+  if (state === "online") { dot.className = "dot on"; label.textContent = "Crew: Claude"; }
+  else if (state === "declined") { dot.className = "dot warn"; label.textContent = "Crew: local orders"; }
+  else { dot.className = "dot off"; label.textContent = "Crew: local orders"; }
+}
+
+/* ------------------------------- readouts -------------------------------- */
+function setMeter(mEl, vEl, pct, invert) {
+  const p = clamp(pct, 0, 100);
+  mEl.style.width = p + "%";
+  const bad = invert ? p > 100 : p < 34;
+  const warn = invert ? false : p < 67;
+  mEl.className = bad ? "hot" : warn ? "warm" : "";
+  if (vEl) {
+    vEl.textContent = Math.round(p) + "%";
+    vEl.className = "v " + (bad ? "hot" : warn ? "warm" : "");
+  }
+}
+
+function render() {
+  // condition
+  const cond = document.getElementById("condition");
+  cond.dataset.level = ship.alert;
+  cond.textContent = "Condition " + ship.alert;
+
+  setMeter(document.getElementById("hullM"), document.getElementById("hullV"), ship.hull);
+  setMeter(document.getElementById("reactorM"), document.getElementById("reactorV"), ship.reactor);
+  setMeter(document.getElementById("phM"), document.getElementById("phV"), ship.phaser);
+
+  document.getElementById("shieldState").textContent = ship.shieldsUp ? "Raised" : "Lowered";
+  document.getElementById("shieldState").className = "v " + (ship.shieldsUp ? "" : "hot");
+
+  const quads = document.getElementById("quads");
+  if (!quads.dataset.built) {
+    quads.dataset.built = "1";
+    for (const q of ["fore", "starboard", "aft", "port"]) {
+      const d = document.createElement("div");
+      d.innerHTML = '<div class="qk"></div><div class="qv"></div>';
+      d.querySelector(".qk").textContent = q === "starboard" ? "STBD" : q.slice(0, 4).toUpperCase();
+      d.dataset.q = q;
+      quads.append(d);
+    }
+  }
+  for (const d of quads.children) {
+    const v = ship.shields[d.dataset.q];
+    const el = d.querySelector(".qv");
+    el.textContent = Math.round(v);
+    el.className = "qv " + (!ship.shieldsUp || v < 25 ? "hot" : v < 60 ? "warm" : "");
+  }
+
+  document.getElementById("pEng").textContent = Math.round(ship.power.engines) + "%";
+  document.getElementById("pShl").textContent = Math.round(ship.power.shields) + "%";
+  document.getElementById("pWpn").textContent = Math.round(ship.power.weapons) + "%";
+  document.getElementById("hdgV").textContent = fmtHdg(ship.heading);
+  document.getElementById("spdV").textContent = ship.speed.toFixed(1) + " km/s";
+  document.getElementById("torpV").textContent = String(ship.torpedoes);
+
+  const t = contacts.find(c => c.id === ship.target);
+  document.getElementById("tgtV").textContent = t ? t.name : "None";
+
+  document.getElementById("contactCount").textContent =
+    contacts.length + (contacts.length === 1 ? " contact" : " contacts");
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(Math.floor(elapsed % 60)).padStart(2, "0");
+  document.getElementById("clock").textContent = "T+" + mm + ":" + ss;
+
+  drawPlot();
+}
+
+/* ------------------------------ tactical plot ----------------------------- */
+const cv = document.getElementById("plot");
+const cx = cv.getContext("2d");
+
+function drawPlot() {
+  const W = cv.width, H = cv.height;
+  const cxp = W / 2, cyp = H / 2;
+  const R = Math.min(W, H) / 2 - 26;
+  const scale = R / RANGE_KM;
+
+  cx.clearRect(0, 0, W, H);
+  cx.fillStyle = "#0A1018";
+  cx.fillRect(0, 0, W, H);
+
+  // range rings
+  cx.strokeStyle = "#1B2A3C";
+  cx.lineWidth = 1;
+  for (let i = 1; i <= 4; i++) {
+    cx.beginPath();
+    cx.arc(cxp, cyp, (R / 4) * i, 0, Math.PI * 2);
+    cx.stroke();
+  }
+  // cardinal spokes
+  cx.strokeStyle = "#16222F";
+  for (let a = 0; a < 360; a += 45) {
+    cx.beginPath();
+    cx.moveTo(cxp, cyp);
+    cx.lineTo(cxp + Math.sin(rad(a)) * R, cyp - Math.cos(rad(a)) * R);
+    cx.stroke();
+  }
+  // bearing labels
+  cx.fillStyle = "#4A5A70";
+  cx.font = "500 10px 'IBM Plex Mono', monospace";
+  cx.textAlign = "center";
+  cx.textBaseline = "middle";
+  [["000", 0], ["090", 90], ["180", 180], ["270", 270]].forEach(([lbl, a]) => {
+    cx.fillText(lbl, cxp + Math.sin(rad(a)) * (R + 14), cyp - Math.cos(rad(a)) * (R + 14));
+  });
+
+  // sweep
+  const sweep = (elapsed * 62) % 360;
+  const grad = cx.createRadialGradient(cxp, cyp, 0, cxp, cyp, R);
+  grad.addColorStop(0, "rgba(79,214,224,0.14)");
+  grad.addColorStop(1, "rgba(79,214,224,0)");
+  cx.save();
+  cx.beginPath();
+  cx.moveTo(cxp, cyp);
+  cx.arc(cxp, cyp, R, rad(sweep - 90 - 26), rad(sweep - 90));
+  cx.closePath();
+  cx.fillStyle = grad;
+  cx.fill();
+  cx.restore();
+
+  // contacts
+  for (const c of contacts) {
+    const dx = (c.x - ship.x) * scale;
+    const dy = (c.y - ship.y) * scale;
+    if (Math.hypot(dx, dy) > R) continue;
+    const px = cxp + dx, py = cyp - dy;
+    const hostile = c.scanned && c.hostile;
+    const col = c.scanned ? (c.hostile ? "#FF5C5C" : "#7FD98C") : "#FFB454";
+
+    // velocity leader
+    cx.strokeStyle = col;
+    cx.globalAlpha = 0.45;
+    cx.lineWidth = 1;
+    cx.beginPath();
+    cx.moveTo(px, py);
+    cx.lineTo(px + Math.sin(rad(c.heading)) * c.speed * 3.4,
+              py - Math.cos(rad(c.heading)) * c.speed * 3.4);
+    cx.stroke();
+    cx.globalAlpha = 1;
+
+    cx.fillStyle = col;
+    if (hostile) {
+      cx.beginPath();
+      cx.moveTo(px, py - 5); cx.lineTo(px + 5, py + 4); cx.lineTo(px - 5, py + 4);
+      cx.closePath(); cx.fill();
+    } else {
+      cx.beginPath(); cx.arc(px, py, 4, 0, Math.PI * 2); cx.fill();
+    }
+
+    if (c.id === ship.target) {
+      cx.strokeStyle = "#FFB454";
+      cx.lineWidth = 1.4;
+      cx.strokeRect(px - 10, py - 10, 20, 20);
+    }
+
+    cx.fillStyle = "#8FA3BC";
+    cx.font = "500 10px 'IBM Plex Mono', monospace";
+    cx.textAlign = "left";
+    cx.fillText(c.name, px + 9, py - 7);
+  }
+
+  // own ship
+  cx.save();
+  cx.translate(cxp, cyp);
+  cx.rotate(rad(ship.heading));
+  cx.fillStyle = "#FFB454";
+  cx.beginPath();
+  cx.moveTo(0, -10); cx.lineTo(6.5, 7); cx.lineTo(0, 3.5); cx.lineTo(-6.5, 7);
+  cx.closePath();
+  cx.fill();
+  cx.restore();
+
+  // heading vector
+  cx.strokeStyle = "rgba(255,180,84,.5)";
+  cx.setLineDash([3, 4]);
+  cx.beginPath();
+  cx.moveTo(cxp, cyp);
+  cx.lineTo(cxp + Math.sin(rad(ship.heading)) * 40, cyp - Math.cos(rad(ship.heading)) * 40);
+  cx.stroke();
+  cx.setLineDash([]);
+}
+
+/* ============================ QUICK ORDERS ================================ */
+const QUICK = [
+  "Red alert, shields up",
+  "Helm, come about to 270, full impulse",
+  "Science, scan the nearest contact",
+  "Tactical, fire phasers",
+  "Comms, hail them",
+  "Engineering, power to the shields"
+];
+function buildQuick() {
+  const host = document.getElementById("quickOrders");
+  for (const q of QUICK) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = q.length > 30 ? q.slice(0, 28) + "…" : q;
+    b.title = q;
+    b.addEventListener("click", () => { orderInput.value = q; submitOrder(); });
+    host.append(b);
+  }
+}
+
+/* ============================== BOOTSTRAP ================================= */
+/* ============================ SETTINGS WIRING ============================= */
+function wireSettings() {
+  const btn = document.getElementById("settingsBtn");
+  const drawer = document.getElementById("drawer");
+  btn.addEventListener("click", () => {
+    const open = drawer.hidden;
+    drawer.hidden = !open;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "Close settings" : "Settings";
+  });
+
+  const noteEl = document.getElementById("voiceNote");
+  const paintNote = () => {
+    noteEl.textContent = voiceEngine === "kokoro"
+      ? "Twenty-eight voices ship with the model, so the crew sounds the same on every machine. Rate sets speaking speed."
+      : "Voices come from your own operating system, so the list differs per device. Pitch and rate separate two officers sharing a voice.";
+  };
+  paintNote();
+
+  for (const r of document.querySelectorAll('input[name="engine"]')) {
+    r.checked = (r.value === voiceEngine);
+    r.addEventListener("change", () => {
+      if (!r.checked) return;
+      voiceEngine = r.value;
+      savePrefs();
+      paintNote();
+      buildVoiceRows();
+      if (voiceEngine === "kokoro") loadKokoro().catch(() => {});
+      else status("Bridge standing by.");
+    });
+  }
+
+  document.getElementById("voiceReset").addEventListener("click", () => {
+    for (const k of ORDER_OF_STATIONS) {
+      voiceCfg[k].pitch = OFFICERS[k].pitch;
+      voiceCfg[k].rate = OFFICERS[k].rate;
+      voiceCfg[k].voiceURI = null;
+      voiceCfg[k].kokoro = null;
+    }
+    assignDefaultVoices();
+    savePrefs();
+    buildVoiceRows();
+    status("Officer voices reset.");
+  });
+
+  document.getElementById("voiceTestAll").addEventListener("click", async () => {
+    for (const k of ORDER_OF_STATIONS) {
+      speak(k, TEST_LINES[k]);
+      flashOfficer(k, TEST_LINES[k]);
+      await pause(1700);
+    }
+  });
+
+  const muteBtn = document.getElementById("speechToggle");
+  const paintMute = () => { muteBtn.textContent = speechOn ? "Mute officers" : "Unmute officers"; };
+  paintMute();
+  muteBtn.addEventListener("click", () => {
+    speechOn = !speechOn;
+    if (!speechOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    paintMute();
+    savePrefs();
+  });
+
+  for (const r of document.querySelectorAll('input[name="brain"]')) {
+    r.addEventListener("change", () => {
+      if (!r.checked) return;
+      brain = r.value;
+      document.getElementById("routeNote").textContent = "";
+      if (brain === "slm") loadSlm().catch(() => {
+        status("The local model could not load here. The ship parser is still flying.");
+      });
+      else status("Bridge standing by.");
+    });
+  }
+
+  document.getElementById("fastPath").addEventListener("change", e => {
+    fastPathOn = e.target.checked;
+  });
+
+  // The local-model option only makes sense where WebGPU exists AND the page
+  // may reach the weights. In the Artifact sandbox the second is never true.
+  const slmRadio = document.getElementById("brainSlm");
+  if (slmAvailable()) {
+    slmRadio.disabled = false;
+    document.getElementById("slmWhy").textContent =
+      "Qwen2.5 0.5B through WebGPU, about 30 to 60 tokens a second. Free and offline once the weights are cached. "
+      + "Needs a self-hosted copy: a published Artifact cannot download them.";
+  }
+}
+
+function seed() {
+  buildRoster();
+  buildQuick();
+  setupRecognition();
+  setCrewPill("offline");
+  loadPrefs();
+  loadVoices();
+  wireSettings();
+  document.getElementById("brainLocal").checked = true;
+
+  // Open in a real working state: contacts on the plot, a patrol underway.
+  ship.heading = 45; ship.desiredHeading = 45;
+  ship.speed = 4; ship.desiredSpeed = 4;
+  spawnContact(false, 21000);
+  spawnContact(true, 26000);
+  spawnContact(true, 33000);
+
+  logLine("SYS", "Deep range patrol, day 41. Two unidentified contacts have shadowed us since the Calder buoy.", "system");
+  logLine("SCI", "Two contacts holding station off our starboard quarter, Captain. Neither answers a transponder query.");
+  logLine("TAC", "Recommend condition yellow until we know what they are.");
+  officerEls.SCI.querySelector(".last").textContent = "Neither answers a transponder query.";
+  officerEls.TAC.querySelector(".last").textContent = "Recommend condition yellow.";
+
+  render();
+  setInterval(tick, TICK_MS);
+}
+
+sendBtn.addEventListener("click", submitOrder);
+orderInput.addEventListener("keydown", e => { if (e.key === "Enter") submitOrder(); });
+micBtn.addEventListener("click", () => { listening ? stopListening() : startListening(); });
+
+seed();
+
+/* Bring the crew online if this page is running inside a Claude viewer.
+   Absence is the normal case, not an error: the local parser already works. */
+(async () => {
+  try {
+    const s = await claude.use("sample");
+    if (!s) { status("Crew running on the ship's own order parser. Try “red alert” or “come about to 090”."); return; }
+    sampleFn = s;
+    crewOnline = true;
+    brain = "claude";
+    document.getElementById("brainClaude").checked = true;
+    setCrewPill("online");
+    status("Bridge standing by. Speak or type your order, Captain.");
+  } catch (e) {
+    status("Crew running on the ship's own order parser.");
+  }
+})();
+</script>
