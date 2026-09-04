@@ -1876,6 +1876,9 @@ const POSITIVE_IDIOM = [
   ["hold", "station"], ["hold", "position"], ["stop", "following"],
   ["break", "off"], ["break", "pursuit"], ["stop", "pursuit"]
 ];
+/* Words that negate whatever else the clause says, with no exceptions. */
+const NEGATOR_HARD = new Set(["don't", "never", "belay", "cancel", "abort",
+                              "disregard", "without", "refrain"]);
 const NEGATOR = new Set(["don't", "not", "never", "belay", "cancel", "abort",
                          "disregard", "without", "cease", "refrain", "negative"]);
 
@@ -1888,6 +1891,11 @@ function hasSeq(tokens, seq) {
 }
 
 function clauseIsNegative(tokens) {
+  /* An EXPLICIT negator always wins. The idiom list exists only to stop the
+     ambiguous words inside "all stop" and "hold station" reading as negation —
+     it must never outrank "don't". Checking idioms first made "don't all stop"
+     stop the ship, which is the exemption swallowing the rule. */
+  if (tokens.some(t => NEGATOR_HARD.has(t))) return true;
   for (const idiom of POSITIVE_IDIOM) if (hasSeq(tokens, idiom)) return false;
   if (hasSeq(tokens, ["hold", "fire"]) || hasSeq(tokens, ["check", "fire"])) return true;
   // "hold your fire", "hold all fire" — hold ... fire within a short window
