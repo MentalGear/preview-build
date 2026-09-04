@@ -474,7 +474,7 @@
       <div class="opt" style="padding-left:26px;border-top:0">
         <input type="checkbox" id="engGpu" disabled>
         <label for="engGpu">
-          <span class="optname">Run it on WebGPU</span>
+          <span class="optname">Run it on WebGPU <span style="color:var(--dim);font-weight:400">· experimental</span></span>
           <span class="optwhy" id="gpuWhy">Far faster generation. Costs a bigger download — about 330&nbsp;MB
           instead of 86&nbsp;MB — because the GPU path wants full precision. Needs a browser with WebGPU.</span>
         </label>
@@ -677,6 +677,8 @@ const ship = {
   phaser: 100,         // charge %
   torpedoes: 8,
   target: null,        // contact id
+  following: null,     // contact id being pursued
+  matchSpeed: false,   // pursuit also matches the quarry's speed
   x: 0, y: 0
 };
 
@@ -811,6 +813,19 @@ function tick() {
   const dt = TICK_MS / 1000;
   elapsed += dt;
 
+  // Pursuit owns the helm while it lasts, so it runs before the turn and
+  // acceleration below rather than fighting them a tick later.
+  if (ship.following) {
+    const q = contacts.find(x => x.id === ship.following && !x.destroyed);
+    if (!q) {
+      ship.following = null; ship.matchSpeed = false;
+      raise("alert", "HELM", "Lost the contact, Captain. Breaking off.");
+    } else {
+      ship.desiredHeading = bearingTo(q);
+      if (ship.matchSpeed) ship.desiredSpeed = clamp(q.speed, 0, ship.maxSpeed);
+    }
+  }
+
   // helm: turn toward desired heading, accelerate toward desired speed
   const turnRate = 22 * (ship.power.engines / 34) * dt;
   let diff = norm360(ship.desiredHeading - ship.heading);
@@ -900,6 +915,8 @@ const ACTIONS = {
   course(a) {
     const h = Number(a.heading);
     if (!Number.isFinite(h)) return "No heading given.";
+    ship.following = null;   // a course order takes the helm back from pursuit
+    ship.matchSpeed = false;
     ship.desiredHeading = norm360(h);
     if (a.speed !== undefined && a.speed !== null) ACTIONS.speed({ speed: a.speed });
     return "Coming to " + fmtHdg(ship.desiredHeading) + ".";
@@ -916,6 +933,7 @@ const ACTIONS = {
     }
     s = Number(s);
     if (!Number.isFinite(s)) return "No velocity given.";
+    ship.matchSpeed = false;
     ship.desiredSpeed = clamp(s, 0, ship.maxSpeed);
     return ship.desiredSpeed === 0 ? "All stop."
       : "Ahead " + ship.desiredSpeed.toFixed(1) + " kilometres per second.";
@@ -987,6 +1005,25 @@ const ACTIONS = {
     if (c.hostile) return c.name + " is jamming us. No response.";
     return c.name + " answers — a freighter out of Calder Station, no distress.";
   },
+  /* Pursuit. The helm holds the bearing to a contact until told otherwise —
+     the one order that keeps acting after it is given. */
+  follow(a) {
+    if (a.stop) {
+      if (!ship.following) return "We are not pursuing anyone.";
+      const was = contacts.find(x => x.id === ship.following);
+      ship.following = null; ship.matchSpeed = false;
+      return "Breaking off" + (was ? " from " + was.name : "") + ".";
+    }
+    const c = findContact(a.target) || contacts.find(x => x.id === ship.target);
+    if (!c) return "No contact to follow.";
+    ship.following = c.id;
+    ship.target = c.id;
+    ship.matchSpeed = !!a.match;
+    return a.match
+      ? "Matching " + c.name + "'s course and speed."
+      : "Falling in behind " + c.name + ", bearing " + fmtHdg(bearingTo(c)) + ".";
+  },
+
   /* A status report is a READ. It mutates nothing — it formats live state,
      which is why it must never cost a model round trip. Scope is already
      narrowed by the parser (a named station implies what that officer
@@ -1099,6 +1136,22 @@ function assignDefaultVoices() {
   ORDER_OF_STATIONS.forEach((k, i) => {
     voiceCfg[k].voiceURI = pool[i % pool.length].voiceURI;
   });
+}
+
+/* The GPU note carries real state: unavailable, known-bad on this machine, or
+   offered. Known-bad is remembered but not enforced — the captain may retry. */
+function paintGpuNote() {
+  const el = document.getElementById("gpuWhy");
+  if (!el) return;
+  if (!kokoroGpuAvailable()) {
+    el.textContent = "This browser reports no WebGPU, so the voices run on a single CPU core via WebAssembly.";
+  } else if (gpuMarkedBad()) {
+    el.textContent = "WebGPU produced distorted audio on this machine and was switched off. "
+      + "Known to happen on Intel Macs in Chrome. Tick it again to retry — the check runs every time.";
+  } else {
+    el.textContent = "Far faster generation. Costs a bigger download — about 330 MB instead of 86 MB — "
+      + "because the GPU path wants full precision. Verified with a short test phrase before it is trusted.";
+  }
 }
 
 function kokoroVoiceFor(who) {
@@ -1235,6 +1288,44 @@ self.onmessage = async (e) => {
 `;
 }
 
+/* A broken WebGPU backend does not error — it returns audio that is simply
+   wrong. Reported on macOS Intel / Chrome: garbled, distorted voices. Since a
+   bad backend cannot be detected from adapter strings reliably, generate one
+   known phrase after loading and look for the numerical signatures of failure:
+   non-finite samples, silence, blow-up, or noise. Heuristic, not proof — but it
+   catches the shapes that actually occur. */
+const KOKORO_SELFTEST = "Bridge, sound off.";
+const GPU_BAD_KEY = "meridian.webgpu.bad";
+
+function audioLooksSane(a) {
+  if (!a || !a.length) return "no audio";
+  let peak = 0, sumsq = 0, crossings = 0, prev = a[0];
+  for (let i = 0; i < a.length; i++) {
+    const v = a[i];
+    if (!Number.isFinite(v)) return "non-finite samples";
+    const m = Math.abs(v);
+    if (m > peak) peak = m;
+    sumsq += v * v;
+    if ((v >= 0) !== (prev >= 0)) crossings++;
+    prev = v;
+  }
+  const rms = Math.sqrt(sumsq / a.length);
+  const zcr = crossings / a.length;
+  if (peak > 4)        return "samples far outside range (peak " + peak.toFixed(1) + ")";
+  if (peak < 0.001)    return "silence";
+  if (rms  < 0.0005)   return "effectively silent";
+  if (zcr  > 0.45)     return "noise rather than speech (zcr " + zcr.toFixed(2) + ")";
+  return null;
+}
+
+function gpuMarkedBad() {
+  try { return localStorage.getItem(GPU_BAD_KEY) === "1"; } catch (e) { return false; }
+}
+function markGpuBad(bad) {
+  try { bad ? localStorage.setItem(GPU_BAD_KEY, "1") : localStorage.removeItem(GPU_BAD_KEY); }
+  catch (e) {}
+}
+
 function startKokoro() {
   if (kokoroReady) return kokoroReady;
 
@@ -1255,8 +1346,23 @@ function startKokoro() {
         if (fill && m.total) fill.style.width = Math.round(100 * (m.loaded / m.total)) + "%";
       } else if (m.type === "ready") {
         if (bar) bar.hidden = true;
-        status("Crew voices ready.");
-        resolve(kokoroWorker);
+        if (!gpu) { status("Crew voices ready."); resolve(kokoroWorker); return; }
+        // Prove the GPU backend actually produces speech before trusting it.
+        status("Checking the voice hardware…");
+        const id = ++kokoroSeq;
+        kokoroPending.set(id, {
+          resolve: raw => {
+            const bad = audioLooksSane(raw.audio);
+            if (!bad) { markGpuBad(false); status("Crew voices ready on WebGPU."); resolve(kokoroWorker); return; }
+            markGpuBad(true);
+            reject(new Error("WebGPU produced " + bad));
+          },
+          reject
+        });
+        kokoroWorker.postMessage({
+          type: "gen", id, text: KOKORO_SELFTEST,
+          voice: KOKORO_CAST.TAC, speed: 1
+        });
       } else if (m.type === "audio") {
         const p = kokoroPending.get(m.id);
         if (p) { kokoroPending.delete(m.id); p.resolve({ audio: m.audio, sampling_rate: m.rate }); }
@@ -1278,11 +1384,25 @@ function startKokoro() {
     });
   });
 
-  kokoroReady.catch(() => {
+  kokoroReady.catch(err => {
     const b = document.getElementById("ttsBar");
     if (b) b.hidden = true;
     if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; }
     kokoroReady = null;
+
+    // A bad GPU backend is not a reason to give up on Kokoro — retry on wasm,
+    // which is slower but correct everywhere.
+    if (gpu) {
+      kokoroUseGpu = false;
+      savePrefs();
+      const box = document.getElementById("engGpu");
+      if (box) box.checked = false;
+      paintGpuNote();
+      status("WebGPU gave distorted audio on this machine. Falling back to the CPU path.");
+      if (voiceEngine === "kokoro") startKokoro().catch(() => {});
+      return;
+    }
+
     voiceEngine = "browser";
     const r = document.getElementById("engBrowser");
     if (r) r.checked = true;
@@ -1682,6 +1802,17 @@ function parseClause(clause, wholeTarget) {
     add(at(/\bopen fire\b|\bfire\b|\bshoot\b|\bengage\b/), "TAC",
         torp ? "Torpedo away." : "Firing phasers.",
         { do: "fire", weapon: torp ? "torpedoes" : "phasers", target: tgt });
+  }
+
+  add(at(/\bbreak off\b|\bbreak pursuit\b|\bstop following\b|\bdisengage\b/), "HELM",
+      "Breaking off, aye.", { do: "follow", stop: true });
+  {
+    const pi2 = at(/\bfollow\b|\bpursue\b|\bchase\b|\bintercept\b|\bshadow\b|\bstay (?:on|with|behind)\b|\bmatch\b|\bkeep after\b/);
+    if (pi2 >= 0 && !/\bbreak off\b|\bstop following\b/.test(t)) {
+      const match = /\bspeed\b|\bvelocity\b|\bmatch (?:them|him|her|it)\b/.test(t);
+      add(pi2, "HELM", match ? "Matching course and speed, aye." : "Falling in behind them, aye.",
+          { do: "follow", target: tgt, match });
+    }
   }
 
   add(at(/\bscan\b|\banaly[sz]e\b|\bidentify\b/), "SCI",
@@ -2246,16 +2377,14 @@ function wireSettings() {
   paintNote();
 
   const gpuBox = document.getElementById("engGpu");
-  if (kokoroGpuAvailable()) {
-    gpuBox.disabled = false;
-  } else {
-    document.getElementById("gpuWhy").textContent =
-      "This browser reports no WebGPU, so the voices run on a single CPU core via WebAssembly.";
-  }
+  gpuBox.disabled = !kokoroGpuAvailable();
   gpuBox.checked = kokoroUseGpu;
+  paintGpuNote();
   gpuBox.addEventListener("change", () => {
     kokoroUseGpu = gpuBox.checked;
+    if (kokoroUseGpu) markGpuBad(false);   // an explicit retry deserves a clean slate
     savePrefs();
+    paintGpuNote();
     // Precision and device are fixed when the weights load, so a change means
     // starting over rather than reconfiguring in place.
     if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; kokoroReady = null; kokoroCache.clear(); }
