@@ -970,6 +970,10 @@ function tick() {
    officer's line is checked against, and what a failure reports. The model
    proposes; these functions decide.
    ======================================================================== */
+/* ===== SIM ACTIONS — BEGIN =====================================
+   The set of things the ship can actually do. Two other places must agree
+   with it — the brief the model reads and the parser's output — and both
+   agreements are now checked, not remembered. See harness/parser.test.mjs. */
 const ACTIONS = {
   course(a) {
     const h = Number(a.heading);
@@ -1117,6 +1121,7 @@ const ACTIONS = {
 
   none() { return "Acknowledged."; }
 };
+/* ===== SIM ACTIONS — END ===== */
 
 function resolveHit(c, dmg, verb) {
   const absorbed = Math.min(c.shields, dmg);
@@ -1688,6 +1693,35 @@ function setVoicePill(state) {
 let sampleFn = null;
 let crewOnline = false;
 
+/* ONE source of truth for what the crew can do. The brief the model reads is
+   GENERATED from this, so an action cannot exist in the sim and stay invisible
+   to the model. It already had: ACTIONS implemented `status` and `follow`, the
+   hand-written brief advertised neither, so six of the orders that escalated
+   were answered in words and performed nothing. Same failure as the harness
+   invariant — a second copy of a source of truth, maintained by memory. */
+/* ===== ACTION SPEC — BEGIN ===== */
+const ACTION_SPEC = {
+  course:  '{"do":"course","heading":0-359,"speed":number}   heading in degrees, speed 0-12 km/s',
+  speed:   '{"do":"speed","speed":number|"full"|"half"|"quarter"|"stop"}',
+  shields: '{"do":"shields","up":true|false}',
+  alert:   '{"do":"alert","level":"green"|"yellow"|"red"}',
+  target:  '{"do":"target","target":"contact name"}',
+  fire:    '{"do":"fire","weapon":"phasers"|"torpedoes","target":"contact name"}',
+  scan:    '{"do":"scan","target":"contact name"}',
+  power:   '{"do":"power","system":"engines"|"shields"|"weapons","amount":10-80}',
+  hail:    '{"do":"hail","target":"contact name"}',
+  follow:  '{"do":"follow","target":"contact name","match":true|false}   hold a bearing on a contact until told otherwise; {"do":"follow","stop":true} breaks off',
+  status:  '{"do":"status","scope":"all"|"hull"|"shields"|"power"|"weapons"|"navigation"|"contacts"}   a READ — reports live state and changes nothing'
+};
+/* ===== ACTION SPEC — END ===== */
+
+/* Drift is now loud instead of silent. */
+(function () {
+  const impl = Object.keys(ACTIONS).filter(k => k !== "none").sort().join(",");
+  const doc  = Object.keys(ACTION_SPEC).sort().join(",");
+  if (impl !== doc) console.warn("ACTION_SPEC drift — sim has [" + impl + "], brief advertises [" + doc + "]");
+})();
+
 const BRIEF = [
   "You write the dialogue for the bridge crew of the starship ISV Meridian in a hard-science-fiction game.",
   "The player is the Captain. You never narrate, never describe scenery, and never speak as the Captain.",
@@ -1708,15 +1742,7 @@ const BRIEF = [
   "  Address the Captain as 'Captain'. No stage directions, no asterisks, no quotation marks.",
   "- 'act' is optional and at most one entry may carry one. Omit it for chatter or questions.",
   "- Valid 'act' shapes, and nothing else:",
-  '    {"do":"course","heading":0-359,"speed":number}   heading in degrees, speed 0-12 km/s',
-  '    {"do":"speed","speed":number|"full"|"half"|"stop"}',
-  '    {"do":"shields","up":true|false}',
-  '    {"do":"alert","level":"green"|"yellow"|"red"}',
-  '    {"do":"target","target":"contact name or id"}',
-  '    {"do":"fire","weapon":"phasers"|"torpedoes","target":"name or id"}',
-  '    {"do":"scan","target":"name or id"}',
-  '    {"do":"power","system":"engines"|"shields"|"weapons","amount":10-80}',
-  '    {"do":"hail","target":"name or id"}',
+  ...Object.keys(ACTION_SPEC).map(k => "    " + ACTION_SPEC[k]),
   "- If the order is impossible or the Captain is only talking, omit 'act' and have the officer say so.",
   "- Do not invent contacts, systems or events that are not in the state below."
 ].join("\n");
@@ -2271,13 +2297,23 @@ const UNSUPPORTED = [
 
 /* Matched only after the parser has found no action, so a real order always
    wins over a refusal. */
+/* Earliest match wins, longest on a tie — the same rule the parser uses.
+   A flat list with `.some()` and first-match-wins made "divert power to the
+   tractor beam" answer "we have no transporter", because ["beam"] sits earlier
+   in the table than ["tractor"]. That is precisely the failure CLAUDE.md uses
+   as its worked example, reintroduced in a new table. Ordering the table by
+   hand would be the patch; deferring to findAny is the fix. */
 function unsupportedReply(text) {
   const c = makeClaim(tokenize(text));
+  let best = null;
   for (const u of UNSUPPORTED) {
-    if (u.phrases.some(p => c.find(p) >= 0))
-      return [{ officer: u.officer, line: u.line, act: null, unsupported: u.cap }];
+    const hit = c.findAny(u.phrases);
+    if (!hit) continue;
+    if (!best || hit.at < best.hit.at || (hit.at === best.hit.at && hit.len > best.hit.len))
+      best = { u, hit };
   }
-  return null;
+  return best ? [{ officer: best.u.officer, line: best.u.line,
+                   act: null, unsupported: best.u.cap }] : null;
 }
 
 /* The audit SNIS gets for free: what does the crew recognise but refuse? */
