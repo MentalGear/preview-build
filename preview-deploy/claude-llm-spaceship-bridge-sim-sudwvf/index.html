@@ -679,6 +679,26 @@ const ship = {
 };
 
 let contacts = [];
+
+/* Transient things drawn on the plot. The sim owns damage; these only draw —
+   except torpedoes, which carry their damage with them and apply it on
+   impact, because a torpedo you can watch travel should not have already
+   hit. Phaser beams are instant, so their damage is instant too. */
+const effects = [];
+
+function addBeam(x1, y1, x2, y2, hostile) {
+  effects.push({ kind: "beam", x1, y1, x2, y2, t: 0, life: 0.5, hostile: !!hostile });
+}
+function addFlash(x, y) {
+  effects.push({ kind: "flash", x, y, t: 0, life: 0.55 });
+}
+function launchTorpedo(target, damage) {
+  effects.push({
+    kind: "torp", targetId: target.id, damage,
+    x: ship.x, y: ship.y, px: ship.x, py: ship.y,
+    speed: 70, t: 0, life: 12
+  });
+}
 let elapsed = 0;
 let nextId = 1;
 let busy = false;
@@ -830,12 +850,37 @@ function tick() {
         c.cooldown = 5 + Math.random() * 4;
         const dmg = 6 + Math.random() * 7;
         damageShip(dmg, bearingTo(c));
+        addBeam(c.x, c.y, ship.x, ship.y, true);
         raiseThrottled("incoming", "TAC",
           "Taking fire from " + c.name + ", bearing " + fmtHdg(bearingTo(c)) + ".");
       }
     }
     c.x += Math.sin(rad(c.heading)) * c.speed * dt * 60;
     c.y += Math.cos(rad(c.heading)) * c.speed * dt * 60;
+  }
+
+  // weapons in flight
+  for (let i = effects.length - 1; i >= 0; i--) {
+    const e = effects[i];
+    e.t += dt;
+    if (e.kind === "torp") {
+      const c = contacts.find(x => x.id === e.targetId && !x.destroyed);
+      if (!c || e.t >= e.life) { effects.splice(i, 1); continue; }
+      const dx = c.x - e.x, dy = c.y - e.y;
+      const d = Math.hypot(dx, dy) || 1;
+      const step = e.speed * dt * 60;
+      e.px = e.x; e.py = e.y;
+      if (d <= step) {
+        effects.splice(i, 1);
+        addFlash(c.x, c.y);
+        raise("alert", "TAC", resolveHit(c, e.damage, "Torpedo impact"));
+      } else {
+        e.x += (dx / d) * step;
+        e.y += (dy / d) * step;
+      }
+    } else if (e.t >= e.life) {
+      effects.splice(i, 1);
+    }
   }
 
   contacts = contacts.filter(c => !c.destroyed && rangeTo(c) < RANGE_KM * 1.6);
@@ -903,12 +948,14 @@ const ACTIONS = {
       if (ship.torpedoes <= 0) return "Torpedo bays are empty.";
       if (r > 22000) return c.name + " is out of torpedo range at " + Math.round(r / 1000) + " thousand kilometres.";
       ship.torpedoes--;
-      return resolveHit(c, 34 + Math.random() * 16, "Torpedo away");
+      launchTorpedo(c, 34 + Math.random() * 16);
+      return "Running hot toward " + c.name + ".";
     }
     if (ship.phaser < 12) return "Phasers have not recharged — " + Math.round(ship.phaser) + " percent.";
     if (r > 14000) return c.name + " is beyond phaser range at " + Math.round(r / 1000) + " thousand kilometres.";
     const power = ship.phaser;
     ship.phaser = 0;
+    addBeam(ship.x, ship.y, c.x, c.y, false);
     return resolveHit(c, (power / 100) * (18 + Math.random() * 10), "Phasers fired");
   },
   scan(a) {
@@ -2075,6 +2122,47 @@ function drawPlot() {
     cx.font = "500 10px 'IBM Plex Mono', monospace";
     cx.textAlign = "left";
     cx.fillText(c.name, px + 9, py - 7);
+  }
+
+  // weapons fire — beams fade, torpedoes streak, impacts ring outward
+  const sx = wx => cxp + (wx - ship.x) * scale;
+  const sy = wy => cyp - (wy - ship.y) * scale;
+  for (const e of effects) {
+    const k = Math.max(0, 1 - e.t / e.life);
+    cx.save();
+    if (e.kind === "beam") {
+      cx.globalAlpha = k;
+      cx.strokeStyle = e.hostile ? "#FF5C5C" : "#FFB454";
+      cx.lineWidth = e.hostile ? 1.4 : 2.2;
+      cx.shadowColor = e.hostile ? "#FF5C5C" : "#FFB454";
+      cx.shadowBlur = 8;
+      cx.beginPath();
+      cx.moveTo(sx(e.x1), sy(e.y1));
+      cx.lineTo(sx(e.x2), sy(e.y2));
+      cx.stroke();
+    } else if (e.kind === "torp") {
+      // a short streak behind the warhead reads as motion at any zoom
+      cx.strokeStyle = "rgba(255,180,84,.55)";
+      cx.lineWidth = 1.4;
+      cx.beginPath();
+      cx.moveTo(sx(e.px), sy(e.py));
+      cx.lineTo(sx(e.x), sy(e.y));
+      cx.stroke();
+      cx.fillStyle = "#FFF1D6";
+      cx.shadowColor = "#FFB454";
+      cx.shadowBlur = 10;
+      cx.beginPath();
+      cx.arc(sx(e.x), sy(e.y), 2.6, 0, Math.PI * 2);
+      cx.fill();
+    } else if (e.kind === "flash") {
+      cx.globalAlpha = k;
+      cx.strokeStyle = "#FFD9A0";
+      cx.lineWidth = 2;
+      cx.beginPath();
+      cx.arc(sx(e.x), sy(e.y), 4 + (1 - k) * 16, 0, Math.PI * 2);
+      cx.stroke();
+    }
+    cx.restore();
   }
 
   // own ship
