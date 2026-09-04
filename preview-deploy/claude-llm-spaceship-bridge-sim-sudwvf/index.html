@@ -1818,7 +1818,7 @@ const DIGIT_WORD = {
 
 function tokenize(text) {
   const raw = String(text).toLowerCase().match(/[a-z0-9']+|[,;]/g) || [];
-  return raw.map(w => NORMALISE[w] || w);
+  return raw.map(w => NORMALISE[w] || w).filter(w => !EXPLETIVE.has(w));
 }
 
 /* Clause boundaries. A clause that is only a station name introduces the
@@ -1831,9 +1831,17 @@ const STATIONS = {
   engineering: "ENG", engineer: "ENG", chief: "ENG",
   comms: "COMM", coms: "COMM", communications: "COMM"
 };
+/* Spoken orders under pressure carry words that mean nothing to the parse.
+   SNIS registers 16 of these as a part of speech and strips them; the same
+   trick costs us one line and stops "fucking fire the torpedoes" failing. */
+const EXPLETIVE = new Set(["damn", "damned", "goddamn", "goddamned", "bloody", "hell",
+                           "fucking", "fuckin", "frigging", "freaking", "blasted",
+                           "christ", "jesus", "shit", "crap", "please"]);
+
 const FILLER = new Set(["please", "now", "immediately", "mister", "mr", "ms",
                         "the", "a", "an", "our", "your", "my", "us", "we",
-                        "lets", "let's", "would", "you", "kindly", "right", "away"]);
+                        "lets", "let's", "would", "you", "kindly", "right", "away",
+                        "again", "some", "more", "that", "this", "all"]);
 
 function splitClauses(tokens) {
   const out = [];
@@ -1889,6 +1897,38 @@ function clauseIsNegative(tokens) {
   if (hasSeq(tokens, ["no", "need"])) return true;
   if (hasSeq(tokens, ["hold", "off"])) return true;
   return tokens.some(t => NEGATOR.has(t));
+}
+
+/* MOOD. Polarity said whether a clause commands the opposite; mood says whether
+   it commands at all. "Can we take another hit" contains a weapon verb and is a
+   question about damage — obeying it fires on the captain's own question.
+
+   This is the third instance of one shape: a trigger word matching where it is
+   not a command. Negation was the first, context bleed the second. So it is
+   checked once, before any rule, like polarity — not patched per verb.
+
+   English imperatives have no subject. A leading auxiliary or wh-word, or a
+   subject pronoun at the front, means the captain is asking or describing.
+
+   Questions are ANSWERED, not obeyed — so status is the one rule allowed to run
+   on an interrogative clause. That is its entire job. */
+const QUESTION_LEAD = new Set([
+  "can", "could", "did", "do", "does", "are", "is", "was", "were", "will",
+  "would", "should", "have", "has", "had", "am", "shall", "may", "might",
+  "what", "what's", "how", "how's", "why", "when", "who", "whose", "which"
+]);
+const SUBJECT_LEAD = new Set(["we", "they", "he", "she", "i", "that", "this", "there", "it"]);
+
+function clauseIsQuestion(tokens) {
+  const head = tokens.filter(t => t !== "," && t !== ";");
+  if (!head.length) return false;
+  if (QUESTION_LEAD.has(head[0])) return true;
+  // "we took a hit", "that was a hit" — a subject at the front is a statement
+  if (SUBJECT_LEAD.has(head[0])) return true;
+  // "helm, can we make it" — a station may precede the question
+  if (STATIONS[head[0]] && head.length > 1 &&
+      (QUESTION_LEAD.has(head[1]) || SUBJECT_LEAD.has(head[1]))) return true;
+  return false;
 }
 
 /* ---------------------------------------------------------------- claims */
@@ -1979,6 +2019,10 @@ function slotWeapon(c) {
   return c.tokens[i];
 }
 
+/* A named contact wins; otherwise a pronoun resolves to whatever was last
+   talked about. SNIS keeps a single `current_topic` and deliberately narrowed
+   pronoun handling to "it" after trying to be general — same lesson here: one
+   antecedent, set by the caller, no cleverness. */
 function slotTarget(c, names) {
   for (const name of names) {
     const seq = tokenize(name);
@@ -2101,7 +2145,7 @@ const RULES = [
     } },
 
   { name: "fire",
-    triggers: [["open", "fire"], ["fire"], ["shoot"], ["engage"]],
+    triggers: [["open", "fire"], ["fire"], ["shoot"], ["engage"], ["hit"], ["keep", "firing"]],
     run(c, ctx) {
       const weapon = slotWeapon(c) || "phasers";
       const target = slotTarget(c, ctx.names);
@@ -2161,8 +2205,11 @@ function parseOrders(text, contactNames) {
     const stationScope = { HELM: "navigation", TAC: "weapons", SCI: "contacts",
                            ENG: "hull", COMM: "contacts" }[station] || null;
 
+    const asking = clauseIsQuestion(clauseTokens);
+
     const found = [];
     for (const rule of RULES) {
+      if (asking && rule.name !== "status") continue;   // questions are answered, not obeyed
       const hit = c.findAny(rule.triggers);
       if (!hit) continue;
       const before = c.used.slice();
@@ -2177,6 +2224,56 @@ function parseOrders(text, contactNames) {
   return all;
 }
 /* ===== ORDER PARSER — END PURE ======================================= */
+
+/* Orders the crew UNDERSTANDS but the ship cannot carry out. SNIS points every
+   such verb at one handler that replies "I'm sorry Dave, I'm afraid I can't do
+   that", and can dump the list at test time so the gap stays auditable rather
+   than invisible. The distinction matters: "I did not understand you" and "I
+   understood you and we cannot" are different answers, and only one of them
+   makes the captain repeat himself. */
+const UNSUPPORTED = [
+  { cap: "evasive patterns", officer: "HELM",
+    phrases: [["evasive"], ["jink"], ["corkscrew"], ["barrel", "roll"], ["juke"]],
+    line: "No evasive pattern loaded, Captain. I can give you a heading and a speed." },
+  { cap: "damage control parties", officer: "ENG",
+    phrases: [["seal"], ["damage", "control", "party"], ["repair"], ["patch"], ["weld"]],
+    line: "No repair crews to send, Captain. What is broken stays broken." },
+  { cap: "viewscreen", officer: "COMM",
+    phrases: [["on", "screen"], ["viewscreen"], ["main", "viewer"], ["put", "them", "up"]],
+    line: "No viewscreen on this refit, Captain. Sensors and the plot are what we have." },
+  { cap: "ramming", officer: "HELM",
+    phrases: [["ramming", "speed"], ["ram"], ["collision", "course"]],
+    line: "She is a survey ship, Captain. I will not ram anything with her." },
+  { cap: "faster-than-light", officer: "HELM",
+    phrases: [["warp"], ["jump"], ["hyperspace"], ["ftl"], ["light", "speed"]],
+    line: "No FTL on this hull, Captain. Impulse only." },
+  { cap: "transporter", officer: "ENG",
+    phrases: [["beam"], ["transporter"], ["teleport"], ["board", "them"], ["boarding", "party"]],
+    line: "We have no transporter, Captain." },
+  { cap: "cloaking", officer: "TAC",
+    phrases: [["cloak"], ["go", "dark"], ["run", "silent"], ["stealth"]],
+    line: "Nothing to cloak with, Captain. They can see us." },
+  { cap: "self-destruct", officer: "ENG",
+    phrases: [["self", "destruct"], ["scuttle"], ["blow", "her"]],
+    line: "I will not arm that, Captain. Not while there is hull left." },
+  { cap: "tractor beam", officer: "TAC",
+    phrases: [["tractor"], ["grapple"], ["tow"]],
+    line: "No tractor emitter fitted, Captain." }
+];
+
+/* Matched only after the parser has found no action, so a real order always
+   wins over a refusal. */
+function unsupportedReply(text) {
+  const c = makeClaim(tokenize(text));
+  for (const u of UNSUPPORTED) {
+    if (u.phrases.some(p => c.find(p) >= 0))
+      return [{ officer: u.officer, line: u.line, act: null, unsupported: u.cap }];
+  }
+  return null;
+}
+
+/* The audit SNIS gets for free: what does the crew recognise but refuse? */
+function unsupportedCapabilities() { return UNSUPPORTED.map(u => u.cap); }
 
 /* ---- presentation: turn actions into officers and lines -----------------
    The parser above is pure and knows nothing about the ship. Everything that
@@ -2232,9 +2329,12 @@ function lineForAction(act) {
 function bindAction(act) {
   const out = { ...act };
   if (out.target === "__current__") {
-    const cur = contacts.find(c => c.id === ship.target);
+    // last thing talked about, then the standing lock
+    const cur = contacts.find(c => c.name === lastMentioned)
+             || contacts.find(c => c.id === ship.target);
     out.target = cur ? cur.name : undefined;
   }
+  if (out.target) lastMentioned = out.target;
   if (out.do === "speed" || out.speed !== undefined) {
     const map = { full: ship.maxSpeed, half: ship.maxSpeed / 2, quarter: ship.maxSpeed / 4 };
     if (typeof out.speed === "string" && map[out.speed] !== undefined) out.speed = map[out.speed];
@@ -2242,10 +2342,17 @@ function bindAction(act) {
   return out;
 }
 
+/* The single antecedent for "it" / "them". One topic, set when an order names
+   a contact — deliberately not general anaphora. */
+let lastMentioned = null;
+
 function localParse(order) {
   const names = contacts.map(c => c.name).filter(Boolean);
   const found = parseOrders(order, names);
-  if (!found.length) return null;         // nothing confident — the caller escalates
+  if (!found.length) {
+    // Understood but impossible reads better than "say again" — and is free.
+    return unsupportedReply(order);       // null if it is genuinely unrecognised
+  }
 
   const out = [];
   const kinds = new Set();
