@@ -124,6 +124,12 @@
   .dot.on   { background: var(--good); }
   .dot.warn { background: var(--amber); }
   .dot.off  { background: #3A4759; }
+  /* The recorder's own dot pulses, because a steady red dot in a masthead
+     full of pills reads as decoration and this one is a claim that the
+     session is being written down. Reduced motion turns the pulse off (the
+     rule at the foot of this file), and the dot stays red either way. */
+  .dot.rec  { background: var(--alert); animation: recpulse 1.6s ease-in-out infinite; }
+  @keyframes recpulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 
   /* alert condition strip */
   .condition {
@@ -346,7 +352,12 @@
   button:disabled { opacity: .4; cursor: not-allowed; }
   button.primary { color: #0A0E14; background: var(--amber); border-color: var(--amber); }
   button.primary:hover:not(:disabled) { background: #FFC576; border-color: #FFC576; }
+  /* The mic button is a toggle, so its state has to be readable at a glance:
+     red while the channel is open, amber while the words are still being
+     written down, plain otherwise. Painted by paintMic() in src/voice.mjs
+     from micPhase(), never set at a call site. */
   button.mic.live { color: var(--void); background: var(--alert); border-color: var(--alert); }
+  button.mic.working { color: var(--void); background: var(--amber); border-color: var(--amber); }
 
   .hint {
     font-family: var(--f-mono);
@@ -517,14 +528,18 @@
   ol.beats li.done { text-decoration: line-through; text-decoration-color: var(--rule); }
   ol.beats li.failed::before { content: "\\2717"; color: var(--alert); }
 
-  /* ---------- diagnostics ---------- */
-  #diagBox {
+  /* ---------- diagnostics, and the session recorder beside it ---------- */
+  #diagBox, #recBox {
     width: 100%; min-height: 260px; margin-top: 10px;
     background: var(--panel2); color: var(--ink);
     border: 1px solid var(--rule); border-radius: var(--r);
     font-family: var(--f-mono); font-size: 11px; line-height: 1.5;
     padding: 10px; resize: vertical;
   }
+  /* The recorder's own line — what it is doing, and what the last hand-over
+     actually did — reads as a statement about the ship, not as small print. */
+  #recState, #recWhat { font-family: var(--f-mono); }
+  #recWhat:empty { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
@@ -532,7 +547,7 @@
 </style>
 </head>
 <body>
-<!-- build 66f2bbd -->
+<!-- build 3732f98 -->
 <!-- The other end of an episode: the supplemental log, and what to do next. -->
 <div class="gate" id="endGate" hidden>
   <div class="card">
@@ -558,6 +573,11 @@
     <!-- Shown only while the warm pass is generating crew lines in the background;
          painted by paintWarmPill() in src/voice.mjs from warmProgress. -->
     <span class="pill" id="warmPill" hidden title="Crew lines are being pre-generated in the background. A spoken line may wait behind at most the one generating."><span class="dot warn"></span>Voices <b id="warmMode">warming</b></span>
+    <!-- Shown only while the debug recorder is running, and shown in the
+         MASTHEAD rather than only in the drawer, because the drawer is shut
+         most of the time and a recorder nobody knows is running is worse than
+         no recorder at all. Painted by paintRecorder() in src/ui.mjs. -->
+    <span class="pill" id="recPill" hidden title="This session is being recorded for a bug report. Nothing leaves the page until you press Save or Copy in Settings."><span class="dot rec"></span>REC <b id="recMode">0 events</b></span>
     <!-- The watch to stand, and the one control that starts and holds it. The
          options are written by buildEpisodeSelect() in src/ui.mjs from the
          EPISODES constant build.mjs inlines; the button's word is written by
@@ -661,8 +681,8 @@
           <span class="optname">On this device (Moonshine)</span>
           <span class="optwhy" id="moonshineWhy">Speech recognition that runs entirely in the page — nothing you say
           leaves the device, and the decoder is primed with the ship's own vocabulary. A one-time download, then
-          cached. Hold the mic button to talk; release to send. Pinned: the bridge waits for it rather than falling
-          back to the browser.</span>
+          cached. Click the mic to open the channel and click again to send. Pinned: the bridge waits for it rather
+          than falling back to the browser.</span>
         </label>
       </div>
       <div class="loadbar" id="sttBar" hidden><i></i></div>
@@ -705,6 +725,28 @@
       </div>
       <textarea id="diagBox" readonly spellcheck="false"
                 placeholder="Capture diagnostics writes a report here that you can copy."></textarea>
+
+      <!-- The debug recorder. Diagnostics is a snapshot of NOW; this is the
+           whole session in the order it happened, which is what a bug report
+           actually needs. Every word of its state line is written by
+           paintRecorder() (src/ui.mjs) and every word of what a hand-over did
+           by the buttons' own handlers, so there is nothing here to drift. -->
+      <h3 style="margin-top:22px">Session Recorder</h3>
+      <p class="note">
+        Records the session as evidence: every order and where it came from, what the recogniser
+        actually returned before and after repair, what the parser made of it, what the crew said,
+        when the queue said it, and the state of the ship at each order &mdash; plus the build and the
+        seed, so it can be replayed. Nothing leaves the page until you hand it over.
+      </p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="mini" id="recToggle">Start recording</button>
+        <button class="mini" id="recSave">Save to a file</button>
+        <button class="mini" id="recCopy">Copy</button>
+      </div>
+      <p class="note" id="recState" style="margin-top:8px">Not recording.</p>
+      <p class="note" id="recWhat" style="margin-top:4px"></p>
+      <textarea id="recBox" readonly spellcheck="false"
+                placeholder="Save or Copy assembles the recording here. Downloads do not work on every host — if the file never arrives, use Copy, or select this text and copy it by hand."></textarea>
 
       <div class="opt" style="margin-top:10px">
         <input type="checkbox" id="fastPath" checked>
@@ -795,7 +837,7 @@
     <div class="order">
       <input type="text" id="orderInput" autocomplete="off" spellcheck="false"
              placeholder="Give the order, Captain — “Helm, come about to two-seven-zero and give me full impulse.”">
-      <button class="mic" id="micBtn" title="Hold the bridge channel open">Speak</button>
+      <button class="mic" id="micBtn" aria-pressed="false" title="Click to open the bridge channel, click again to send">Speak</button>
       <button class="primary" id="sendBtn">Transmit</button>
     </div>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:9px">
@@ -812,7 +854,7 @@
     your order plus the current state and answers with the officers' lines and one structured action the page validates
     and applies. No model ever flies the Excalibur. Impossible orders fail in the simulation and the officer says so.<br>
     <b>Voice.</b> Officers speak through your browser's own speech synthesiser, so their replies cost nothing and are
-    instant. Speech input prefers an on-device recogniser (Moonshine), held down like a radio key and primed with the
+    instant. Speech input prefers an on-device recogniser (Moonshine), opened and closed with a click of the mic and primed with the
     ship's own vocabulary; it is a one-time download, so the browser's own recogniser — biased toward the same
     vocabulary where the browser supports contextual biasing — holds the mic until it arrives. Either can be pinned in
     Settings, and the masthead pill says which is listening. The typed order line always works either way. Damage
@@ -2602,6 +2644,54 @@ function officerFor(entry, act) {
    answerable without reading the trigonometry. */
 const TAIL_STANDOFF_KM = 3000;
 
+/* ------------------- the slots the parser RESOLVED, declared once ---------
+   A slot the captain DID say a word for and the parser corrected: a misheard
+   contact name, a misheard weapon word, a misheard station address. Three
+   mechanisms that resemble each other closely enough that they were becoming
+   three — each stamped its own flag in src/parser.mjs, and each spelled its own
+   correction phrase here, where "correcting the name — " was already written
+   TWICE (the target read-back and the contact frame's own `said`). So the fact
+   lives here once and has four readers: `parseOrders` stamps `flag` when the
+   claim says the slot was resolved, `ACTION_SCHEMA` declares the flags for every
+   branch, `ackFor` reads them to decide that a corrected order is ALWAYS said
+   back, and `READ_BACK` reads `said` for the words. A fourth resolved slot
+   tomorrow is a row here and nothing else.
+
+   `slot` is the action field the flag qualifies, and it is null for the station:
+   an address says who answers rather than what the ship does, so it is not a
+   slot on the action at all. That is exactly why the row still belongs here — a
+   correction the captain cannot hear is a guess acted on in silence, whatever it
+   corrected.
+
+   WHY A CORRECTION IS ALWAYS SPOKEN while a chosen slot is never announced as
+   chosen: the captain said a word and was overruled. No plot, overlay or
+   viewscreen will ever show him that. See READ_BACK's own header. */
+const INFERRED_SLOTS = [
+  { flag: "targetInferred",  slot: "target", said: "correcting the name" },
+  { flag: "weaponInferred",  slot: "weapon", said: "correcting the weapon" },
+  { flag: "stationInferred", slot: null,     said: "correcting the station" }
+];
+/* The correction phrase for one flag — the one place any of the three is
+   worded. `correctionWords` is the phrase itself, for the row that stands on
+   its own; `correctionSaid` is the prefix form, for the rows that qualify a
+   slot's own words. Both READ_BACK and the contact frame's `said` read these
+   rather than spelling a phrase again. */
+function correctionWords(flag) {
+  const row = INFERRED_SLOTS.find(r => r.flag === flag);
+  return row ? row.said : "";
+}
+function correctionSaid(act, flag) {
+  return act && act[flag] ? correctionWords(flag) + " — " : "";
+}
+/* The corrections an action carries, the way chosenOf lists the slots the
+   officer chose. `ackFor` is the only reader: a corrected order is read back
+   even when its entry never asked to be, or the correction would be silent for
+   every entry that does not declare `readBack` — which is how `scan the
+   astrova` corrected a name and said nothing about it. */
+function correctedOf(act) {
+  return INFERRED_SLOTS.filter(r => act && act[r.flag]).map(r => r.flag);
+}
+
 /* ---------------------------- the helm's frames --------------------------
    One entry per frame of reference the destination slot understands. Each
    declares the field it cannot do without (`need`, and the line to say when it
@@ -2685,8 +2775,9 @@ const COURSE_FRAMES = {
     /* A fuzzy-resolved target (targetInferred, from slotTarget's nearest-name
        match — see the "target" slot's own comment above) is said here too:
        the frame slot COVERS target, so this is the only place a course
-       order onto an inferred contact ever gets read back at all. */
-    said: a => (a.targetInferred ? "correcting the name — " : "")
+       order onto an inferred contact ever gets read back at all. The words
+       come from INFERRED_SLOTS, not from a second copy of them here. */
+    said: a => correctionSaid(a, "targetInferred")
              + (a.offset === "behind" ? "coming in behind " : "closing on ")
              + (a.target ? "the " + a.target : "them")
   },
@@ -2929,7 +3020,7 @@ const READ_BACK = [
      (slotWeapon's fuzzy pass, src/parser.mjs) says the correction the same way
      an inferred target does — "fire missles" acknowledges as "Correcting the
      weapon — torpedoes, aye", never as a silent laser shot. */
-  { slot: "weapon", say: a => (a.weaponInferred ? "correcting the weapon — " : "")
+  { slot: "weapon", say: a => correctionSaid(a, "weaponInferred")
       + (a.weapon === "all" ? "all weapons" : a.weapon) },
   { slot: "posture", say: a => (ROE_POSTURES[a.posture] || {}).said },
   /* Power, said the way the reactor report says it. The captain who names an
@@ -2938,7 +3029,7 @@ const READ_BACK = [
   { slot: "amount", say: a => pct(a.amount) },
   { slot: "system", glue: " ", say: a => "to " + a.system },
   { slot: "target", glue: " ", say: a =>
-      (a.targetInferred ? "correcting the name — " : "") + (TARGET_SAID[a.do] || "on the ") + a.target },
+      correctionSaid(a, "targetInferred") + (TARGET_SAID[a.do] || "on the ") + a.target },
   { slot: "match",  say: a => a.match ? "matching course and speed" : null },
   { slot: "stop",   say: a => a.stop ? "breaking off" : null },
   { slot: "speed",  say: a => saidSpeed(a.speed) }
@@ -2985,6 +3076,16 @@ function readBackLine(act) {
     if (!said) continue;
     line += line ? (s.glue || ", ") + said : said;
   }
+  /* A CORRECTION WITH NO SLOT OF ITS OWN leads the line and qualifies all of
+     it — the station address is the one such row (INFERRED_SLOTS, `slot: null`),
+     because it says who answers rather than what the ship does and so has no
+     field on the action to ride on. It is read from that table rather than
+     named here, and it joins on the same em-dash the other two corrections use
+     inside their slots, which is also the one separator no slot's own `glue`
+     can get wrong: the target slot joins with a space, because it expects to
+     follow the weapon it is fired from. */
+  for (const said of INFERRED_SLOTS.filter(r => r.slot === null && act[r.flag]).map(r => r.said))
+    line = line ? said + " — " + line : said;
   /* Nothing to read back is not a read-back: an order whose every slot was
      absent gets the plain acknowledgement rather than a bare "Aye." */
   return line ? capitalize(line) + ", aye." : "Aye, Captain.";
@@ -2994,17 +3095,29 @@ function readBackLine(act) {
    crew.mjs calls this and never reaches into the entry, so the readBack flag
    is a registry fact like every other.
 
-   Two reasons to read an order back, and only the first is the entry's:
+   Three reasons to read an order back, and only the first is the entry's:
    `readBack` says THIS ORDER is always said back (it is lethal, or it is the
-   helm), and a chosen slot says THIS UTTERANCE was coarse — the captain left
+   helm); a chosen slot says THIS UTTERANCE was coarse — the captain left
    something for the officer to fill, so the words that fill it are said out
-   loud rather than left to the plot to show. An action whose every slot the
-   captain named is neither, and is answered exactly as before: no entry
-   became more verbose for saying more when it matters. */
+   loud rather than left to the plot to show; and a CORRECTION (correctedOf,
+   INFERRED_SLOTS) says the captain was overruled, which no entry's stock `ack`
+   would ever mention. Without the third, a correction was audible only on the
+   entries that happened to declare `readBack` — "scan the astrova" resolved a
+   name the captain never said and answered "Scanning, Captain." An action whose
+   every slot the captain named and none of them corrected is none of the three,
+   and is answered exactly as before: no entry became more verbose for saying
+   more when it matters. */
 function ackFor(act) {
   const entry = REGISTRY[act && act.do];
   if (!entry) return null;
-  return (entry.readBack || chosenOf(act).length) ? readBackLine(act)
+  /* A REFUSAL IS NOT ACKNOWLEDGED, which is why the correction is excluded for
+     one: the officer's only line is the reason, which comes back from
+     applyAction, and "Correcting the station, aye." in front of "Tubes are
+     loaded, Captain" would acknowledge an order that was not carried out. Every
+     refusal entry already reached the `ack` branch and answered null; naming the
+     rule keeps it that way now that there is a second way in. */
+  const corrected = !entry.refusal && correctedOf(act).length;
+  return (entry.readBack || chosenOf(act).length || corrected) ? readBackLine(act)
        : (entry.ack ? entry.ack(act) : null);
 }
 
@@ -3060,7 +3173,7 @@ const REGISTRY = {
          + "(offset behind or toward), to a named place, or away from trouble",
     schema: { properties: { frame: ref("frame"), heading: ref("heading"), turn: ref("turn"),
                             target: ref("contact"), offset: ref("offset"), place: ref("place"),
-                            speed: ref("speed"), targetInferred: ref("bool") },
+                            speed: ref("speed") },
               required: ["frame"] },
     /* The frame's own field must be there and must resolve against live state.
        A JSON Schema over this subset cannot say "heading is required when frame
@@ -3150,7 +3263,7 @@ const REGISTRY = {
   target: {
     officer: "TAC",
     brief: "lock the targeting solution onto a contact",
-    schema: { properties: { target: ref("contact"), targetInferred: ref("bool") }, required: ["target"] },
+    schema: { properties: { target: ref("contact") }, required: ["target"] },
     can: (S, a) => findContact(S, a.target) ? null : noContact(a.target),
     apply: (S, a) => {
       const c = findContact(S, a.target);
@@ -3163,8 +3276,8 @@ const REGISTRY = {
   fire: {
     officer: "TAC",
     brief: "fire on a contact, or on whatever is locked — `all` fires lasers and a torpedo together",
-    schema: { properties: { weapon: ref("weapon"), target: ref("contact"), confirmed: ref("bool"),
-                            targetInferred: ref("bool"), weaponInferred: ref("bool") }, required: [] },
+    schema: { properties: { weapon: ref("weapon"), target: ref("contact"), confirmed: ref("bool") },
+              required: [] },
     /* Lethal, and irreversible the moment it happens. The gate is a REGISTRY
        flag and never a parser rule: only the sim can see whether the contact
        has been scanned and what the scan said. A contact nobody has confirmed
@@ -3266,7 +3379,7 @@ const REGISTRY = {
   scan: {
     officer: "SCI",
     brief: "run a full sensor scan on a contact",
-    schema: { properties: { target: ref("contact"), targetInferred: ref("bool") }, required: [] },
+    schema: { properties: { target: ref("contact") }, required: [] },
     can: (S, a) => aimedAt(S, a.target) ? null
       : (a.target ? noContact(a.target) : "No contact selected to scan."),
     apply: (S, a) => {
@@ -3307,7 +3420,7 @@ const REGISTRY = {
   hail: {
     officer: "COMM",
     brief: "open a channel to a contact",
-    schema: { properties: { target: ref("contact"), targetInferred: ref("bool") }, required: [] },
+    schema: { properties: { target: ref("contact") }, required: [] },
     can: (S, a) => aimedAt(S, a.target) ? null
       : (a.target ? noContact(a.target) : "No one to hail."),
     apply: (S, a) => {
@@ -3328,8 +3441,8 @@ const REGISTRY = {
   follow: {
     officer: "HELM",
     brief: "hold a bearing on a contact until told otherwise; stop breaks off",
-    schema: { properties: { target: ref("contact"), match: ref("bool"), stop: ref("bool"),
-                            targetInferred: ref("bool") }, required: [] },
+    schema: { properties: { target: ref("contact"), match: ref("bool"), stop: ref("bool") },
+              required: [] },
     can: (S, a) => {
       if (a.stop) return S.ship.following ? null : "We are not pursuing anyone.";
       const c = aimedAt(S, a.target);
@@ -3518,6 +3631,28 @@ const REGISTRY = {
     schema: { properties: {} },
     can: () => "No tractor emitter fitted, Captain."
   },
+  /* UNDERSTOOD, AND ALREADY TRUE. "Tactical, prepare missiles" is correct
+     English, correctly heard, and named nothing in this sim: torpedoes are a
+     count in the tubes (SHIP.tubeCount — "there is no reload on this refit")
+     fired against a cooldown, and lasers are a cooldown alone. There is no
+     ready state between "loaded" and "fired" for the order to move into.
+
+     So this is a REFUSAL and not a new mechanic, deliberately. A readiness
+     order would have to be a real declaration — a precondition, an effect, a
+     bit of state the sim advances — and it would model nothing: every `can`
+     that fires already answers "yes", so the new state could never say no. The
+     captain would learn within one episode that the order changes nothing, and
+     the sim would carry a field that only ever reads `ready`. Inventing a
+     mechanic to satisfy a phrase is how dead state gets in.
+
+     Refusing it is not the same as escalating it. The answer is true, it is in
+     character, and it closes the escalation with information: the tubes are
+     loaded, so the next word can be "fire". */
+  magazine: {
+    officer: "TAC", refusal: true, brief: "bring weapons to a readiness state — they are never anything else",
+    schema: { properties: {} },
+    can: () => "Tubes are loaded and the lasers are charged, Captain. Say the word."
+  },
   powerbus: {
     officer: "ENG", refusal: true, brief: "route power to sensors, life support or comms",
     schema: { properties: {} },
@@ -3544,8 +3679,17 @@ const ACTION_SCHEMA = {
        which slots the officer picked because the captain named none — so it
        is declared once, here, for every branch. Not in the entries' own
        schemas: those are what actionBriefLines() shows the model, and the
-       model is asked for the order, not for the bookkeeping. */
+       model is asked for the order, not for the bookkeeping.
+
+       The correction flags (INFERRED_SLOTS) are the same kind of fact and were
+       the same kind of drift — `targetInferred` was retyped into five entry
+       schemas and `weaponInferred` into one, so an entry that gained a target
+       tomorrow would validate until somebody remembered the sixth copy. They
+       are declared here for every branch too, and for the same second reason:
+       what the PARSER worked out from a mishearing is not something the model
+       is ever asked to fill in. */
     properties: Object.assign({ do: { const: name }, chosen: ref("slots") },
+                              Object.fromEntries(INFERRED_SLOTS.map(r => [r.flag, ref("bool")])),
                               REGISTRY[name].schema.properties || {}),
     required: ["do"].concat(REGISTRY[name].schema.required || []),
     additionalProperties: false
@@ -4727,13 +4871,17 @@ function episodeCloser(ledger, outcome) {
    MORE brittle; a normalisation pass handles plurals and common mishearings
    before matching.
 
-   The two things this module reads from outside itself are both facts about
-   the ship rather than about words: the chart (PLACES lives in src/sim.mjs,
-   where a place's position lives, and the words for it travel with it) and
-   the hull's usual power split (SHIP.powerDefault, which is what "power to
-   shields" with no number MEANS — declared where the reactor is, not typed a
-   second time in a rule here). A second copy of either is the drift that cost
-   this repository five bugs; one declaration with two readers is the fix. */
+   The three things this module reads from outside itself are all declarations
+   with two readers rather than second copies — the drift that cost this
+   repository five bugs. Two are facts about the ship: the chart (PLACES lives
+   in src/sim.mjs, where a place's position lives, and the words for it travel
+   with it) and the hull's usual power split (SHIP.powerDefault, which is what
+   "power to shields" with no number MEANS — declared where the reactor is, not
+   typed a second time in a rule here). The third is a fact this module and the
+   sim share: INFERRED_SLOTS, the slots a parse may RESOLVE rather than hear
+   exactly. This file stamps the flags; the sim's READ_BACK says them out loud,
+   and its ACTION_SCHEMA declares them — so the table lives beside the words,
+   and parseOrders reads it rather than keeping a list of its own. */
 
 /* Mishearings and inflections, folded before matching. Unconstrained ASR
    returns "shield", "sheilds" and "phasors"; refusing them is not rigour.
@@ -4742,11 +4890,15 @@ function episodeCloser(ledger, outcome) {
    Moonshine produced for "sitrep" (harness/mishearings.json
    05-damage-control.json#61) — a jargon abbreviation it has no model of at
    all, so this is a hardcoded fold, not a derived one; there is no shorter
-   construction for a word the recogniser invents from nothing. "calms" is
-   the same shape for "comms" (02-first-contact.json#18): a station address
-   this grammar has no other use for "calm"/"calms" to collide with, so an
-   unconditional fold is safe the way the shields/"seal" collision (below)
-   is not. */
+   construction for a word the recogniser invents from nothing.
+
+   "calms" for "comms" (02-first-contact.json#18) USED TO BE HERE, and it is
+   the reason the station repair exists at all: it was a hand-written fold for
+   one transcript, and the very next microphone produced "hang" for "helm",
+   which no fold reached. A misheard station address is a class, not a list, so
+   it closed by construction over STATIONS instead (addressStation, below) and
+   this entry was deleted rather than joined by a second one. "calms" resolves
+   to COMM there, two edits from "comms", derived. */
 const NORMALISE = {
   shield: "shields", sheilds: "shields", sheild: "shields", shels: "shields",
   laser: "lasers", phaser: "lasers", phasers: "lasers", phasor: "lasers", phasors: "lasers", lance: "lasers", lances: "lasers",
@@ -4758,7 +4910,7 @@ const NORMALISE = {
   dont: "don't", cant: "can't", wont: "won't",
   niner: "nine", oh: "zero", o: "zero",
   degrees: "degree", klicks: "km", kilometres: "km", kilometers: "km",
-  citrappa: "sitrep", calms: "comms"
+  citrappa: "sitrep"
 };
 
 /* "shields" has a phonetic double the recogniser rendered as two DIFFERENT
@@ -4881,6 +5033,174 @@ function editDistance(a, b) {
    by the join pass here and by slotTarget's fuzzy contact-name resolution
    below, so the two heuristics never disagree about what "close" means. */
 function fuzzyTolerance(word) { return Math.max(1, Math.round(word.length / 4)); }
+
+/* ------------------------- one resolver, three slots ----------------------
+   THE THIRD INSTANCE OF ONE SHAPE, closed rather than copied a third time
+   (CLAUDE.md, "two instances means stop patching"). A misheard contact name
+   (slotTarget), a misheard weapon word (slotWeapon) and a misheard station
+   address (fuzzyStation) are all the same question: *the recogniser produced a
+   word this ship does not have — which word in a small closed vocabulary did
+   the captain say?* Three near-identical loops had already been written, each
+   with its own tie rule, and each declaring its own correction flag.
+
+   What is genuinely shared is here: nearest entry in the vocabulary, within a
+   per-word tolerance, and NEVER when two entries resolving to DIFFERENT values
+   are equally close — a guess with two answers is declined, not picked from.
+   Comparing the resolved VALUE rather than the spoken word is what lets a
+   vocabulary carry synonyms: "hang" is three edits from both `helm` and `conn`
+   and that is not a tie, because both of them mean HELM.
+
+   What is NOT shared, because the three genuinely differ, stays with each
+   caller: WHICH tokens a resolver may read (the whole clause for an exact
+   contact name, only the token the verb points at for a weapon, only the
+   address position for a station) and HOW FAR is close (fuzzyTolerance for
+   names and weapons; stationTolerance, derived from STATIONS' own shape, for
+   an address). Those are policy about a slot, not machinery. */
+function nearestHeard(word, vocab, tolOf) {
+  let best = null, bestDist = Infinity, tie = false;
+  for (const [said, value] of vocab) {
+    const tol = tolOf(said);
+    if (tol < 1) continue;                       // a word with no margin absorbs nothing
+    const d = editDistance(word, said);
+    if (d > tol) continue;
+    if (d < bestDist) { best = value; bestDist = d; tie = false; }
+    else if (d === bestDist && value !== best) tie = true;
+  }
+  return (!best || tie) ? null : best;
+}
+
+/* --------------------- a misheard station address ------------------------
+   "Helm, come about to two zero zero" came back from a real microphone as
+   "Hang come about to two o O." The heading survived and the digit fusion
+   survived; the station word alone destroyed the order, because an opening
+   token the ship does not know is not a verb it knows, so mood read the whole
+   clause as a remark and no rule ran. One wrong word, and the ship heard
+   nothing — for an order whose remaining seven words were perfect.
+
+   HOW FAR IS CLOSE, DERIVED FROM THE VOCABULARY RATHER THAN CHOSEN. Station
+   words are short, so fuzzyTolerance's one-letter-in-four would resolve almost
+   nothing here ("calms" is two edits from "comms", "hang" three from "helm"),
+   and a flat, generous number would start reading ordinary words as addresses.
+   Two facts about STATIONS decide it instead, and both are computed from the
+   table itself, so a word added to it tomorrow moves the boundary tomorrow:
+
+     · A WORD MAY NOT REACH PAST ITS NEAREST RIVAL. The tolerance around a word
+       stops one edit short of the nearest word meaning a DIFFERENT station, so
+       inside it there is never another station to confuse it with. `conn` and
+       `coms` are two edits apart and mean HELM and COMM, so each absorbs at
+       most one edit; `helm`'s nearest rival is `chief`, four away, so it may
+       absorb three.
+     · AND NEVER AS MANY EDITS AS THE SHORTEST NAME IS LONG. At a distance
+       equal to the whole word the metric has stopped meaning anything — every
+       four-letter token would be `helm`. The cap is one short of that, taken
+       from the shortest word in the table, which is what stops a long name
+       like `communications` from absorbing anything within nine edits.
+
+   The two together are the reason "hang" resolves and "look" does not, though
+   both are three edits from a station word: `look` is three from `conn` and
+   three from `coms`, and neither of those may reach past one.
+
+   AND IT RESOLVES A STATION, NOT A WORD. `hang` is equally close to `helm` and
+   `conn`, which is not a tie to decline — both mean HELM. That is nearestHeard
+   comparing resolved values, and it is what makes the aliases pay their way. */
+let STATION_TOL = null;
+function stationTolerance(word) {
+  if (!STATION_TOL) {
+    STATION_TOL = new Map();
+    const keys = Object.keys(STATIONS);
+    const cap = Math.min(...keys.map(k => k.length)) - 1;
+    for (const k of keys) {
+      let rival = Infinity;
+      for (const other of keys)
+        if (STATIONS[other] !== STATIONS[k]) rival = Math.min(rival, editDistance(k, other));
+      STATION_TOL.set(k, Math.max(0, Math.min(cap, rival - 1)));
+    }
+  }
+  return STATION_TOL.get(word) || 0;
+}
+function fuzzyStation(word) {
+  return nearestHeard(word, Object.entries(STATIONS), stationTolerance);
+}
+/* The word to put back into the clause for a resolved station: the first one
+   STATIONS declares for it, so the repaired token is a real station word every
+   later reader already knows — mood, the station claim, `bareClauseIs` and
+   `leadingStation` all go on doing exactly what they did, on a token stream
+   with the mishearing taken out of it. */
+function stationWord(code) { return Object.keys(STATIONS).find(k => STATIONS[k] === code); }
+
+/* Is this word an address? The exact word, or one near enough to exactly one
+   station. Named and exported so the question can be asked — and tested — on
+   its own, rather than only through a whole utterance. */
+function addressStation(word) {
+  if (STATIONS[word]) return STATIONS[word];
+  /* THE GUARD THAT MAKES THE TOLERANCE AFFORDABLE: a word this grammar has a
+     use for is never re-read as an address. `knownAlone` is joinSplitWords'
+     own predicate — filler, a normalisation key, a subject, a digit, a closed
+     class, or a token of any rule's trigger — so "come" (one edit from `coms`,
+     and the head of "come about"), "hold", "half" and "hail" are all immune by
+     construction rather than by being remembered. What is left is a word that
+     was contributing nothing to the parse and could only ever have been noise
+     or a mishearing. */
+  return knownAlone(word) ? null : fuzzyStation(word);
+}
+
+/* Where a clause's address words sit: the run of station names at its head,
+   past filler, stopping at the first word that OPENS a trigger — "weapons
+   free" is an order to TAC and not an address followed by "free", which is the
+   distinction opensTrigger exists to make and the one place it is asked here.
+   Indices, so both readers below can act on them. */
+function addressRun(tokens) {
+  const at = [];
+  let i = 0;
+  for (;;) {
+    while (i < tokens.length && (FILLER.has(tokens[i]) || tokens[i] === "," || tokens[i] === ";")) i++;
+    if (i >= tokens.length || !STATIONS[tokens[i]] || opensTrigger(tokens, i)) return at;
+    at.push(i); i++;
+  }
+}
+
+/* A CLAUSE NAMES ONE STATION, and the recogniser does not supply commas.
+   "Tactical, helm, come about to two seven zero" has always worked — splitClauses
+   carries a bare address onto the clause it introduces, and the last one
+   carried wins — but the same words with the commas dropped came out as one
+   clause with two addresses in front of the verb, and a second address is not a
+   verb, so mood read the whole thing as a remark and the order was lost. That
+   was true before any of this and it is a hole of exactly the shape being
+   closed here: one stray word in the address region, and the ship hears
+   nothing.
+
+   So the extra addresses are dropped, keeping the LAST — precisely the tokens
+   the comma form would have dropped, and precisely the one it would have kept,
+   so the two spellings of the same order now agree. MOOD IS NOT WEAKENED and
+   nothing in it changes: it goes on admitting exactly one station name before
+   the verb and nothing else, and this hands it a clause that has one. */
+function oneAddress(tokens) {
+  const at = addressRun(tokens);
+  if (at.length < 2) return tokens;
+  const keep = at[at.length - 1];
+  return tokens.filter((_, i) => i === keep || at.indexOf(i) < 0);
+}
+
+/* The address position: the clause's first content token — past filler, and
+   past an address the captain DID say, since "tactical, hang come about" is one
+   garbled word beside a good one. It is the one place mood already allows a
+   non-verb to stand before the verb. A resolver that reads a word by how it
+   SOUNDS may only read the slot's own token: `pointed()` says the same thing
+   for the weapon slot, and for the same reason — given the run of the clause it
+   would start reinterpreting contact names. Returns the repaired clause and the
+   station, or null for "nothing to repair", which is the overwhelmingly common
+   case. */
+function repairAddress(tokens) {
+  const run = addressRun(tokens);
+  let i = run.length ? run[run.length - 1] + 1 : 0;
+  while (i < tokens.length && (FILLER.has(tokens[i]) || tokens[i] === "," || tokens[i] === ";")) i++;
+  if (i >= tokens.length || !isWord(tokens[i]) || STATIONS[tokens[i]]) return null;
+  const station = addressStation(tokens[i]);
+  if (!station) return null;
+  const out = tokens.slice();
+  out[i] = stationWord(station);
+  return { tokens: oneAddress(out), station };
+}
 
 function dropDigitCommas(words) {
   return words.filter((w, i) =>
@@ -5019,6 +5339,15 @@ function splitClauses(tokens) {
        its own. Carrying the WHOLE clause (not just the station word) is what
        lets "all" survive the merge as the fire rule's own trigger. */
     const bare = c.filter(w => !FILLER.has(w) && w !== "all");
+    /* STATIONS and not addressStation, deliberately: only a word the ship
+       actually knows carries onto the next clause. A misheard address is
+       repaired in parseOrders, on a clause that commanded nothing — and
+       carrying an unrecognised word forward instead would hand a clause that
+       WAS an order ("hmm, fire torpedoes") an opening token mood cannot read
+       as a verb, which is the one way this repair could take something away.
+       The cost is real and it is small: "Hang. Come about." is obeyed with no
+       address rather than addressed to the helm, because the second clause
+       commands on its own and never needs rescuing. */
     if (bare.length === 1 && STATIONS[bare[0]] && merged.length >= 0) {
       merged.push({ carry: c });
     } else if (bare.length === 1 && (bare[0] === "no" || bare[0] === "negative")) {
@@ -5284,9 +5613,14 @@ function makeClaim(tokens) {
     targetInferred: false,
     /* The same for the weapon slot: true once slotWeapon resolved a word the
        recogniser or the captain got wrong ("missles") against the weapon
-       vocabulary. Two flags, one door — parseOrders stamps both from
-       INFERRED_SLOTS (below) rather than each rule threading its own. */
+       vocabulary. Three flags, one door — parseOrders stamps all three from
+       INFERRED_SLOTS (src/sim.mjs) rather than each rule threading its own. */
     weaponInferred: false,
+    /* And the third: the clause's ADDRESS was resolved rather than heard
+       ("hang" for "helm"). Set by parseOrders on the claim it just made, not
+       by a slot function, because the address is repaired before any rule
+       runs — see repairAddress. */
+    stationInferred: false,
     /* First unclaimed occurrence of a phrase in search order, skipping filler
        words between its parts — "raise the shields" must match
        ["raise","shields"], or every rule needs its own article handling and
@@ -5437,14 +5771,17 @@ function weaponVocab() {
    tie can only be reached by adding one — which is precisely when a guess
    would be wrong, and why the guard is written now rather than the day after. */
 function fuzzyWeapon(word) {
-  let best = null, bestDist = Infinity, tie = false;
-  for (const [said, weapon] of weaponVocab()) {
-    const d = editDistance(word, said);
-    if (d > fuzzyTolerance(said)) continue;
-    if (d < bestDist) { best = weapon; bestDist = d; tie = false; }
-    else if (d === bestDist && weapon !== best) tie = true;
-  }
-  return (!best || tie) ? null : best;
+  return nearestHeard(word, weaponVocab(), fuzzyTolerance);
+}
+
+/* The words a readiness order is built from — the verbs the captain says and
+   the things he says them about. Both are read, never a hand-written list of
+   phrasings: the objects are weaponVocab's own two weapons plus the system
+   word the power rules already use, so a weapon added to the ship is a
+   readiness phrase the same day. See the `magazine` rule below. */
+const MAGAZINE_VERBS = ["prepare", "ready", "arm", "load"];
+function magazineObjects() {
+  return [...new Set(weaponVocab().values()), "weapons"];
 }
 
 function slotWeapon(c) {
@@ -5477,15 +5814,11 @@ function slotWeapon(c) {
 function fuzzyTarget(c, names) {
   const i = c.where(t => !FILLER.has(t) && /^[a-z']{3,}$/.test(t));
   if (i < 0) return null;
-  const word = c.tokens[i];
-  let best = null, bestDist = Infinity, tie = false;
-  for (const name of names) {
-    const d = editDistance(word, name.toLowerCase());
-    if (d > fuzzyTolerance(name)) continue;
-    if (d < bestDist) { best = name; bestDist = d; tie = false; }
-    else if (d === bestDist) tie = true;
-  }
-  if (!best || tie) return null;
+  /* The plot's names ARE the vocabulary, spoken word to resolved name — the
+     one of the three whose vocabulary is live state rather than a declaration.
+     nearestHeard's tie rule reads the same either way. */
+  const best = nearestHeard(c.tokens[i], names.map(n => [n.toLowerCase(), n]), fuzzyTolerance);
+  if (!best) return null;
   c.take(i, 1);
   return best;
 }
@@ -5824,6 +6157,27 @@ const RULES = [
                ["power", "to", "comms"], ["power", "to", "communications"]],
     run: () => ({ do: "powerbus" }) },
 
+  /* Readiness the ship is never NOT in. "Tactical, prepare missiles" is
+     correct English, correctly heard, and it matched no rule at all: the verbs
+     are already generic imperatives, so the clause passed mood and then
+     escalated as if nobody had understood it — the same shape the power-bus
+     rule above closed for a system the ship has no circuit to. The registry
+     entry says why this is a refusal and not a mechanic (REGISTRY.magazine,
+     src/sim.mjs).
+
+     THE VERB FAMILY AND THE WEAPON WORDS ARE BOTH DERIVED, so the rule covers
+     the whole shape rather than the one transcript: every readiness verb
+     against every weapon word this ship answers to. The objects come out of
+     weaponVocab's own values plus the system word, and NORMALISE has already
+     folded "missiles", "torps" and "phasors" onto those two by the time a
+     trigger is matched — which is why "prepare missiles" and "arm the phasers"
+     need no entry of their own. Nothing new enters the vocabulary: all four
+     verbs were in GENERIC_IMPERATIVE already, which is exactly why the clause
+     commanded nothing instead of being ignored. */
+  { name: "magazine", refusal: true,
+    triggers: MAGAZINE_VERBS.flatMap(v => magazineObjects().map(o => [v, o])),
+    run: () => ({ do: "magazine" }) },
+
   { name: "status", anyMood: true,
     triggers: STATUS_TRIGGERS.map(([seq]) => seq),
     run(c, ctx) {
@@ -6018,14 +6372,6 @@ const RULES = [
     } }
 ];
 
-/* The slots a parse may RESOLVE rather than hear exactly, and the flag each
-   one carries when it did. Declared once and read by parseOrders below; the
-   sim's READ_BACK reads the same flags off the action. */
-const INFERRED_SLOTS = [
-  { flag: "targetInferred", slot: "target" },
-  { flag: "weaponInferred", slot: "weapon" }
-];
-
 /* ------------------- the slots the captain did not utter ------------------
    A rule may DECLARE the slots it fills when the clause contained no word for
    them — `chooses: { slot: ctx => value }` — and this stamps both the value
@@ -6063,18 +6409,16 @@ function parseOrders(text, contactNames) {
   const names = (contactNames || []).slice();
   const all = [];
 
-  for (const clauseTokens of splitClauses(tokenize(text))) {
-    /* Control tokens first, ahead of polarity and of every rule: half of them
-       are words polarity negates on, so a clause that is nothing but one of
-       them would otherwise command nothing at all. See CONTROL_PHRASES. */
-    const control = clauseControl(clauseTokens);
-    if (control) {
-      all.push({ at: 0, act: control, station: leadingStation(clauseTokens), refusal: false });
-      continue;
-    }
-    if (clauseIsNegative(clauseTokens)) continue;   // a negative clause commands nothing
-
+  /* Every rule, over one clause, in the order they matched. Lifted out of the
+     loop below so the clause can be read TWICE — once as the recogniser gave
+     it, and once with a misheard address repaired. See the call site. */
+  function runClause(clauseTokens, stationInferred) {
     const c = makeClaim(clauseTokens);
+    /* The clause's own correction, read by the same INFERRED_SLOTS loop below
+       that stamps a resolved name and a resolved weapon. It sits on the claim
+       rather than in a local so that all three arrive at that loop the same
+       way, from the object that knows what this clause resolved. */
+    c.stationInferred = !!stationInferred;
 
     /* A leading station names who answers; for a bare status it also narrows
        scope. Never when the same word is opening a trigger this clause
@@ -6107,15 +6451,17 @@ function parseOrders(text, contactNames) {
       if (!act) continue;
       /* A slot the parser RESOLVED rather than heard exactly is stamped here,
          once, for every rule — the same way `station` below is attached by
-         parseOrders and not by each rule. There are two such slots now (a
-         misheard contact name in slotTarget, a misheard weapon word in
-         slotWeapon) and they are one table rather than two lines that would
-         drift: a third resolved slot tomorrow is a row in INFERRED_SLOTS. The
-         flag reaches the captain in READ_BACK (src/sim.mjs), which says the
-         correction out loud rather than acting on a guess in silence. */
+         parseOrders and not by each rule. The table is INFERRED_SLOTS
+         (src/sim.mjs, declared beside the words that say each correction out
+         loud), so a fourth resolved slot tomorrow is one row and nothing else.
+         A row with no `slot` qualifies the whole clause rather than one field
+         of the action — the address is the one such row, since it says who
+         answers rather than what the ship does. The flag reaches the captain in
+         READ_BACK, which says the correction out loud rather than acting on a
+         guess in silence. */
       let stamped = act;
       for (const { flag, slot } of INFERRED_SLOTS)
-        if (c[flag] && act[slot]) stamped = { ...stamped, [flag]: true };
+        if (c[flag] && (slot === null || act[slot])) stamped = { ...stamped, [flag]: true };
       /* And the other half of the same idea, one line further on: a slot the
          captain left to the officer entirely (stampChosen, above). The rule
          declares what it picks; this is the one place any rule's pick is
@@ -6129,7 +6475,56 @@ function parseOrders(text, contactNames) {
        hull", not a laser shot. Earliest refusal wins, for the same reason the
        claim machinery prefers the earliest match. */
     const refusal = found.find(f => f.refusal);
-    for (const f of (refusal ? [refusal] : found)) all.push(f);
+    return refusal ? [refusal] : found;
+  }
+
+  for (const clause of splitClauses(tokenize(text))) {
+    /* One address per clause, before anything reads it — the commas the
+       recogniser drops are what put two of them there. See oneAddress. */
+    const spoken = oneAddress(clause);
+    /* Control tokens first, ahead of polarity and of every rule: half of them
+       are words polarity negates on, so a clause that is nothing but one of
+       them would otherwise command nothing at all. See CONTROL_PHRASES. */
+    const control = clauseControl(spoken);
+    if (control) {
+      /* No correction is ever stamped here, and the address is not repaired for
+         a control token: it claims no slots at all, and its answer is the thing
+         it takes back or repeats. There is no read-back to carry a correction's
+         words, and replacing that answer with one would tell the captain less
+         than it told him before. */
+      all.push({ at: 0, act: control, station: leadingStation(spoken), refusal: false });
+      continue;
+    }
+    if (clauseIsNegative(spoken)) continue;   // a negative clause commands nothing
+
+    const found = runClause(spoken, false);
+    /* A MISHEARD ADDRESS IS REPAIRED ONLY TO RESCUE A CLAUSE THAT COMMANDED
+       NOTHING, never to re-read one that was already understood. That is the
+       whole safety argument, and it is stronger than any threshold: the second
+       reading cannot change a parse, only replace an empty one, so no utterance
+       that worked before this existed parses differently now — the property is
+       checkable rather than argued (harness/parser.test.mjs).
+
+       It is also what stops a generous tolerance from doing harm where it would
+       do the most. "helm" is four letters and its nearest rival is four edits
+       away, so it may absorb three — enough for "hang", and enough for "hmm"
+       as well. But "hmm, fire torpedoes" is a clause that already fires, so it
+       is never read a second time; the words the captain actually said win, and
+       the repair only ever gets the clauses nobody could do anything with.
+
+       MOOD IS NOT WEAKENED, and none of its rules change. The second reading
+       runs the whole clause pipeline again on a repaired token stream: mood
+       still admits exactly one station name before the verb and nothing else,
+       and a clause whose opening word resolves to no station never gets a
+       second reading at all — which is why "nobody fire" and "so should we
+       fire" command nothing, before this and after it. What changed is one
+       token, not the rule that reads it. */
+    if (!found.length) {
+      const repair = repairAddress(spoken);
+      if (repair) for (const f of runClause(repair.tokens, true)) all.push(f);
+      continue;
+    }
+    for (const f of found) all.push(f);
   }
   return all;
 }
@@ -7320,10 +7715,21 @@ let recog = null, listening = false;
        needs, and "maximum power to weapons" heard as "Maxim on power to
        weapons" is what a recogniser with no hint "maximum" is one of the
        words in play does to it. */
-const PHRASE_TRIGGER_BOOST = 8;   // RULES trigger phrases: the verbs and frames the parser matches on
-const PHRASE_STATION_BOOST = 6;   // station names ("tactical", "engineering"…)
-const PHRASE_DIGIT_BOOST   = 4;   // spoken digits — short, common words, so a smaller nudge
-const PHRASE_CONTACT_BOOST = 10;  // live contact names — proper nouns with no other source of bias
+/* WHAT KIND OF THING A PHRASE IS, declared once, because the two tiers weigh
+   the kinds differently and neither may keep its own list. `boost` is tier 0's
+   own currency (the Web Speech explainer's 0–10 float); `name` is the one
+   property of a phrase that changes what tier 1 does with it — see
+   NAME_BIAS_FACTOR under "TIER 1" below for why a proper noun is not just
+   another high boost. A kind added here reaches both tiers or neither. */
+const PHRASE_CLASSES = {
+  trigger: { boost: 8,  name: false },   // RULES trigger phrases: the verbs and frames the parser matches on
+  station: { boost: 6,  name: false },   // station names ("tactical", "engineering"…)
+  digit:   { boost: 4,  name: false },   // spoken digits — short, common words, so a smaller nudge
+  contact: { boost: 10, name: true }     // live contact names — proper nouns with no other source of bias
+};
+/* The top of the scale, read off the table rather than repeated as a number:
+   a kind declared with a higher boost tomorrow moves this by itself. */
+const PHRASE_MAX_BOOST = Math.max(...Object.values(PHRASE_CLASSES).map(c => c.boost));
 
 let phraseBiasingActive = false;        // recog.phrases was accepted this session
 let onDeviceGate = "unchecked";         // last result of SpeechRecognition.available()
@@ -7331,32 +7737,46 @@ let onDeviceRecognitionActive = false;  // processLocally was actually turned on
 
 /* One phrase can in principle earn its way in from more than one table (a
    contact sharing a word with a trigger); the higher boost wins rather than
-   the two colliding into a duplicate list entry. */
+   the two colliding into a duplicate list entry, and on a TIE the name wins —
+   a contact that happens to share a word with a trigger is still the target
+   of the order, which is the fact tier 1 leans on. */
 function shipPhrases(contactNames) {
-  const out = new Map();   // phrase text -> boost
-  const add = (text, boost) => {
+  const out = new Map();   // phrase text -> { boost, kind }
+  const add = (text, kind) => {
     const t = String(text || "").trim();
     if (!t) return;
-    if (!out.has(t) || out.get(t) < boost) out.set(t, boost);
+    const cls = PHRASE_CLASSES[kind];
+    const had = out.get(t);
+    if (!had || had.boost < cls.boost
+        || (had.boost === cls.boost && cls.name && !PHRASE_CLASSES[had.kind].name)) {
+      out.set(t, { boost: cls.boost, kind });
+    }
   };
-  for (const rule of RULES) for (const trig of rule.triggers) add(trig.join(" "), PHRASE_TRIGGER_BOOST);
-  for (const word of Object.keys(STATIONS)) add(word, PHRASE_STATION_BOOST);
-  for (const word of Object.keys(DIGIT_WORD)) add(word, PHRASE_DIGIT_BOOST);
-  for (const [word, canon] of Object.entries(NORMALISE)) if (canon in DIGIT_WORD) add(word, PHRASE_DIGIT_BOOST);
-  for (const [seqs] of POWER_AMOUNTS) for (const seq of seqs) for (const word of seq) add(word, PHRASE_TRIGGER_BOOST);
-  for (const name of (contactNames || [])) add(name, PHRASE_CONTACT_BOOST);
+  for (const rule of RULES) for (const trig of rule.triggers) add(trig.join(" "), "trigger");
+  for (const word of Object.keys(STATIONS)) add(word, "station");
+  for (const word of Object.keys(DIGIT_WORD)) add(word, "digit");
+  for (const [word, canon] of Object.entries(NORMALISE)) if (canon in DIGIT_WORD) add(word, "digit");
+  for (const [seqs] of POWER_AMOUNTS) for (const seq of seqs) for (const word of seq) add(word, "trigger");
+  for (const name of (contactNames || [])) add(name, "contact");
   return out;
 }
 
 /* The same list, shaped for tier 1's decoder instead of tier 0's recogniser.
    `shipPhrases` above is the ONE declaration of what the ship's vocabulary
    is; this is a projection of it, so a trigger added to RULES tomorrow
-   reaches both tiers or neither — the two cannot drift apart. Two
+   reaches both tiers or neither — the two cannot drift apart. Three
    differences, each because a logit bias is not a Web Speech hint:
 
-     - It is an array of [text, boost] pairs, not a Map, because it crosses
-       a postMessage boundary into the Moonshine worker (a Map survives the
-       structured clone, but the worker only ever iterates it).
+     - It is an array of [text, start, inside] triples, not a Map, because it
+       crosses a postMessage boundary into the Moonshine worker (a Map
+       survives the structured clone, but the worker only ever iterates it).
+     - The numbers are BONUSES IN LOGITS, not tier 0's boost, and there are
+       two of them per phrase because where a bonus lands changes what it
+       risks (see below). The conversion lives here, in the page, rather than
+       in the worker: the worker adds the number it is given for the position
+       it is in and has no opinion about how the ship weighs its own
+       vocabulary, so there is one place to read and one place to change
+       (`biasBonus` / `biasBonusInside` below).
      - A phrase shorter than MIN_BIAS_CHARS is dropped. Tier 0's `boost` is
        a hint a recogniser weighs against a whole utterance; tier 1's is
        added to one token's logit at EVERY decoding step, so a one- or
@@ -7365,10 +7785,29 @@ function shipPhrases(contactNames) {
        them is a rule about length, not a hand-written exclusion list: a
        future two-letter phrase inherits it. */
 const MIN_BIAS_CHARS = 3;
+/* Two numbers per phrase, not one, because the two places a bonus can land
+   are not the same risk — see NAME_BIAS_FACTOR under "TIER 1" below for the
+   measurement that forced the distinction:
+
+     START    the bonus on the phrase's FIRST token, which is claimed at
+              every decoding step by every phrase not yet begun. This one
+              competes with EOS, so it is the dangerous one.
+     INSIDE   the bonus on the token that CONTINUES a phrase already begun.
+              It can only ever fire once the decoder has committed to the
+              phrase's own opening, so it cannot invent a word from nothing.
+
+   A name is leaned on harder INSIDE and exactly like everything else at the
+   start. */
+function biasBonus(entry) {
+  return MOONSHINE_BIAS_SCALE * (entry.boost / PHRASE_MAX_BOOST);
+}
+function biasBonusInside(entry) {
+  return biasBonus(entry) * (PHRASE_CLASSES[entry.kind].name ? NAME_BIAS_FACTOR : 1);
+}
 function biasPhrases(contactNames) {
   const out = [];
-  for (const [text, boost] of shipPhrases(contactNames)) {
-    if (text.length >= MIN_BIAS_CHARS) out.push([text, boost]);
+  for (const [text, entry] of shipPhrases(contactNames)) {
+    if (text.length >= MIN_BIAS_CHARS) out.push([text, biasBonus(entry), biasBonusInside(entry)]);
   }
   return out;
 }
@@ -7377,8 +7816,12 @@ function applyPhraseBiasing(rec, contactNames) {
   phraseBiasingActive = false;
   if (typeof SpeechRecognitionPhrase !== "function" || !rec) return false;
   try {
+    /* Tier 0 takes the boost as declared and knows nothing about kinds: its
+       scale is closed at PHRASE_MAX_BOOST and contact names already sit at
+       the top of it, so there is no room here for the extra lean tier 1's
+       NAME_BIAS_FACTOR gives them, and no need to invent one. */
     const objs = [];
-    for (const [phrase, boost] of shipPhrases(contactNames)) objs.push(new SpeechRecognitionPhrase(phrase, boost));
+    for (const [phrase, entry] of shipPhrases(contactNames)) objs.push(new SpeechRecognitionPhrase(phrase, entry.boost));
     rec.phrases = objs;
     phraseBiasingActive = true;
   } catch (e) { phraseBiasingActive = false; }
@@ -7482,18 +7925,24 @@ function setupRecognition() {
       orderInput.value = txt.trim();
       if (ev.results[ev.results.length - 1].isFinal) {
         stopListening();
+        /* `txt` is the recogniser's own words and `orderInput.value` is what
+           the ship acts on; a recording keeps both, so a transcript repaired
+           on its way to the order line can never look like what was heard. */
+        recNote("heard", { tier: "browser", raw: txt, text: orderInput.value,
+                           primed: phraseBiasingActive, onDevice: onDeviceRecognitionActive });
         /* A short clip that yields nothing is the recogniser's failure, not
            an order: submitOrder() would already do nothing with an empty
            input (its own guard, crew.mjs), but doing nothing left the
            captain wondering whether the mic ever heard him at all. Say so
            through the same door every other officer line goes through — the
            mic is already ready again, stopListening() having just reset it. */
-        if (orderInput.value) submitOrder();
+        if (orderInput.value) submitOrderFrom("browser");
         else deliver(didNotCatch());
       }
     };
     recog.onerror = (e) => {
       stopListening();
+      recNote("mic", { event: "recogniser error", tier: "browser", why: e && e.error });
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
         micBlocked = true;
         paintVoicePill();
@@ -7505,30 +7954,61 @@ function setupRecognition() {
   } catch (e) { recog = null; paintVoicePill(); }
 }
 
+/* Both of these are reached from micPressed() below, which is the ONE thing
+   the mic button is wired to. The tier guard stays: the browser recogniser
+   runs only while IT is the live tier, so a press that arrives just after the
+   on-device weights landed cannot open a session in the tier that no longer
+   holds the mic. What the button LOOKS like is painted by paintMic() from the
+   state, never set by hand here — that is what keeps "Listening" on the button
+   and "listening" in the page from ever disagreeing. */
 function startListening() {
-  // The browser recogniser runs only while IT is the live tier; on-device is
-  // push-to-talk (see pttStart/pttEnd below). This guard also absorbs the
-  // ordinary click event a press-and-release always fires afterward, so that
-  // click cannot re-trigger a browser-recogniser session underneath the
-  // on-device one.
   if (!recog || listening || activeInputTier() !== "browser") return;
   applyPhraseBiasing(recog, contacts.map(c => c.name));   // refreshed every session — never stale
-  try { recog.start(); listening = true; micBtn.classList.add("live"); micBtn.textContent = "Listening"; status("Bridge channel open."); }
+  try { recog.start(); listening = true; status("Bridge channel open. Press the mic again to stop."); }
   catch (e) { listening = false; }
+  paintMic();
 }
 function stopListening() {
   listening = false;
-  micBtn.classList.remove("live");
-  micBtn.textContent = "Speak";
   try { recog && recog.stop(); } catch (e) {}
+  paintMic();
+}
+
+/* WHAT THE MIC BUTTON SAYS ABOUT ITSELF. A captain must be able to tell at a
+   glance whether the ship is listening, and with a toggle that matters more
+   than it did with a hold: nothing about a click tells him afterwards which
+   way it went. So the button's word, its colour and its `aria-pressed` are
+   all DERIVED, in one function, from the state the two tiers actually keep —
+   never assigned at a call site, which is how a button comes to read
+   "Listening" over a recogniser that has already stopped.
+
+   Three phases, and the label is the whole of the answer:
+     idle       "Speak"      nothing is open
+     listening  "Listening"  a channel is open (either tier), or opening
+     working    "Working"    the microphone is shut and a transcription is
+                             still running — the state a hold never had,
+                             because a hold ended at the release.        */
+const MIC_LABELS = { idle: "Speak", listening: "Listening", working: "Working" };
+function micPhase() {
+  if (micWorking) return "working";
+  if (listening || pttActive || pttOpening) return "listening";
+  return "idle";
+}
+function paintMic() {
+  if (!micBtn) return;
+  const phase = micPhase();
+  micBtn.textContent = MIC_LABELS[phase];
+  micBtn.classList.toggle("live", phase === "listening");
+  micBtn.classList.toggle("working", phase === "working");
+  micBtn.setAttribute("aria-pressed", String(phase === "listening"));
 }
 
 /* The masthead pill is where the live tier is visible rather than silent —
    a switch from the browser recogniser to on-device happens mid-game, on its
    own, and a captain who is not told is a captain wondering why the mic
-   button suddenly wants holding down. Derived from activeInputTier(), never
-   set by hand from a call site, so the pill cannot disagree with what a
-   press will actually do.
+   button behaves differently than it did a minute ago. Derived from
+   activeInputTier(), never set by hand from a call site, so the pill cannot
+   disagree with what a press will actually do.
 
    It DISABLES the mic button (no tier at all, or the microphone refused) but
    never enables it: whether the order bar is live at all belongs to
@@ -7546,13 +8026,13 @@ function paintVoicePill() {
     micBtn.title = "The microphone was refused here — type the order instead.";
   } else if (tier === "moonshine") {
     dot.className = "dot on"; label.textContent = "on-device";
-    micBtn.title = "Hold to talk. Recognised on this device — nothing you say leaves it.";
+    micBtn.title = "Click to start listening, click again to stop. Recognised on this device — nothing you say leaves it.";
   } else if (tier === "browser") {
     dot.className = "dot on";
     label.textContent = downloading ? "browser · on-device loading" : "browser";
     micBtn.title = downloading
-      ? "Click to speak. The on-device recogniser is still downloading; the bridge switches to it when it arrives."
-      : "Click to speak, and click again to stop.";
+      ? "Click to start listening, click again to stop. The on-device recogniser is still downloading; the bridge switches to it when it arrives."
+      : "Click to start listening, and click again to stop.";
   } else if (tier === "loading") {
     dot.className = "dot warn"; label.textContent = "on-device loading";
     micBtn.title = "The on-device recogniser is still downloading — type the order for now.";
@@ -7560,6 +8040,10 @@ function paintVoicePill() {
     dot.className = "dot off"; label.textContent = "typed only"; micBtn.disabled = true;
     micBtn.title = "This browser has no speech recogniser and no microphone access";
   }
+  /* The tier changed under the button; the button's own word did not, but
+     painting it here costs nothing and closes the one ordering in which a
+     stale label could survive a switch. */
+  paintMic();
 }
 
 /* ========================== TIER 1: ON-DEVICE ASR ==========================
@@ -7614,15 +8098,60 @@ const MOONSHINE_RUNTIME = "transformers.js 4.2.0 (encoder q8, decoder fp32), " +
 const MOONSHINE_RATE    = 16000;   // Hz; fixed by the model, like KOKORO_RATE above
 const TRANSFORMERS_JS_URL = KOKORO_TFJS;   // the same pinned build, shared with the Kokoro worker
 
-/* How hard the ship's vocabulary leans on the decoder. tier 0's boost scale
-   is 0-10 (the Web Speech explainer's), and a logit is not a boost, so this
-   is the one number that converts between them: a phrase's bonus is
-   MOONSHINE_BIAS_SCALE * boost / PHRASE_CONTACT_BOOST, added to the logit of
-   the token that would continue that phrase. Contact names (boost 10) get
-   the whole of it, spoken digits (4) less than half. Measured, not guessed —
-   harness/asr.test.mjs --bias=ab runs the same audio through the decoder
-   with and without it, and writes harness/ASR-BIAS.md. */
+/* How hard the ship's vocabulary leans on the decoder. Tier 0's boost scale
+   is 0–10 (the Web Speech explainer's), and a logit is not a boost, so this
+   is the number that converts between them: a phrase's bonus is
+   MOONSHINE_BIAS_SCALE * boost / PHRASE_MAX_BOOST, added to the logit of the
+   token that would continue that phrase (`biasBonus`, above, is the one place
+   that arithmetic happens). A phrase at the top of tier 0's scale gets the
+   whole of it, spoken digits less than half. Measured, not guessed —
+   harness/asr.test.mjs --bias=ab runs the same audio through the decoder with
+   and without it, and writes harness/ASR-BIAS.md.
+
+   THIS IS NOT A DIAL TO TURN UP. A stronger global scale was measured and was
+   WORSE: the bonus is added at every decoding step to every phrase in a list
+   of hundreds, so raising it everywhere buys a few names at the price of the
+   ordinary words around them (BACKLOG.md, "The bias strength is one global
+   constant plus one targeted exception", which carries both measurements). */
 const MOONSHINE_BIAS_SCALE = 3;
+
+/* …and this is the targeted exception, which is a different claim. A proper
+   noun is the one kind of phrase a general recogniser has NO model of: it
+   never saw "Ostrava" or "Kestrel" in training, so it spells them out of
+   whatever ordinary words they sound like ("the cestrel", "the Ostrova") —
+   and it matters more when it does, because a mangled name loses the TARGET
+   of the order rather than a word of its wrapping. Everything else in the
+   list is ordinary English the model already knows how to spell; it needs a
+   nudge, not a rescue.
+
+   The extra lean is derived from the phrase's declared KIND
+   (`PHRASE_CLASSES[…].name`), never from a list of names: a second source of
+   proper nouns tomorrow — a place, a callsign — becomes a kind in that table
+   and inherits this by construction.
+
+   IT APPLIES INSIDE A NAME, NOT AT ITS START, and that is measured rather
+   than tasteful. Applied everywhere, at this size, it is the "one token, one
+   bonus" landmine in a new costume: a phrase not yet begun claims its FIRST
+   token at every decoding step, so a large bonus there sits above EOS
+   forever and the transcript runs on — an A/B run over the corpus turned
+   "fire phasors" into `Fire fast s o s o` and "come about to two seven niner"
+   into `Come about to two seven nine o s`, the leading tokens of the contact
+   names on the plot, arriving after the sentence was over. Restricted to
+   continuations it cannot do that: the bonus only fires once the decoder has
+   already committed to the name's own opening token, so it can finish a name
+   correctly but can never invent one out of nothing.
+
+   AND SO FAR IT HAS BOUGHT NOTHING MEASURABLE, which belongs here rather than
+   in a hopeful comment: restricted to continuations it left the --bias=ab
+   comparison exactly where it was, because the only name failures in that
+   corpus subset are FIRST-token errors ("cestrel" for "Kestrel") that a
+   continuation bonus cannot reach and the discarded variant did not fix
+   either. The mechanism is in, it is derived from the declarations, and it
+   cannot misfire; whether it earns its keep is a question for a corpus with
+   name errors of the other shape in it. harness/ASR-BIAS.md's header records
+   this factor beside the scale, so what was in force when a table was
+   generated is a fact in the file rather than a memory. */
+const NAME_BIAS_FACTOR = 2;
 
 function moonshineWorkerSource() {
   return 'import * as TF from ' + JSON.stringify(TRANSFORMERS_JS_URL) + ';\n'
@@ -7665,12 +8194,17 @@ function moonshineWorkerMain(TF, cfg) {
 
   function tokenizerOf(t) { return (t && t.tokenizer) || (t && t.processor && t.processor.tokenizer) || null; }
 
-  function buildBiasSeqs(phrases, scale, maxBoost) {
+  /* `phrases` arrives as [text, start, inside] triples in LOGITS: how the
+     ship weighs its own vocabulary is the page's business (biasPhrases /
+     biasBonus / biasBonusInside in voice.mjs), and this worker only adds the
+     number it was handed for the position it is in. It used to be given a
+     boost, a scale and a maximum and do that arithmetic here, which was the
+     same conversion written in two places. */
+  function buildBiasSeqs(phrases) {
     const tok = tokenizerOf(transcriber);
     if (!tok || typeof tok.encode !== "function") return [];
-    const best = new Map();   // token ids, joined -> {ids, bonus}
-    for (const [text, boost] of phrases) {
-      const bonus = scale * (boost / maxBoost);
+    const best = new Map();   // token ids, joined -> {ids, start, inside}
+    for (const [text, start, inside] of phrases) {
       const variants = new Set([text, text.toLowerCase(), text.charAt(0).toUpperCase() + text.slice(1)]);
       for (const v of variants) {
         let ids;
@@ -7678,7 +8212,7 @@ function moonshineWorkerMain(TF, cfg) {
         if (!ids || !ids.length) continue;
         const key = ids.join(",");
         const had = best.get(key);
-        if (!had || had.bonus < bonus) best.set(key, { ids, bonus });
+        if (!had || had.start < start) best.set(key, { ids, start, inside });
       }
     }
     return [...best.values()];
@@ -7711,8 +8245,13 @@ function moonshineWorkerMain(TF, cfg) {
             }
             if (!hit) continue;
             const next = toks[k];
+            /* k === 0 is "this phrase has not been begun", which every
+               phrase in the list claims at every step; k > 0 is "the
+               decoder is already inside this phrase". A name is worth more
+               inside than at the start — see NAME_BIAS_FACTOR. */
+            const bonus = k === 0 ? s.start : s.inside;
             const had = bump.get(next);
-            if (had === undefined || had < s.bonus) bump.set(next, s.bonus);
+            if (had === undefined || had < bonus) bump.set(next, bonus);
             break;   // the longest match wins; a phrase claims one token per step
           }
         }
@@ -7749,13 +8288,20 @@ function moonshineWorkerMain(TF, cfg) {
         // what the pipeline accepts in place of a URL or a decoded AudioBuffer.
         const opts = {};
         if (m.phrases && m.phrases.length) {
-          const key = m.scale + "|" + m.maxBoost + "|" + m.phrases.length + "|" + JSON.stringify(m.phrases);
-          if (key !== biasKey) { biasSeqs = buildBiasSeqs(m.phrases, m.scale, m.maxBoost); biasKey = key; }
+          const key = m.phrases.length + "|" + JSON.stringify(m.phrases);
+          if (key !== biasKey) { biasSeqs = buildBiasSeqs(m.phrases); biasKey = key; }
           if (biasSeqs.length) opts.logits_processor = [biasProcessor(biasSeqs)];
         }
         const out = await transcriber(m.audio, opts);
+        /* `raw` is what the decoder actually wrote and `text` is what the
+           page acts on. They differ only by the trim today, and saying so in
+           a recording is worth more than assuming it: the debug recorder
+           (src/ui.mjs) prints both, so a transcript that was repaired on the
+           way to the order line can never look like the recogniser's own
+           words. */
+        const raw = (out && out.text) || "";
         self.postMessage({
-          type: "text", id: m.id, text: ((out && out.text) || "").trim(),
+          type: "text", id: m.id, raw, text: raw.trim(),
           primed: !!opts.logits_processor, sequences: opts.logits_processor ? biasSeqs.length : 0
         });
       }
@@ -7779,9 +8325,12 @@ const moonshinePending = new Map();
 const INPUT_ENGINES = ["auto", "browser", "moonshine"];
 let voiceInputEngine = "auto";
 let lastMoonshineError = null;
-/* What the last transcription was actually primed with, for Diagnostics —
-   a claim about priming that the page can print rather than assert. */
-let lastMoonshinePriming = null;
+/* The last transcription, exactly as the worker reported it: what the decoder
+   wrote (`raw`), what the page acts on (`text`), and whether it was primed and
+   with how many token sequences. Diagnostics prints the priming half; the
+   debug recorder prints all of it. One record of one event, so the two cannot
+   describe different transcriptions. */
+let lastMoonshineResult = null;
 /* Whether to prime the decoder with the ship's vocabulary at all. On by
    default; harness/asr.test.mjs turns it off to measure what it is worth. */
 let moonshinePrimed = true;
@@ -7817,11 +8366,12 @@ function startMoonshine() {
            one. paintVoicePill() moves the masthead pill with it. */
         paintVoicePill();
         status(activeInputTier() === "moonshine"
-          ? "On-device speech recognition ready — hold the mic button to talk."
+          ? "On-device speech recognition ready — click the mic to talk, click again to send."
           : "On-device speech recognition ready.");
         resolve(moonshineWorker);
       } else if (m.type === "text") {
-        lastMoonshinePriming = { primed: !!m.primed, sequences: m.sequences || 0 };
+        lastMoonshineResult = { primed: !!m.primed, sequences: m.sequences || 0,
+                                raw: String(m.raw === undefined ? m.text : m.raw), text: String(m.text || "") };
         const p = moonshinePending.get(m.id);
         if (p) { moonshinePending.delete(m.id); p.resolve(m.text); }
       } else if (m.type === "error") {
@@ -7867,9 +8417,7 @@ function requestMoonshine(w, audio, phrases) {
   return new Promise((resolve, reject) => {
     const id = ++moonshineSeq;
     moonshinePending.set(id, { resolve, reject });
-    w.postMessage({ type: "transcribe", id, audio, phrases: phrases || null,
-                    scale: MOONSHINE_BIAS_SCALE, maxBoost: PHRASE_CONTACT_BOOST },
-                  [audio.buffer]);
+    w.postMessage({ type: "transcribe", id, audio, phrases: phrases || null }, [audio.buffer]);
   });
 }
 
@@ -7950,18 +8498,53 @@ async function startMicCapture() {
   };
 }
 
-/* ---- push-to-talk on the existing mic button ------------------------------
-   Attached here, not in ui.mjs's final wiring, so the browser recogniser's
-   click-to-toggle listener there is untouched: these fire on mousedown/
-   mouseup/touch, are no-ops whenever voiceInputEngine is not "moonshine",
-   and the ordinary click a mousedown+mouseup pair always fires afterward
-   lands on startListening(), which itself refuses to run in moonshine mode
-   — see the guard there. Two independent listeners, two independent guards,
-   never fighting over the same event. */
-let pttCapture = null, pttActive = false;
+/* ---- the mic button: click to start, click again to stop ------------------
+   ONE listener on the mic button, one state machine, both tiers. It used to
+   be two: a click-to-toggle listener in ui.mjs for the browser recogniser,
+   and a mousedown/mouseup/mouseleave/touch set here for on-device, each
+   written to be a no-op while the other's tier held the mic. Two listeners
+   guarding each other over one control is the shape CLAUDE.md's "two
+   instances of a problem" rule names, and the playtester's complaint — a
+   button he had to keep holding down — was the second instance. So the hold
+   is gone, both tiers share this one toggle, and there is nothing left for
+   two guards to disagree about.
 
-async function pttStart() {
-  if (pttActive) return;
+   WHAT THE HOLD WAS HIDING, and what a toggle has to answer for:
+
+     - A click that opens a capture and never closes it. Opening a microphone
+       is asynchronous; a hold could not press twice inside that window, a
+       toggle can. A second click while it is opening asks to STOP, and the
+       stop happens the moment there is a capture to stop (`pttAfterOpen`).
+     - A second click arriving mid-transcription. A hold had no such state —
+       it ended at the release. A toggle does: the button reads "Working",
+       and a press then SAYS so rather than opening a second microphone whose
+       transcript would race the one already in flight.
+     - The pointer leaving the button. With a hold, `mouseleave` had to count
+       as a release, which is exactly the accident that ended orders early.
+       There is no `mouseleave` listener here any more, and moving off the
+       button while the channel is open does nothing at all.
+     - The page going away with the channel open. A hold could not outlive the
+       captain's finger; a toggle outlives the tab. A HIDDEN page is a page
+       the captain is not at, so the channel closes and what was captured is
+       DISCARDED rather than acted on — a half-spoken order given to a
+       background tab must not reach the ship. Window blur is deliberately not
+       a trigger: a window can lose focus while the captain is still talking
+       into it.
+
+   Which tier a press reaches is still activeInputTier()'s answer and nobody
+   else's — the preference is a want, the tier is the fact (bridge/README.md,
+   "Things that will waste your time"). */
+let pttCapture = null, pttActive = false, pttOpening = false;
+/* What a click that arrived while the microphone was still opening asked
+   for: null, "stop" (the captain pressed again) or "abandon" (the page went
+   away). Acted on by micStart once there is a capture to act on. */
+let pttAfterOpen = null, pttAbandonWhy = "";
+/* A transcription is in flight: the microphone is already shut, but the order
+   is not written down yet. micPhase() turns this into the button's word. */
+let micWorking = false;
+
+async function micStart() {
+  if (pttActive || pttOpening) return;
   const tier = activeInputTier();
   if (tier === "loading") {
     // The one case where a press has no recogniser to reach: on-device is
@@ -7972,49 +8555,119 @@ async function pttStart() {
     return;
   }
   if (tier !== "moonshine" || !micCaptureAvailable()) return;
-  pttActive = true;
-  micBtn.classList.add("live");
-  micBtn.textContent = "Listening";
+  pttOpening = true;
+  pttAfterOpen = null;
+  paintMic();
+  let capture;
   try {
-    pttCapture = await startMicCapture();
-    status("Bridge channel open — on-device.");
+    capture = await startMicCapture();
   } catch (e) {
-    pttActive = false;
-    pttCapture = null;
-    micBtn.classList.remove("live");
-    micBtn.textContent = "Speak";
+    pttOpening = false;
+    paintMic();
     status("Microphone blocked here — type the order instead.");
+    recNote("mic", { event: "refused", tier, why: (e && e.message) || String(e) });
+    return;
   }
+  pttOpening = false;
+  pttCapture = capture;
+  pttActive = true;
+  paintMic();
+  status("Bridge channel open — on-device. Press the mic again to send.");
+  recNote("mic", { event: "opened", tier: "on-device" });
+  /* Whatever arrived while the microphone was coming up, honoured now that
+     there is something to honour. */
+  const after = pttAfterOpen;
+  pttAfterOpen = null;
+  if (after === "abandon") micAbandon(pttAbandonWhy);
+  else if (after === "stop") micStop();
 }
 
-async function pttEnd() {
+async function micStop() {
+  /* A press that lands while the microphone is still coming up is a request
+     to stop, kept until there is a capture to stop. Without this the capture
+     would open behind the captain's back and stay open. */
+  if (pttOpening) { pttAfterOpen = "stop"; status("Closing the channel…"); return; }
   /* Guarded on the capture being open, NOT on the tier: the tier can change
-     between press and release (the model finishing its download is exactly
-     such a change), and a release that bailed would leave the microphone
-     open with the button already back to "Speak". */
+     between the two presses (the model finishing its download is exactly
+     such a change), and a stop that bailed would leave the microphone open
+     with the button already back to "Speak". */
   if (!pttActive) return;
   pttActive = false;
-  micBtn.classList.remove("live");
-  micBtn.textContent = "Speak";
   const capture = pttCapture;
   pttCapture = null;
+  paintMic();
   if (!capture) return;
   const audio = capture.stop();
-  if (!audio.length) { status("Bridge standing by."); return; }
+  const secs = audio.length / MOONSHINE_RATE;
+  if (!audio.length) {
+    status("Bridge standing by.");
+    recNote("mic", { event: "closed", tier: "on-device", seconds: 0, note: "no samples captured" });
+    return;
+  }
+  micWorking = true;
+  paintMic();
   status("Transcribing…");
+  recNote("mic", { event: "closed", tier: "on-device", seconds: Number(secs.toFixed(2)) });
+  const t0 = (typeof performance !== "undefined" ? performance.now() : Date.now());
   try {
     const text = await transcribeMoonshine(audio);
+    const ms = Math.round((typeof performance !== "undefined" ? performance.now() : Date.now()) - t0);
+    const r = lastMoonshineResult || {};
     /* Same rule as tier 0's onresult, above: an empty or whitespace-only
        transcript (the worker already trims it — see moonshineWorkerMain's
        "text" message) is the recogniser's failure, not a silent order and
        not just a status-line hint either — it goes in the log, through the
        normal path, so the captain sees the bridge heard the mic open and
        say something back. The mic is already reset to ready above. */
-    if (text) { orderInput.value = text; submitOrder(); }
+    recNote("heard", { tier: "on-device", raw: r.raw === undefined ? text : r.raw, text,
+                       primed: !!r.primed, sequences: r.sequences || 0, seconds: Number(secs.toFixed(2)), ms });
+    if (text) { orderInput.value = text; submitOrderFrom("on-device"); }
     else { status("Did not catch that — try again, or type the order."); deliver(didNotCatch()); }
   } catch (e) {
     status("On-device transcription failed — type the order instead.");
+    recNote("mic", { event: "transcription failed", tier: "on-device", why: (e && e.message) || String(e) });
+  } finally {
+    micWorking = false;
+    paintMic();
   }
+}
+
+/* One press, whichever tier holds the mic and whatever it is doing. The order
+   of the guards is the whole design: an OPEN channel is closed before the
+   tier is even consulted, because the tier can have changed underneath it —
+   the lesson pttEnd already carried, now the rule for both tiers. */
+function micPressed() {
+  if (micWorking) { status("Still writing down the last order — one moment."); return; }
+  if (pttActive || pttOpening) { micStop(); return; }
+  if (listening) { stopListening(); status("Bridge channel closed."); return; }
+  const tier = activeInputTier();
+  if (tier === "moonshine") { micStart(); return; }
+  if (tier === "browser") { startListening(); return; }
+  if (tier === "loading") { status("The on-device recogniser is still downloading — type the order for now."); return; }
+  /* "none": paintVoicePill() has already disabled the button, so a press
+     cannot get here from the page. Nothing to say and nothing to reach. */
+}
+
+/* The channel closes and what was captured is thrown away, because the
+   captain is not there to have meant it. Used only by the page-went-away
+   listeners below: an ordinary stop always submits what it heard. */
+function micAbandon(why) {
+  pttAbandonWhy = why;
+  if (pttOpening) { pttAfterOpen = "abandon"; return; }
+  if (listening) {
+    stopListening();
+    status("Bridge channel closed — " + why + ".");
+    recNote("mic", { event: "abandoned", tier: "browser", why });
+    return;
+  }
+  if (!pttActive) return;
+  pttActive = false;
+  const capture = pttCapture;
+  pttCapture = null;
+  try { capture && capture.stop(); } catch (e) {}
+  paintMic();
+  status("Bridge channel closed — " + why + ". Nothing was sent.");
+  recNote("mic", { event: "abandoned", tier: "on-device", why });
 }
 
 /* A function, not a bare call at this module's top level: micBtn is ui.mjs's
@@ -8022,16 +8675,22 @@ async function pttEnd() {
    order comment), so touching it before ui.mjs's own top level has run would
    be a TDZ error. wireSettings() in ui.mjs calls this once, by which point
    every module — including the one that defines micBtn — is fully loaded. */
-let pttWired = false;
-function wirePushToTalk() {
-  if (pttWired) return;
-  pttWired = true;
-  micBtn.addEventListener("mousedown", pttStart);
-  micBtn.addEventListener("mouseup", pttEnd);
-  micBtn.addEventListener("mouseleave", pttEnd);
-  micBtn.addEventListener("touchstart", e => { e.preventDefault(); pttStart(); }, { passive: false });
-  micBtn.addEventListener("touchend", e => { e.preventDefault(); pttEnd(); }, { passive: false });
-  micBtn.addEventListener("touchcancel", e => { e.preventDefault(); pttEnd(); }, { passive: false });
+let micWired = false;
+function wireMicButton() {
+  if (micWired) return;
+  micWired = true;
+  micBtn.addEventListener("click", micPressed);
+  /* A hidden page is a page the captain is not at. `visibilitychange` covers
+     the tab switch and the minimised window; `pagehide` covers the close and
+     the back button, and fires where `unload` no longer does. Window blur is
+     NOT here on purpose: a window can lose focus — a notification, another
+     app taking it — while the captain is still talking into this one, and
+     cutting him off mid-order would be the hold's own bug in a new costume. */
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) micAbandon("the page went to the background");
+  });
+  window.addEventListener("pagehide", () => micAbandon("the page was closed"));
+  paintMic();
 }
 
 
@@ -8791,12 +9450,47 @@ let plotRange = 40000;           // plot radius — changed by the wheel
 const PLOT_MIN = 4000, PLOT_MAX = 160000;
 const TICK_MS  = 50;             // 20 Hz
 
+/* THE PAGE'S SEED. `newState` demands a generator rather than defaulting to
+   Math.random (src/sim.mjs), and the page used to hand it Math.random itself
+   — which made every game unrepeatable, including the one a playtester is
+   trying to report. So the page draws ONE number at load and runs the world
+   off a generator seeded with it. The seed costs nothing, changes nothing a
+   captain can see, and is what turns a bug report into a thing that can be
+   replayed: the debug recorder below prints it in every recording.
+
+   The generator is the one the node suites use (harness/sim.test.mjs and its
+   siblings), so a seed lifted out of a recording drives the same world there.
+   `crypto.getRandomValues` where it exists, the clock where it does not —
+   this only needs to differ between sessions, never to be unguessable. */
+function seededRng(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function drawSeed() {
+  try {
+    if (typeof crypto !== "undefined" && crypto.getRandomValues)
+      return crypto.getRandomValues(new Uint32Array(1))[0] | 0;
+  } catch (e) { /* a locked-down context still gets a seed, just a duller one */ }
+  return Date.now() | 0;
+}
+const PAGE_SEED = drawSeed();
+const pageRng = seededRng(PAGE_SEED);
+
 /* The live world. `ship`, `contacts` and `effects` are the same objects the
    core holds, so the readouts, the diagnostics and the scenario harness's
    applySetup all keep working against them unchanged — and the core keeps
    mutating them in place rather than replacing them. */
-const S = newState(() => Math.random());
+const S = newState(pageRng);
 const ship = S.ship, contacts = S.contacts, effects = S.effects;
+/* Whether the world is still running on the seed above. The harness replaces
+   S.rng outright to make a fight reproducible (harness/page.test.mjs), which
+   is exactly right for a test and would make a recording's seed a lie — so
+   the recording prints the answer to this rather than the seed alone. */
+function seedInForce() { return S.rng === pageRng; }
 
 /* ========================= THE SPEECH QUEUE =============================
    One queue, built once, and every line the bridge says goes through it. It
@@ -8854,6 +9548,11 @@ const speech = createQueue({
     if (!QUEUE_EVENT_KINDS.includes(e.kind)) return;
     queueEvents.push(e);
     if (queueEvents.length > QUEUE_EVENTS_MAX) queueEvents.shift();
+    /* The recorder is a SECOND READER of this same sink, not a second sink:
+       the diagnostics ring above keeps the last few for a snapshot, and a
+       recording keeps the whole session. Nothing is computed twice. */
+    recNote("queue", { kind: e.kind, who: e.who || null, cls: e.cls || null,
+                       line: e.line || null, bucket: e.bucket || null, reason: e.reason || null });
   }
 });
 
@@ -8953,6 +9652,11 @@ const micBtn = document.getElementById("micBtn");
 
 function logLine(who, text, cls) {
   logEntries.push({ who, text });
+  /* EVERY line on the bridge log passes here — the captain's own, each
+     officer's, the ship's results and the sim's callouts — so this one call
+     is the whole of "what was said" in a recording. There is no second list
+     to keep in step with this one. */
+  recNote("log", { who, text, cls: cls || "" });
   const div = document.createElement("div");
   div.className = "entry " + (cls || "");
   const label = who === "CAPTAIN" ? "Captain"
@@ -9083,6 +9787,11 @@ function render() {
   const mm = String(Math.floor(since / 60)).padStart(2, "0");
   const ss = String(Math.floor(since % 60)).padStart(2, "0");
   document.getElementById("clock").textContent = "T+" + mm + ":" + ss;
+
+  /* The recording pill counts up while it runs, so the captain can see it is
+     still catching things. Only while recording: with the recorder off the
+     pill is already hidden and there is nothing to repaint. */
+  if (recording) paintRecorder();
 
   renderEpisode();
   if (S.episode && S.episode.over && !endShown) showEnd();
@@ -9579,6 +10288,7 @@ function beginEpisode(id) {
   endShown = false;
   const endGate = document.getElementById("endGate");
   if (endGate) endGate.hidden = true;
+  recNote("mark", { note: "episode " + ep.id + " started" });
   startEpisode(S, ep);        // validates the file, resets the world, raises the opener
   drainEvents();              // …which reaches the log and the queue at once
   renderEpisode();
@@ -9639,7 +10349,14 @@ function setOrderBarEnabled(on) {
   micBtn.disabled = !on;
   orderInput.placeholder = on ? ORDER_PLACEHOLDER : PAUSED_PLACEHOLDER;
   for (const b of document.querySelectorAll("#quickOrders button")) b.disabled = !on;
-  if (!on && listening) stopListening();
+  /* Taking the order bar away takes the microphone with it, whichever tier
+     holds it. This used to stop the browser recogniser only, which was enough
+     while the other tier was push-to-talk: a hold could not outlive the
+     captain's finger. A toggle can, so a pause with the channel open would
+     have left it open with the button unreachable. `micAbandon` closes it and
+     throws away what it heard — an order half-spoken into a paused bridge is
+     not an order — and does nothing at all when nothing is open. */
+  if (!on) micAbandon("the bridge stood down");
 }
 
 /* One line, composed from the two facts that decide it — who is answering the
@@ -9658,6 +10375,7 @@ function pauseGame(byDrawer) {
   stopClock();
   pausedByDrawer = !!byDrawer;
   paintPlayControl();
+  recNote("mark", { note: "paused" + (byDrawer ? " (settings drawer)" : " by the captain") });
   status("Paused. The bridge is holding \u2014 nothing more will be said until you resume.");
 }
 
@@ -9666,6 +10384,7 @@ function resumeGame() {
   pausedByDrawer = false;
   startClock();
   paintPlayControl();
+  recNote("mark", { note: "resumed" });
   status(standingBy());
 }
 
@@ -9765,7 +10484,7 @@ function buildQuick() {
     b.type = "button";
     b.textContent = q.length > 30 ? q.slice(0, 28) + "…" : q;
     b.title = q;
-    b.addEventListener("click", () => { orderInput.value = q; submitOrder(); });
+    b.addEventListener("click", () => { orderInput.value = q; submitOrderFrom("quick"); });
     host.append(b);
   }
 }
@@ -9841,6 +10560,14 @@ async function buildDiagnostics() {
   const add = (k, v) => L.push(k.padEnd(22) + " " + v);
 
   add("captured", new Date().toISOString());
+  add("build", buildStamp());
+  /* Which world this is, and whether it is still the one the seed made. Both
+     are the recorder's header facts; they are here too because a diagnostics
+     capture pasted on its own should also be tied to a build and a world. */
+  add("seed", PAGE_SEED + (seedInForce() ? "" : "  ** replaced — this world is not this seed's **"));
+  add("recorder", recording ? "ON, " + recording.events.length + " events"
+      : lastRecording ? "off, " + lastRecording.events.length + " events held from the last session"
+      : "off");
   add("page", location.href.split("?")[0]);
   add("userAgent", navigator.userAgent);
   add("platform", navigator.platform || "(none)");
@@ -9906,13 +10633,20 @@ async function buildDiagnostics() {
      what happened, not as what the settings intend: the phrase count is the
      list this page would send now, and the token-sequence count is what the
      decoder was actually given last time it ran. */
+  const primedList = biasPhrases(contacts.map(c => c.name));
+  const shipList = shipPhrases(contacts.map(c => c.name));
+  /* How many of the biased phrases are NAMES — counted off the phrases' own
+     declared kinds, never off the contact list a second time, so a second
+     source of names tomorrow is counted here the day it exists. */
+  const nameCount = [...shipList.values()].filter(p => PHRASE_CLASSES[p.kind].name).length;
   add("tier 1: vocabulary priming", moonshinePrimed
-      ? "on, " + biasPhrases(contacts.map(c => c.name)).length + " phrases of "
-        + shipPhrases(contacts.map(c => c.name)).size + " (>= " + MIN_BIAS_CHARS
+      ? "on, " + primedList.length + " phrases of "
+        + shipList.size + " (>= " + MIN_BIAS_CHARS
         + " chars), scale " + MOONSHINE_BIAS_SCALE
+        + "; names x" + NAME_BIAS_FACTOR + " (" + nameCount + " of them)"
       : "off");
-  add("tier 1: last transcript primed", lastMoonshinePriming
-      ? (lastMoonshinePriming.primed ? "yes, " + lastMoonshinePriming.sequences + " token sequences" : "no")
+  add("tier 1: last transcript primed", lastMoonshineResult
+      ? (lastMoonshineResult.primed ? "yes, " + lastMoonshineResult.sequences + " token sequences" : "no")
       : "(nothing transcribed yet)");
   add("tier 1: last error", lastMoonshineError || (moonshineFailed ? "load failed" : "(none)"));
 
@@ -9981,6 +10715,368 @@ async function buildDiagnostics() {
   return L.join("\n");
 }
 
+/* ========================== THE DEBUG RECORDER ============================
+   A play session, turned into evidence.
+
+   THE PROBLEM IT EXISTS FOR. A playtester finds real bugs and they arrive as
+   a pasted chat transcript with everything interesting missing: what the
+   recogniser actually returned, which tier returned it, whether it was
+   primed, what the parser made of it, which route the order took, what the
+   officers said back, when the queue actually said it, and what the world
+   looked like at that instant. Every one of those facts already exists in
+   this page. None of them survives being remembered.
+
+   WHAT IT IS NOT. It is not a second set of books. `recNote` is called from
+   the places that ALREADY record these things — `logLine` (every line on the
+   bridge log), the speech queue's own `onEvent` sink, the two recogniser
+   paths in voice.mjs, and `submitOrderFrom` below, which reads crew.mjs's
+   own `traceLog` rather than re-deriving a route. The sim's ledger is copied
+   at hand-over, not mirrored as it grows. If a fact is not already kept
+   somewhere, the recorder does not invent a place to keep it.
+
+   COST WHEN OFF. One `if (!recording) return;`. Nothing is allocated, nothing
+   is formatted, and no snapshot is taken. The report is built at hand-over,
+   from the events, never as it goes.
+
+   BOUNDED WHEN ON. A session can run for an hour. The event list is a ring of
+   RECORDING_MAX and the ledger copy is capped at RECORDING_LEDGER_MAX, and
+   BOTH say in the file exactly how many records were dropped and of what
+   kind. A recording that silently truncated would be worse than none — the
+   reader would reconstruct a failure out of a gap.
+
+   VISIBLE WHILE ON, in two places: the masthead pill (which is on screen
+   whether or not the drawer is open) and the drawer's own line. A recorder
+   nobody knows is running is worse than no recorder at all.
+
+   HANDED OVER TWO WAYS, because one of them does not always work. A file
+   download is right on a normal host; the game is also opened where a
+   download is inert, so there is a copy-to-clipboard path beside it and the
+   text is left selected in a box that can be copied by hand. The interface
+   says which one just did what, and never claims a download arrived — the
+   page cannot know that.                                                   */
+
+const RECORDING_MAX = 4000;          // timeline events held
+const RECORDING_LEDGER_MAX = 2000;   // ledger rows carried into the file
+
+/* The live session, or null. This null IS the off switch — see "cost when
+   off" above. `lastRecording` keeps the session after Stop so it can still
+   be handed over; the two are the same object while recording. */
+let recording = null;
+let lastRecording = null;
+
+function recNote(kind, data) {
+  if (!recording) return;
+  const r = recording;
+  r.events.push({
+    t: Math.round(S.elapsed * 10) / 10,          // sim seconds: the clock a pause stops
+    w: (Date.now() - r.startedMs) / 1000,        // wall seconds since Start: a pause shows as a gap
+    kind, data: data || {}
+  });
+  if (r.events.length > RECORDING_MAX) {
+    const gone = r.events.shift();
+    r.dropped.total++;
+    r.dropped.byKind[gone.kind] = (r.dropped.byKind[gone.kind] || 0) + 1;
+    r.dropped.upTo = gone.t;
+  }
+}
+
+function startRecording() {
+  recording = lastRecording = {
+    startedIso: new Date().toISOString(),
+    startedMs: Date.now(),
+    startedSim: Math.round(S.elapsed * 10) / 10,
+    /* Where the sim's own ledger stood when this began, so the copy at
+       hand-over is this session's rows and not the whole game's. */
+    ledgerFrom: S.ledger.length,
+    stoppedIso: null,
+    events: [],
+    dropped: { total: 0, byKind: {}, upTo: null }
+  };
+  recNote("mark", { note: "recording started" });
+  paintRecorder();
+  return recording;
+}
+
+function stopRecording() {
+  if (!recording) return lastRecording;
+  recNote("mark", { note: "recording stopped" });
+  recording.stoppedIso = new Date().toISOString();
+  recording.ledgerTo = S.ledger.length;
+  const done = recording;
+  recording = null;
+  paintRecorder();
+  return done;
+}
+
+function toggleRecording() { return recording ? stopRecording() : startRecording(); }
+
+/* The build this recording came out of, read from the stamp build.mjs writes
+   into the page rather than from a constant a hand edit could set: a
+   recording that cannot be tied to a build is an anecdote. */
+function buildStamp() {
+  try {
+    for (const n of document.body.childNodes) {
+      if (n.nodeType !== 8) continue;
+      const m = /build\s+([0-9a-z]+)/i.exec(n.nodeValue || "");
+      if (m) return m[1];
+    }
+  } catch (e) { /* fall through */ }
+  return "(unstamped)";
+}
+
+/* The world at one instant, small enough to sit beside every order and
+   complete enough to answer "why did it refuse that". Everything here is read
+   from live state; nothing is kept as it goes. */
+function worldSnapshot() {
+  return {
+    hull: Math.round(ship.hull),
+    alert: ship.alert,
+    shields: ship.shieldsUp ? "up" : "DOWN",
+    heading: fmtHdg(ship.heading),
+    speed: ship.speed.toFixed(1),
+    target: ship.target || null,
+    following: ship.following || null,
+    roe: ship.roe,
+    awaiting: S.pending ? S.pending.reason : null,
+    belayable: S.lastOrder ? S.lastOrder.do : null,
+    contacts: contacts.map(c => ({
+      name: c.name,
+      state: (c.destroyed ? "destroyed" : c.scanned ? (c.hostile ? "hostile" : "friendly") : "unidentified"),
+      km: Math.round(rangeTo(S, c)),
+      brg: Math.round(bearingTo(S, c)),
+      hull: Math.round(c.hull)
+    }))
+  };
+}
+
+/* Every order the ship is given goes through here — typed, quick button, or
+   either recogniser — so "where did this order come from" is answered by the
+   call site rather than guessed at afterwards. It adds nothing to the order
+   path itself: submitOrder() is crew.mjs's, unchanged, and the parse record
+   is READ back out of crew.mjs's own traceLog rather than derived a second
+   time. */
+async function submitOrderFrom(source) {
+  const text = orderInput.value.trim();
+  const on = !!recording && !!text;
+  const before = traceLog.length ? traceLog[traceLog.length - 1] : null;
+  if (on) {
+    recNote("order", { source, text });
+    recNote("state", worldSnapshot());
+  }
+  await submitOrder();
+  if (!on) return;
+  const last = traceLog.length ? traceLog[traceLog.length - 1] : null;
+  if (last && last !== before) recNote("parse", { route: last.route, actions: last.actions });
+  /* No new trace record means the order never reached the parser: crew.mjs
+     drops a second order while one is in flight, on purpose. That is exactly
+     the kind of thing a playtester experiences as "it ignored me", so it is
+     recorded as what it is rather than left as a hole in the timeline. */
+  else recNote("parse", { route: null, actions: [], note: "no trace record — the pipeline was busy with the order before this one" });
+}
+
+/* ---- the report ---------------------------------------------------------
+   One text document, chronological, meant to be read top to bottom by
+   somebody who was not there. The format is a decision about the READER: a
+   header saying which build and which world, a timeline of everything the
+   page saw in the order it saw it, and then the sim's own ledger and a
+   diagnostics capture as appendices. Text rather than JSON because the first
+   thing anyone does with a recording is read it and the second is paste it
+   into a message; the two parts that are genuinely structured — the actions
+   an order produced, and the ledger — are printed as JSON on their own lines,
+   so they are still exact and still greppable. */
+
+/* Named for this section rather than for what they do: the build flattens
+   every module into ONE scope, so a bare "pad" or "q" at a module's top level
+   is a name the whole page has to agree about — see bridge/README.md's
+   duplicate-top-level-name landmine, and parser.test.mjs, which fails on a
+   clash by reading build.mjs's own module list. */
+const recPad = (s, n) => String(s).padEnd(n);
+const recQ = s => JSON.stringify(String(s === undefined || s === null ? "" : s));
+const recSimT = t => "T+" + String(t.toFixed(1)).padStart(7);
+const recWallT = w => "w+" + String(w.toFixed(1)).padStart(7);
+
+function recEventLines(e) {
+  const d = e.data || {};
+  const out = [];
+  const head = recSimT(e.t) + "  " + recWallT(e.w) + "  ";
+  const row = (kind, rest) => out.push(head + recPad(kind, 6) + " " + rest);
+  if (e.kind === "mark") row("mark", d.note);
+  else if (e.kind === "order") row("order", "from " + recPad(d.source, 10) + " " + recQ(d.text));
+  else if (e.kind === "parse") {
+    row("parse", "route=" + (d.route || "(none)")
+      + "  actions=" + JSON.stringify(d.actions || [])
+      + (d.note ? "  ** " + d.note : ""));
+  } else if (e.kind === "state") {
+    row("state", "hull " + d.hull + "% · condition " + d.alert + " · shields " + d.shields
+      + " · " + d.heading + " @ " + d.speed + " km/s · target " + (d.target || "none")
+      + (d.following ? " · following " + d.following : "")
+      + " · roe " + d.roe
+      + " · awaiting " + (d.awaiting || "nothing")
+      + " · belayable " + (d.belayable || "nothing"));
+    out.push(head + recPad("", 6) + " contacts " + (d.contacts && d.contacts.length
+      ? d.contacts.map(c => c.name + " (" + c.state + ", " + c.km + " km, brg "
+          + String(c.brg).padStart(3, "0") + ", hull " + c.hull + ")").join(" · ")
+      : "(none)"));
+  } else if (e.kind === "heard") {
+    row("heard", "[" + d.tier + "] raw " + recQ(d.raw) + " → " + recQ(d.text)
+      + "  " + (d.primed ? "primed" + (d.sequences ? " (" + d.sequences + " token sequences)" : "") : "not primed")
+      + (d.onDevice ? ", on-device recognition" : "")
+      + (d.seconds !== undefined ? "  " + d.seconds + " s of audio" : "")
+      + (d.ms !== undefined ? " in " + d.ms + " ms" : ""));
+  } else if (e.kind === "mic") {
+    row("mic", d.event + " [" + (d.tier || "?") + "]"
+      + (d.why ? " — " + d.why : "")
+      + (d.note ? " — " + d.note : "")
+      + (d.seconds !== undefined ? "  " + d.seconds + " s of audio" : ""));
+  } else if (e.kind === "log") {
+    row("log", recPad(d.who, 8) + " " + d.text + (d.cls ? "   [" + d.cls + "]" : ""));
+  } else if (e.kind === "queue") {
+    row("queue", recPad(d.kind, 20) + (d.bucket ? "(" + d.bucket + ") " : "")
+      + (d.reason ? "[" + d.reason + "] " : "")
+      + (d.who ? d.who + ": " : "") + (d.line || ""));
+  } else if (e.kind === "setting") {
+    row("set", d.what + " = " + d.value);
+  } else {
+    row(e.kind, JSON.stringify(d));
+  }
+  return out;
+}
+
+async function buildRecording() {
+  const r = lastRecording;
+  if (!r) {
+    return "No recording yet. Turn the recorder on in Settings, play until the fault happens, "
+         + "then turn it off and press Save or Copy.";
+  }
+  const L = [];
+  const add = (k, v) => L.push("  " + recPad(k, 20) + " " + v);
+  const stoppedIso = r.stoppedIso || "(still recording)";
+  const wallSec = ((r.stoppedIso ? Date.parse(r.stoppedIso) : Date.now()) - r.startedMs) / 1000;
+  const simNow = Math.round(S.elapsed * 10) / 10;
+
+  L.push("IA-XS EXCALIBUR — SESSION RECORDING");
+  L.push("===================================");
+  L.push("");
+  L.push("Evidence, not a summary. Read it top to bottom: the header says which build");
+  L.push("and which world, the timeline is everything the page saw in the order it saw");
+  L.push("it, and the appendices are the sim's own ledger and a diagnostics capture");
+  L.push("taken at hand-over. Every line here is one of the page's own records.");
+  L.push("");
+  add("build", buildStamp());
+  add("page", location.href.split("?")[0]);
+  /* The two facts that decide whether this can be replayed rather than only
+     read. The seed is worthless if something replaced the generator it made,
+     so the answer to that is printed beside it rather than assumed. */
+  add("seed", PAGE_SEED + (seedInForce() ? "  (in force)" : "  ** NOT IN FORCE — S.rng was replaced, this world is not this seed's **"));
+  add("episode", (S.episode && S.episode.id) || (chosenEpisode || "(none chosen)"));
+  add("recorded", r.startedIso + "  →  " + stoppedIso);
+  add("wall time", wallSec.toFixed(1) + " s");
+  add("sim time", "T+" + r.startedSim.toFixed(1) + "  →  T+" + simNow.toFixed(1)
+      + (clockRunning() ? "  (clock running)" : "  (clock stopped)"));
+  add("events kept", r.events.length + (r.dropped.total
+        ? "   ** " + r.dropped.total + " earlier events dropped (ring of " + RECORDING_MAX + "): "
+          + Object.entries(r.dropped.byKind).map(([k, n]) => k + " " + n).join(", ")
+          + "; the timeline below begins after T+" + Number(r.dropped.upTo).toFixed(1) + " **"
+        : "   (nothing dropped)"));
+  add("input tier", activeInputTier() + ", preference " + voiceInputEngine);
+  add("voice engine", voiceEngine + (voiceEngine === "kokoro" ? " (" + (kokoroUseGpu ? "webgpu" : "cpu") + ")" : ""));
+  add("brain", brain + ", parser first " + (fastPathOn ? "on" : "off"));
+  add("userAgent", navigator.userAgent);
+  L.push("");
+  L.push("HOW TO READ THE TIMELINE");
+  L.push("  T+   sim seconds — the clock a pause stops. w+ is wall seconds since the");
+  L.push("       recording started, so a pause is sim time standing still while w+ runs.");
+  L.push("  order  what was submitted and where it came from (typed, quick, browser, on-device)");
+  L.push("  state  the world at the instant that order was given");
+  L.push("  parse  the route the order took and the actions it produced, from crew.mjs's traceLog");
+  L.push("  heard  a recogniser's own result: raw, then the text the ship acted on, and whether primed");
+  L.push("  mic    the microphone opening, closing, refused, or abandoned with the page");
+  L.push("  log    a line on the bridge log, exactly as the captain saw it");
+  L.push("  queue  what the spoken-message queue did with a line, and when it did it");
+  L.push("  set    a setting the captain changed mid-session");
+  L.push("");
+  L.push("TIMELINE");
+  if (!r.events.length) L.push("  (nothing was recorded)");
+  for (const e of r.events) for (const line of recEventLines(e)) L.push(line);
+
+  L.push("");
+  L.push("LEDGER — the sim's own record, from where this recording started");
+  L.push("  Written by exactly two functions, `emit` and `applyAction` (src/sim.mjs);");
+  L.push("  one JSON object per line, exactly as the sim wrote it.");
+  const all = S.ledger.slice(r.ledgerFrom, r.ledgerTo === undefined ? S.ledger.length : r.ledgerTo);
+  const kept = all.slice(-RECORDING_LEDGER_MAX);
+  if (kept.length < all.length)
+    L.push("  ** " + (all.length - kept.length) + " earlier rows dropped (cap " + RECORDING_LEDGER_MAX + ") **");
+  if (!kept.length) L.push("  (empty — nothing was said and no order reached the ship)");
+  for (const row of kept) L.push("  " + JSON.stringify(row));
+
+  L.push("");
+  L.push("DIAGNOSTICS AT HAND-OVER");
+  L.push("  The same capture the Diagnostics button makes, taken now rather than");
+  L.push("  during the session, so it describes the page as it is being handed over.");
+  L.push("");
+  try { L.push(await buildDiagnostics()); }
+  catch (e) { L.push("  diagnostics failed: " + ((e && e.message) || e)); }
+
+  L.push("");
+  return L.join("\n");
+}
+
+function recordingFilename() {
+  const when = ((lastRecording && lastRecording.startedIso) || new Date().toISOString()).replace(/[:.]/g, "-");
+  return "excalibur-recording-" + buildStamp() + "-" + when + ".txt";
+}
+
+/* ---- handing it over ----------------------------------------------------
+   Two paths, because on some hosts the first one does nothing at all and the
+   page cannot tell. A download is ASKED FOR, never claimed to have arrived;
+   the clipboard reports which of its two mechanisms worked; and the text is
+   in the box either way, selected, so it can always be copied by hand. */
+function askForDownload(text, name) {
+  try {
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    a.style.display = "none";
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => { try { URL.revokeObjectURL(url); } catch (e) {} }, 30000);
+    return null;
+  } catch (e) { return (e && e.message) || String(e); }
+}
+
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return "clipboard"; }
+  catch (e) { /* an insecure origin, a denied permission, or no API at all */ }
+  try { return document.execCommand("copy") ? "execCommand" : null; }
+  catch (e) { return null; }
+}
+
+/* The masthead pill and the drawer's line, both painted from the same state,
+   so the two can never disagree about whether the ship is being recorded. */
+function paintRecorder() {
+  const pill = document.getElementById("recPill");
+  const mode = document.getElementById("recMode");
+  if (pill && mode) {
+    pill.hidden = !recording;
+    if (recording) mode.textContent = recording.events.length + " events";
+  }
+  const btn = document.getElementById("recToggle");
+  if (btn) btn.textContent = recording ? "Stop recording" : "Start recording";
+  const line = document.getElementById("recState");
+  if (line) {
+    line.textContent = recording
+      ? "Recording — " + recording.events.length + " events since " + recording.startedIso + "."
+        + (recording.dropped.total ? " " + recording.dropped.total + " earlier events dropped." : "")
+      : lastRecording
+        ? "Stopped. " + lastRecording.events.length + " events held, ready to hand over."
+        : "Not recording. Nothing is captured until you turn this on.";
+  }
+}
+
 /* ============================ SETTINGS WIRING ============================= */
 async function wireSettings() {
   const btn = document.getElementById("settingsBtn");
@@ -10018,6 +11114,7 @@ async function wireSettings() {
       const gpu = r.value === "webgpu";
       setKokoroUseGpu(gpu);
       if (gpu) markGpuBad(false);      // an explicit retry deserves a clean slate
+      recNote("setting", { what: "compute", value: r.value });
       savePrefs();
       /* Precision and device are fixed when the weights load: this is a
          different model file, not a setting on the one already here. Starting
@@ -10034,6 +11131,7 @@ async function wireSettings() {
     r.addEventListener("change", () => {
       if (!r.checked) return;
       setVoiceEngine(r.value);
+      recNote("setting", { what: "voice engine", value: r.value });
       savePrefs();
       paintNote();
       paintComputeNotes();
@@ -10043,11 +11141,11 @@ async function wireSettings() {
     });
   }
 
-  // Push-to-talk listeners live in voice.mjs but cannot self-register at that
-  // module's own top level (micBtn is ui.mjs's export, and ui.mjs runs after
-  // voice.mjs in the build — see wirePushToTalk()'s own comment), so this is
-  // where they attach: called once, after every module is loaded.
-  wirePushToTalk();
+  // The mic button's one listener lives in voice.mjs but cannot self-register
+  // at that module's own top level (micBtn is ui.mjs's export, and ui.mjs runs
+  // after voice.mjs in the build — see wireMicButton()'s own comment), so this
+  // is where it attaches: called once, after every module is loaded.
+  wireMicButton();
 
   /* Tier 1's radio makes the same promise brainSlm's does below: enabled
      only where the capability the option needs actually exists here — and
@@ -10065,6 +11163,7 @@ async function wireSettings() {
     r.addEventListener("change", () => {
       if (!r.checked) return;
       setVoiceInputEngine(r.value);
+      recNote("setting", { what: "speech input", value: r.value });
       savePrefs();
       if (inputWantsMoonshine()) startMoonshine().catch(() => {});
       else status(standingBy());
@@ -10106,6 +11205,7 @@ async function wireSettings() {
     r.addEventListener("change", () => {
       if (!r.checked) return;
       setBrain(r.value);
+      recNote("setting", { what: "brain", value: r.value });
       paintCrewPill();
       document.getElementById("routeNote").textContent = "";
       if (r.value === "slm") loadSlm().catch(() => {
@@ -10137,8 +11237,53 @@ async function wireSettings() {
      playtester nothing. See runVoiceTest. */
   document.getElementById("diagVoice").addEventListener("click", () => runVoiceTest());
 
+  /* ---- the recorder's three controls -----------------------------------
+     On/off, and the two ways out. Every one of them writes what it actually
+     did into `recWhat` beside the box, because "it says Copy so it copied"
+     is precisely the assumption that makes a hand-over fail silently on a
+     host where one of the two paths does nothing. */
+  const recBox = document.getElementById("recBox");
+  const recWhat = document.getElementById("recWhat");
+  const said = msg => { if (recWhat) recWhat.textContent = msg; status(msg); };
+  paintRecorder();
+  document.getElementById("recToggle").addEventListener("click", () => {
+    if (recording) {
+      const done = stopRecording();
+      said("Recording stopped — " + done.events.length + " events held. Save or Copy hands it over.");
+    } else {
+      startRecording();
+      said("Recording. Play until the fault happens, then stop and hand it over.");
+    }
+  });
+  const fill = async () => {
+    if (!recBox) return "";
+    recBox.value = "gathering…";
+    try { recBox.value = await buildRecording(); }
+    catch (e) { recBox.value = "recording failed to assemble: " + ((e && e.message) || e); }
+    return recBox.value;
+  };
+  document.getElementById("recSave").addEventListener("click", async () => {
+    const text = await fill();
+    const name = recordingFilename();
+    const err = askForDownload(text, name);
+    /* Never "downloaded" — the page cannot see whether the file arrived, and
+       on a sandboxed host it will not have. Say what was ASKED for and what
+       to do if nothing came of it. */
+    said(err
+      ? "This browser refused the download (" + err + "). The recording is in the box — press Copy."
+      : "Asked the browser to save " + name + ". If nothing arrived, this host blocks downloads — press Copy instead.");
+  });
+  document.getElementById("recCopy").addEventListener("click", async () => {
+    const text = await fill();
+    recBox.select();
+    const how = await copyText(text);
+    said(how ? "Recording copied to the clipboard (" + how + "). Paste it into the report."
+             : "Could not reach the clipboard — the recording is selected in the box, copy it by hand.");
+  });
+
   document.getElementById("fastPath").addEventListener("change", e => {
     setFastPath(e.target.checked);
+    recNote("setting", { what: "parser first", value: String(e.target.checked) });
   });
 
   // The local-model option only makes sense where WebGPU exists; the weights
@@ -10224,9 +11369,13 @@ function startGame() {
 }
 
 /* ============================ FINAL WIRING ================================ */
-sendBtn.addEventListener("click", submitOrder);
-orderInput.addEventListener("keydown", e => { if (e.key === "Enter") submitOrder(); });
-micBtn.addEventListener("click", () => { listening ? stopListening() : startListening(); });
+sendBtn.addEventListener("click", () => submitOrderFrom("typed"));
+orderInput.addEventListener("keydown", e => { if (e.key === "Enter") submitOrderFrom("typed"); });
+/* The mic button has ONE listener, in voice.mjs, and both tiers go through
+   it: wireMicButton() (called from wireSettings above) owns the click. The
+   click-to-toggle listener that used to live here was half of a pair — the
+   other half was a mousedown/mouseup set in voice.mjs — and the two had to
+   guard each other against the same events. One control, one listener. */
 
 seed();
 document.getElementById("playBtn").addEventListener("click", togglePlay);
