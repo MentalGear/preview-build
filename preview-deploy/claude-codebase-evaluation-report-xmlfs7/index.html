@@ -547,7 +547,7 @@
 </style>
 </head>
 <body>
-<!-- build 3732f98 -->
+<!-- build 12b74aa -->
 <!-- The other end of an episode: the supplemental log, and what to do next. -->
 <div class="gate" id="endGate" hidden>
   <div class="card">
@@ -595,23 +595,20 @@
       <h3>Officer Voices</h3>
 
       <div class="opt">
-        <input type="radio" name="engine" id="engBrowser" value="browser" checked>
+        <input type="radio" name="engine" id="engBrowser" value="browser">
         <label for="engBrowser">
           <span class="optname">Browser voices</span>
           <span class="optwhy">Instant and free, but they come from your operating system — the crew sounds
           different on every machine, and some systems have no voices at all.</span>
         </label>
       </div>
-      <div class="opt">
-        <input type="radio" name="engine" id="engKokoro" value="kokoro">
-        <label for="engKokoro">
-          <span class="optname">Kokoro, on this device</span>
-          <span class="optwhy">An 82M-parameter Apache-2.0 model running in the page. The same five voices
-          everywhere. Downloads once from Hugging Face, then caches &mdash; how big that download is depends
-          on the compute device below, which is where the two sizes are named.</span>
-        </label>
-      </div>
-      <!-- Which device Kokoro runs on. A radio group, not a tick, because the
+      <!-- One radio per on-device engine, built by buildEngineOptions()
+           (src/voice.mjs) from TTS_ENGINES so a third model is a third entry
+           in that table and nothing here. The label and the sentence under it
+           are the engine's own `label` and `blurb`; the download size belongs
+           to the compute group below, which is the one place that names it. -->
+      <div id="engineOptions"></div>
+      <!-- Which device the chosen engine runs on. A radio group, not a tick, because the
            two are different downloads of different weights: switching really
            does start the load over, and a checkbox said nothing about that.
            Every word in the three notes below is written by
@@ -6571,7 +6568,10 @@ let speechOn = true;
 /* who -> {voiceURI, pitch, rate}. Seeded from OFFICERS, overridden by prefs. */
 const voiceCfg = {};
 for (const k of ORDER_OF_STATIONS) {
-  voiceCfg[k] = { voiceURI: null, kokoro: null, pitch: OFFICERS[k].pitch, rate: OFFICERS[k].rate };
+  /* `voice` is keyed by engine id: the officer's Kokoro voice and their
+     Supertonic voice are different choices over different vocabularies, and
+     one field would have made switching engines silently reset the other. */
+  voiceCfg[k] = { voiceURI: null, voice: {}, pitch: OFFICERS[k].pitch, rate: OFFICERS[k].rate };
 }
 
 function loadPrefs() {
@@ -6581,14 +6581,21 @@ function loadPrefs() {
     const saved = JSON.parse(raw);
     if (saved && typeof saved === "object") {
       if (typeof saved.speechOn === "boolean") speechOn = saved.speechOn;
-      if (saved.engine === "kokoro" || saved.engine === "browser") voiceEngine = saved.engine;
-      if (typeof saved.gpu === "boolean") kokoroUseGpu = saved.gpu;
+      if (VOICE_ENGINES.includes(saved.engine)) voiceEngine = saved.engine;
+      if (typeof saved.gpu === "boolean") ttsUseGpu = saved.gpu;
       if (INPUT_ENGINES.includes(saved.inputEngine)) voiceInputEngine = saved.inputEngine;
       for (const k of ORDER_OF_STATIONS) {
         const s = saved[k];
         if (!s) continue;
         if (typeof s.voiceURI === "string") voiceCfg[k].voiceURI = s.voiceURI;
-        if (typeof s.kokoro === "string") voiceCfg[k].kokoro = s.kokoro;
+        /* v1 prefs kept one voice under `kokoro`; it can only have been a
+           Kokoro voice, so that is where it lands. */
+        if (typeof s.kokoro === "string") voiceCfg[k].voice.kokoro = s.kokoro;
+        if (s.voice && typeof s.voice === "object") {
+          for (const id of TTS_ENGINE_IDS) {
+            if (typeof s.voice[id] === "string") voiceCfg[k].voice[id] = s.voice[id];
+          }
+        }
         if (Number.isFinite(s.pitch)) voiceCfg[k].pitch = clamp(s.pitch, 0.5, 2);
         if (Number.isFinite(s.rate))  voiceCfg[k].rate  = clamp(s.rate, 0.5, 2);
       }
@@ -6598,7 +6605,7 @@ function loadPrefs() {
 
 function savePrefs() {
   try {
-    const out = { speechOn, engine: voiceEngine, gpu: kokoroUseGpu, inputEngine: voiceInputEngine };
+    const out = { speechOn, engine: voiceEngine, gpu: ttsUseGpu, inputEngine: voiceInputEngine };
     for (const k of ORDER_OF_STATIONS) out[k] = { ...voiceCfg[k] };
     localStorage.setItem(PREFS_KEY, JSON.stringify(out));
   } catch (e) { /* not being able to remember is not an error worth showing */ }
@@ -6628,14 +6635,6 @@ function assignDefaultVoices() {
    currently selected is doing, in the words the note prints. Nothing else
    keeps a copy — the notes, the status line and the diagnostics all read it
    or `lastGpuCheck` rather than a second flag of their own. */
-const COMPUTE_COST = {
-  wasm: "Loads the quantised (q8) Kokoro model — about 92 MB the first time, then cached. "
-      + "Generation runs on a single CPU core through WebAssembly: correct on every machine, and slow.",
-  webgpu: "Loads the full-precision (fp32) model — a different and much larger download, about 325 MB the "
-      + "first time, then cached, because fp32 is the only precision reported clean on WebGPU. "
-      + "Far faster generation once it is there."
-};
-
 /* idle | loading | checking | ready | passed. One value, set only by the load
    and the self-test that own each transition. There is deliberately no
    "failed": a failed self-test falls straight back to the CPU, so the live
@@ -6661,20 +6660,21 @@ function paintComputeNotes() {
   const gpuRadio = document.getElementById("computeGpu");
   if (!wasmEl || !gpuEl) return;
 
-  const onKokoro = voiceEngine === "kokoro";
-  const haveGpu = kokoroGpuAvailable();
+  const eng = ttsEngine();
+  const onDevice = !!eng;
+  const haveGpu = ttsGpuAvailable();
 
-  /* The group only means anything while Kokoro is the engine: browser voices
+  /* The group only means anything while a model is the engine: browser voices
      come from the operating system and load nothing at all. */
   if (group) {
-    group.textContent = onKokoro ? ""
+    group.textContent = onDevice ? ""
       : "The officers are on the browser's own voices, so nothing is loaded here. "
-        + "Choose Kokoro above to pick a device for it.";
+        + "Choose an on-device engine above to pick a device for it.";
   }
-  if (wasmRadio) wasmRadio.disabled = !onKokoro;
-  if (gpuRadio) gpuRadio.disabled = !onKokoro || !haveGpu;
-  if (wasmRadio) wasmRadio.checked = !kokoroUseGpu;
-  if (gpuRadio) gpuRadio.checked = kokoroUseGpu;
+  if (wasmRadio) wasmRadio.disabled = !onDevice;
+  if (gpuRadio) gpuRadio.disabled = !onDevice || !haveGpu;
+  if (wasmRadio) wasmRadio.checked = !ttsUseGpu;
+  if (gpuRadio) gpuRadio.checked = ttsUseGpu;
 
   const live = () => {
     if (computeState === "loading") return " Downloading now — the bar below is the download.";
@@ -6683,32 +6683,45 @@ function paintComputeNotes() {
     if (computeState === "ready") return " Loaded and ready.";
     return "";
   };
-  const mine = want => onKokoro && kokoroUseGpu === want ? live() : "";
+  const mine = want => onDevice && ttsUseGpu === want ? live() : "";
 
-  wasmEl.textContent = COMPUTE_COST.wasm + mine(false);
+  /* What each device costs is the ENGINE's fact, not this function's: Kokoro's
+     two devices are two different downloads, Supertonic's are the same one. */
+  const e2 = eng || TTS_ENGINES[DEFAULT_VOICE_ENGINE];
+  const cost = e2.cost;
+  /* The playtester's complaint was that switching device silently restarted a
+     download. Whether it does is derivable — two precisions means two files —
+     so the sentence answering it is generated from the record rather than
+     written into each engine's prose, where two copies drifted apart at once
+     and the page suite caught it. */
+  const shared = " " + DOWNLOAD_NOTE[twoDownloads(e2) ? "separate" : "shared"];
+  wasmEl.textContent = cost.wasm + shared + mine(false);
 
   /* A failure is NOT read off `computeState`: the page falls straight back to
      the CPU and starts that load, so by the time anyone reads the note the
      live state belongs to the CPU. The self-test's own conclusion is the
      durable record — in memory this session, in localStorage across them —
      and that is what the GPU note reports. */
-  const failedHere = !kokoroUseGpu
+  const failedHere = !ttsUseGpu
     && ((lastGpuCheck && /^failed/.test(lastGpuCheck)) || gpuMarkedBad());
 
   if (!haveGpu) {
     gpuEl.textContent = "This browser reports no WebGPU, so there is no device to run on here — "
       + "the voices stay on the CPU path above.";
   } else if (failedHere) {
-    gpuEl.textContent = COMPUTE_COST.webgpu + " Self-test "
+    gpuEl.textContent = cost.webgpu + shared + " Self-test "
       + (lastGpuCheck || "failed: distorted audio") + ", back on CPU. Known to happen on Intel Macs in "
       + "Chrome. Choose it again to retry — the check runs every time.";
   } else {
-    gpuEl.textContent = COMPUTE_COST.webgpu + " Verified against known phrases before it is trusted." + mine(true);
+    gpuEl.textContent = cost.webgpu + shared + " Verified against known phrases before it is trusted." + mine(true);
   }
 }
 
-function kokoroVoiceFor(who) {
-  return (voiceCfg[who] && voiceCfg[who].kokoro) || KOKORO_CAST[who] || "af_heart";
+function ttsVoiceFor(who, engineId) {
+  const e = ttsEngine(engineId);
+  if (!e) return null;
+  const chosen = voiceCfg[who] && voiceCfg[who].voice && voiceCfg[who].voice[e.id];
+  return (e.voiceIds.includes(chosen) && chosen) || e.cast[who] || e.defaultVoice;
 }
 
 function voiceObjFor(who) {
@@ -6832,6 +6845,21 @@ const KOKORO_RATE       = 24000;   // Hz; fixed by the model
    pipeline.py: "divide pred_dur frames by 40 to get timestamp in seconds"). */
 const KOKORO_FRAME_MS   = 25;
 
+/* High-frequency energy ratio — Kokoro's, at Kokoro's 24 kHz. The signature in
+   onnxruntime #29807 is energy above ~6 kHz out of all proportion; clean
+   24 kHz speech keeps almost all of its energy under 4 kHz. Rather than an
+   FFT, use the first difference y[n]=x[n]−x[n−1]: a one-line high-pass whose
+   power gain is 4·sin²(π·f/fs) — 0.07 at 1 kHz, 2 at 6 kHz, 4 at Nyquist — so
+   Σy² / (4·Σx²) is a cheap proxy for "energy above 6 kHz over total". It sits
+   in [0, 1]: white noise scores 0.5. Clean Kokoro lines measured 0.02–0.05 on
+   the wasm path (seven lines, five voices; see README), so 0.25 — five times
+   the highest clean value, half of white noise — is the limit.
+
+   Read the gain formula again before reusing this number on another engine:
+   fs is in it, so the same clean speech scores differently at another
+   sampling rate. Each engine declares its own ceiling in TTS_ENGINES. */
+const KOKORO_HF_MAX = 0.25;
+
 /* Cast to the crew. A spread of accent and register so the officers stay
    distinguishable without relying on pitch tricks. */
 const KOKORO_CAST = {
@@ -6848,7 +6876,190 @@ const KOKORO_VOICE_IDS = [
   "bf_alice","bf_lily","bm_george","bm_lewis","bm_daniel","bm_fable"
 ];
 
-let voiceEngine = "browser";      // "browser" | "kokoro"
+/* ======================= SUPERTONIC, THE SECOND VOICE =====================
+   Supertonic is the decided engine (docs/plan.md → Decided, "The voice
+   engine is Supertonic"): comparable quality to Kokoro and, on the user's own
+   hardware, noticeably faster to generate.
+
+   Version, and why it is 2 rather than 3. Transformers.js carries Supertonic
+   (PR #1459, shipped in 3.8.0, so the 4.2.0 pinned above already has it), but
+   what it loads is the community conversion — `Supertonic-TTS-ONNX` and
+   `-2-ONNX`. There is no v3 repository in that layout, and v3 is not shaped
+   like v2: four ONNX graphs against three, the vendor's own JSON tokeniser
+   against a Hugging Face one. So v2 is a model id; v3 would be a conversion
+   this project waits for, maintains, or replaces Transformers.js to avoid.
+   docs/research/tts-kokoro-webgpu-alternatives.md → "Fifth pass".
+
+   Against Kokoro, two things change and one is a loss:
+
+   - No phonemizer. Supertonic takes raw text, so the espeak pin and the
+     eighty transcribed lines of Kokoro's phonemising are not in this path.
+   - No per-token timings. `generate_speech` returns one duration per batch
+     item — a sample count, used below to trim the tail — and there is no
+     alignment inside the model to expose. Kokoro's `-timestamped` export is
+     still the only source of the per-phoneme timing lip-sync would want, so
+     an engine choice is now also a choice about open decision 8.
+
+   Verified 2026-09-10 in headless Chromium against the pinned bundle: the
+   class is present, the config reads sampling_rate 44100 and style_dim 128, a
+   voice file is 101 style vectors of 128 floats, and three lines generated
+   clean. See harness/TTS-ENGINES.md for what the clips measured.           */
+
+const SUPERTONIC_MODEL   = "onnx-community/Supertonic-TTS-2-ONNX";
+const SUPERTONIC_VOICE_URL = "https://huggingface.co/" + SUPERTONIC_MODEL + "/resolve/main/voices/";
+const SUPERTONIC_RUNTIME = "transformers.js 4.2.0, " + SUPERTONIC_MODEL;
+const SUPERTONIC_RATE    = 44100;  // Hz; fixed by the model's config
+/* The library's own default for this model class (`generate_speech`,
+   num_inference_steps = 5). Declared rather than chosen: a number invented
+   here would be a quality judgement nobody in a container can make. */
+const SUPERTONIC_STEPS   = 5;
+
+/* Cast to the crew. Ten presets where Kokoro has twenty-eight, so the spread
+   is by register alone — the constraint is not "pick five" but "pick five
+   that stay apart across a whole engagement, heard one after another through
+   the queue", and only a person can confirm that. */
+const SUPERTONIC_CAST = {
+  HELM: "M1",
+  TAC:  "F1",
+  SCI:  "M3",
+  ENG:  "F3",
+  COMM: "M5"
+};
+const SUPERTONIC_VOICE_IDS = ["F1","F2","F3","F4","F5","M1","M2","M3","M4","M5"];
+
+/* ====================== THE ON-DEVICE ENGINE REGISTRY =====================
+   Two models now run in this page, and everything below this table — the
+   worker, the cache, the self-test, the radio, the voice rows, the warm pass
+   and the diagnostics — reads the record of whichever engine is selected and
+   knows nothing else about either one. A third engine is a third entry here
+   and no branch anywhere else.
+
+   Each field is a fact about that engine that exactly one place declares:
+
+     label, blurb   what the settings radio says it is
+     model          the Hugging Face id, pinned
+     runtime        what the diagnostics readout reports as loaded
+     rate           output sampling rate, Hz — audioStats() reads it
+     cast           station -> voice id, the defaults before anyone chooses
+     voiceIds       every voice this engine offers
+     voiceLabel     how a voice id is written out in the drawer
+     voiceStore     the Cache API bucket its voice vectors live in
+     timing         whether a clip carries per-token timings (lip-sync)
+     hfMax          the self-test's high-frequency ceiling FOR THIS RATE —
+                    see audioStats(); the proxy's gain scales with 1/fs, so a
+                    threshold is never portable between engines
+     load           dtype, device and the size to warn about, per compute pick
+     main           the worker body, serialised with toString()
+     imports        exact module URLs that body needs                        */
+const TTS_ENGINES = {
+  supertonic: {
+    id: "supertonic",
+    label: "Supertonic, on this device",
+    blurb: "The decided engine: an OpenRAIL-M model running in the page, ten voices, no phonemizer, "
+         + "and faster to generate than Kokoro on the hardware it has been tried on. It is also the "
+         + "larger download of the two — the compute device below names the size.",
+    model: SUPERTONIC_MODEL,
+    runtime: SUPERTONIC_RUNTIME,
+    rate: SUPERTONIC_RATE,
+    cast: SUPERTONIC_CAST,
+    voiceIds: SUPERTONIC_VOICE_IDS,
+    voiceLabel: id => (id[0] === "F" ? "Female " : "Male ") + id.slice(1),
+    voiceUrl: SUPERTONIC_VOICE_URL,
+    voiceStore: "supertonic-voices",
+    defaultVoice: "M1",
+    timing: false,
+    /* Measured, not carried over — the numbers are in harness/TTS-ENGINES.md,
+       written by `node harness/tts.test.mjs`. Clean Supertonic lines score
+       roughly a quarter of what clean Kokoro lines score, because the
+       first-difference proxy's gain is 4 sin^2(pi f / fs) and fs here is
+       nearly twice as big; Kokoro's 0.25 would wave through Supertonic audio
+       that is plainly wrong. Same construction as Kokoro's, applied to this
+       engine's own evidence: five times the highest clean value seen, which
+       leaves it seven times under white noise's 0.5.
+
+       Set from a run of the six self-test lines, not from one line: a first
+       probe with a single voice saw nothing above 0.007 and a ceiling built
+       on it would have had barely twice the headroom Kokoro's has. The suite
+       prints the headroom on every run for exactly that reason. */
+    hfMax: 0.075,
+    load: {
+      wasm:   { dtype: "fp32", device: "wasm",
+                note: "Downloading Supertonic. About 263 megabytes, once." },
+      webgpu: { dtype: "fp32", device: "webgpu",
+                note: "Downloading Supertonic for WebGPU. About 263 megabytes, once." }
+    },
+    cost: {
+      /* This export publishes only fp32 — there is no quantised variant to
+         choose — so, unlike Kokoro, the device decides what RUNS the weights
+         and not which weights are fetched. That difference is deliberately not
+         stated here: paintComputeNotes() derives the sentence from `load`
+         above, so it cannot drift from the fact it describes. */
+      wasm: "Loads Supertonic — about 263 MB the first time, then cached. Generation runs on a single "
+          + "CPU core through WebAssembly: correct on every machine, and slow.",
+      webgpu: "Runs Supertonic on the GPU — far faster generation once the weights are there."
+    },
+    main: supertonicWorkerMain,
+    imports: [["TF", KOKORO_TFJS]]
+  },
+  kokoro: {
+    id: "kokoro",
+    label: "Kokoro, on this device",
+    blurb: "An 82M-parameter Apache-2.0 model running in the page, with twenty-eight voices and the "
+         + "per-token timings lip-sync would need. Smaller to download than Supertonic and slower to "
+         + "speak.",
+    model: KOKORO_MODEL,
+    runtime: KOKORO_RUNTIME,
+    rate: KOKORO_RATE,
+    cast: KOKORO_CAST,
+    voiceIds: KOKORO_VOICE_IDS,
+    // af_bella -> "Bella - American female"
+    voiceLabel: id => id.slice(3).replace(/^./, c => c.toUpperCase())
+      + " · " + (id[0] === "b" ? "British" : "American") + " " + (id[1] === "f" ? "female" : "male"),
+    voiceUrl: KOKORO_VOICE_URL,
+    voiceStore: "kokoro-voices",
+    defaultVoice: "af_heart",
+    timing: true,
+    hfMax: KOKORO_HF_MAX,
+    load: {
+      wasm:   { dtype: "q8",   device: "wasm",
+                note: "Downloading the quantised model for the CPU. About 92 megabytes, once." },
+      webgpu: { dtype: "fp32", device: "webgpu",
+                note: "Downloading the full-precision model for WebGPU. About 325 megabytes, once." }
+    },
+    cost: {
+      wasm: "Loads the quantised (q8) Kokoro model — about 92 MB the first time, then cached. "
+          + "Generation runs on a single CPU core through WebAssembly: correct on every machine, and slow.",
+      webgpu: "Loads the full-precision (fp32) model — about 325 MB the first time, then cached, because "
+            + "fp32 is the only precision reported clean on WebGPU. Far faster generation once it is there."
+    },
+    main: kokoroWorkerMain,
+    imports: [["TF", KOKORO_TFJS], ["{ phonemize as espeak }", KOKORO_PHONEMIZER]]
+  }
+};
+
+/* Derived, never listed: a third engine inherits the radio, the prefs
+   whitelist and every test that iterates these. */
+const TTS_ENGINE_IDS = Object.keys(TTS_ENGINES);
+
+/* Two precisions means two files on disk; one precision means the device
+   picks the runner and downloads nothing new. Derived from `load`, so no
+   engine can claim otherwise, and the sentence the drawer prints is declared
+   here once — the page suite asserts against THIS, not against a regex over
+   the drawer's prose. */
+function twoDownloads(e) { return e.load.wasm.dtype !== e.load.webgpu.dtype; }
+const DOWNLOAD_NOTE = {
+  separate: "Choosing this is a different download, not a switch on the weights already here.",
+  shared:   "Both devices run these same weights, so switching between them downloads nothing again."
+};
+const VOICE_ENGINES = ["browser", ...TTS_ENGINE_IDS];
+const DEFAULT_VOICE_ENGINE = "supertonic";
+
+let voiceEngine = DEFAULT_VOICE_ENGINE;   // "browser" | one of TTS_ENGINE_IDS
+/* The record for the engine in force, or null on browser voices. Everything
+   that used to say "kokoro" asks this instead. */
+function ttsEngine(id) { return TTS_ENGINES[id === undefined ? voiceEngine : id] || null; }
+function onDeviceVoices() { return !!ttsEngine(); }
+
 let audioCtx = null;
 
 /* Inference runs in a Web Worker. On the main thread it blocks the 20 Hz sim
@@ -6859,17 +7070,17 @@ let audioCtx = null;
    which needs COOP/COEP headers. GitHub Pages cannot set those, so the wasm
    path is pinned to a single core there. WebGPU is the way out, at the cost of
    a much larger download. */
-let kokoroWorker = null;
-let kokoroReady = null;
-let kokoroSeq = 0;
-const kokoroPending = new Map();
+let ttsWorker = null;
+let ttsReady = null;
+let ttsSeq = 0;
+const ttsPending = new Map();
 
-let kokoroUseGpu = false;
+let ttsUseGpu = false;
 let lastVoiceError = null;
 let lastGpuCheck = null;          // what the last WebGPU self-test concluded, for diagnostics
-function kokoroGpuAvailable() { return typeof navigator !== "undefined" && !!navigator.gpu; }
+function ttsGpuAvailable() { return typeof navigator !== "undefined" && !!navigator.gpu; }
 
-const kokoroCache = new Map();   // voice|speed|text -> {audio, sampling_rate, timing}
+const ttsCache = new Map();   // voice|speed|text -> {audio, sampling_rate, timing}
 /* Raised from 60 so the whole warm-up pass (warmLines() in sim.mjs, run
    through warm() below) fits without evicting itself to make room for the
    next contact spawned mid-patrol: five constant callouts, four
@@ -6882,22 +7093,35 @@ const kokoroCache = new Map();   // voice|speed|text -> {audio, sampling_rate, t
    4 * 24000 * N bytes; README's own measurements put a line at 2.0-5.3s, so
    two hundred clips is on the order of 200 * 4 * 24000 * 3.5 ≈ 64 MB in the
    worst case — inside what a page already holding one ONNX model can spare. */
-const KOKORO_CACHE_MAX = 200;
-function kokoroCacheKey(voice, speed, text) { return voice + "|" + speed + "|" + text; }
-function kokoroCachePut(key, raw) {
-  if (kokoroCache.size >= KOKORO_CACHE_MAX) kokoroCache.delete(kokoroCache.keys().next().value);
-  kokoroCache.set(key, raw);
+const TTS_CACHE_MAX = 200;
+/* The engine is part of the key because the cache outlives a switch: the same
+   officer, voice name and words produce different audio on a different model,
+   and two engines' voice vocabularies do not even overlap. */
+function ttsCacheKey(voice, speed, text, engineId) {
+  return (engineId === undefined ? voiceEngine : engineId) + "|" + voice + "|" + speed + "|" + text;
+}
+function ttsCachePut(key, raw) {
+  if (ttsCache.size >= TTS_CACHE_MAX) ttsCache.delete(ttsCache.keys().next().value);
+  ttsCache.set(key, raw);
 }
 
 /* The worker is a Blob module worker: its source is this string, its imports
    come from jsDelivr, pinned to exact versions. The body is a real function serialised with
    toString() so it is syntax-checked with the page and needs no escaping —
    which is why it must close over nothing and take everything as arguments. */
-function kokoroWorkerSource() {
-  return 'import * as TF from ' + JSON.stringify(KOKORO_TFJS) + ';\n'
-       + 'import { phonemize as espeak } from ' + JSON.stringify(KOKORO_PHONEMIZER) + ';\n'
-       + '(' + kokoroWorkerMain.toString() + ')(TF, espeak, '
-       + JSON.stringify({ model: KOKORO_MODEL, voiceUrl: KOKORO_VOICE_URL, rate: KOKORO_RATE }) + ');\n';
+function ttsWorkerSource(eng) {
+  const e = eng || ttsEngine();
+  if (!e) throw new Error("no on-device engine selected");
+  /* Each import's binding name is declared beside its URL in the registry, so
+     the argument list the body is called with is the registry's own order and
+     nothing here has to know which engine needs a phonemizer. */
+  const names = e.imports.map(([n]) => n);
+  const args = names.map(n => n.replace(/^\{\s*\w+\s+as\s+(\w+)\s*\}$/, "$1"));
+  return e.imports.map(([n, url]) =>
+           (n === "TF" ? 'import * as TF from ' : 'import ' + n + ' from ') + JSON.stringify(url) + ';').join('\n')
+       + '\n(' + e.main.toString() + ')(' + args.join(', ') + ', '
+       + JSON.stringify({ model: e.model, voiceUrl: e.voiceUrl, voiceStore: e.voiceStore,
+                          rate: e.rate, steps: SUPERTONIC_STEPS }) + ');\n';
 }
 
 function kokoroWorkerMain(TF, espeak, cfg) {
@@ -7105,6 +7329,111 @@ function kokoroWorkerMain(TF, espeak, cfg) {
   };
 }
 
+/* Supertonic's worker: the same contract as Kokoro's — load, gen, cancel, and
+   a run already inside ONNX Runtime cannot be stopped — over a much smaller
+   body, because this model takes raw text and needs no phonemising.
+
+   Read off the pinned bundle rather than a README: the class is
+   `SupertonicForConditionalGeneration`, and its `generate_speech` takes
+   `{ input_ids, attention_mask, style, num_inference_steps = 5, speed = 1.05 }`
+   and returns `{ waveform, durations }` where `durations` is a SAMPLE COUNT
+   per batch item (the model computes it as duration / speed * sampling_rate),
+   not per-token frames. That is why the tail is trimmed here and why this
+   engine reports no timing. */
+function supertonicWorkerMain(TF, cfg) {
+  const { SupertonicForConditionalGeneration, AutoTokenizer, Tensor } = TF;
+
+  /* ---- Voices ----------------------------------------------------------
+     A voice file is a style matrix of `style_dim`-wide vectors, handed to the
+     model whole — the model views it as (batch, n, style_dim) itself, so
+     unlike Kokoro there is no row to pick per token count. Cached the same
+     way the weights are. */
+  const voiceCache = new Map();
+  async function loadVoice(id) {
+    if (voiceCache.has(id)) return voiceCache.get(id);
+    const url = cfg.voiceUrl + id + ".bin";
+    let store = null, buf = null;
+    try {
+      store = await caches.open(cfg.voiceStore);
+      const hit = await store.match(url);
+      if (hit) buf = await hit.arrayBuffer();
+    } catch (e) { /* no Cache API here (file://, private window) — just fetch */ }
+    if (!buf) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("voice " + id + " not found (" + res.status + ")");
+      buf = await res.arrayBuffer();
+      if (store) { try { await store.put(url, new Response(buf, { headers: res.headers })); } catch (e) {} }
+    }
+    const data = new Float32Array(buf);
+    voiceCache.set(id, data);
+    return data;
+  }
+
+  let model = null, tokenizer = null;
+
+  async function load(m) {
+    // Progress arrives per file; sum them so the bar moves once, forwards.
+    const files = {};
+    const progress = ev => {
+      if (!ev || ev.status !== "progress" || !ev.total) return;
+      files[ev.file || ev.name || "?"] = { loaded: ev.loaded, total: ev.total };
+      let loaded = 0, total = 0;
+      for (const k in files) { loaded += files[k].loaded; total += files[k].total; }
+      self.postMessage({ type: "progress", loaded, total });
+    };
+    [model, tokenizer] = await Promise.all([
+      SupertonicForConditionalGeneration.from_pretrained(cfg.model,
+        { dtype: m.dtype, device: m.device, progress_callback: progress }),
+      AutoTokenizer.from_pretrained(cfg.model, { progress_callback: progress })
+    ]);
+  }
+
+  /* `aborted()` is checked after the voice fetch, the one await before the
+     model runs. Once inside ONNX Runtime nothing can stop it; the queue counts
+     that wasted work as `generationsCancelled`. Same as Kokoro — see there. */
+  async function generate(text, voice, speed, aborted) {
+    const style = await loadVoice(voice);
+    if (aborted && aborted()) return null;
+    const dim = model.config.style_dim;
+    const inputs = tokenizer(text, { padding: true, truncation: true });
+    const out = await model.generate_speech({
+      input_ids: inputs.input_ids,
+      attention_mask: inputs.attention_mask,
+      style: new Tensor("float32", style, [1, style.length / dim, dim]),
+      num_inference_steps: cfg.steps,
+      speed
+    });
+    /* The waveform is padded to the longest item in the batch; `durations`
+       says how many samples of it are real. One item here, so item zero. */
+    const len = out.waveform.dims[1];
+    const keep = out.durations ? Math.min(Math.ceil(Number(out.durations.data[0])), len) : len;
+    const audio = out.waveform.data.slice(0, keep);
+    return { audio, phonemes: null, durations: null };
+  }
+
+  const cancelled = new Set();
+
+  self.onmessage = async e => {
+    const m = e.data;
+    try {
+      if (m.type === "load") {
+        await load(m);
+        self.postMessage({ type: "ready" });
+      } else if (m.type === "cancel") {
+        cancelled.add(m.id);
+      } else if (m.type === "gen") {
+        if (cancelled.delete(m.id)) { self.postMessage({ type: "cancelled", id: m.id }); return; }
+        const r = await generate(m.text, m.voice, m.speed, () => cancelled.has(m.id));
+        if (!r || cancelled.delete(m.id)) { self.postMessage({ type: "cancelled", id: m.id }); return; }
+        self.postMessage({ type: "audio", id: m.id, audio: r.audio, rate: cfg.rate,
+                           phonemes: null, durations: null }, [r.audio.buffer]);
+      }
+    } catch (err) {
+      self.postMessage({ type: "error", id: m.id, message: String((err && err.message) || err) });
+    }
+  };
+}
+
 /* A broken WebGPU backend does not error — it returns audio that is simply
    wrong. Reported on macOS Intel / Chrome: garbled, distorted voices. Since a
    bad backend cannot be detected from adapter strings reliably, generate
@@ -7122,18 +7451,8 @@ function kokoroWorkerMain(TF, espeak, cfg) {
 const KOKORO_SELFTEST = "Bridge, sound off.";
 const GPU_BAD_KEY = "excalibur.webgpu.bad";
 
-/* High-frequency energy ratio. The signature in #29807 is energy above ~6 kHz
-   out of all proportion — clean 24 kHz speech keeps almost all of its energy
-   under 4 kHz. Rather than an FFT, use the first difference y[n]=x[n]−x[n−1]:
-   a one-line high-pass whose power gain is 4·sin²(π·f/fs) — 0.07 at 1 kHz,
-   2 at 6 kHz, 4 at Nyquist — so Σy² / (4·Σx²) is a cheap proxy for
-   "energy above 6 kHz over total". It sits in [0, 1]: white noise scores 0.5.
-   Clean Kokoro lines measured 0.02–0.05 on the wasm path (seven lines, five
-   voices; see README), so 0.25 — five times the highest clean value, half of
-   white noise — is the limit. */
-const KOKORO_HF_MAX = 0.25;
-
-function audioStats(a) {
+function audioStats(a, rate) {
+  rate = rate || (ttsEngine() ? ttsEngine().rate : KOKORO_RATE);
   let peak = 0, sumsq = 0, hp = 0, crossings = 0, prev = a[0];
   for (let i = 0; i < a.length; i++) {
     const v = a[i];
@@ -7152,19 +7471,25 @@ function audioStats(a) {
     rms: Math.sqrt(sumsq / a.length),
     zcr: crossings / a.length,
     hf: sumsq > 0 ? hp / (4 * sumsq) : 0,
-    seconds: a.length / KOKORO_RATE
+    seconds: a.length / rate
   };
 }
 
-function audioLooksSane(a) {
+/* `eng` is the engine that made this clip. The high-frequency ceiling is NOT
+   portable between engines: the first-difference proxy's gain is
+   4 sin^2(pi f / fs), so the same clean speech scores several times lower at
+   44.1 kHz than at 24 kHz, and Kokoro's 0.25 would wave through Supertonic
+   audio that is plainly wrong. Each engine declares its own. */
+function audioLooksSane(a, eng) {
+  const e = eng || ttsEngine() || TTS_ENGINES.kokoro;
   if (!a || !a.length) return "no audio";
-  const s = audioStats(a);
+  const s = audioStats(a, e.rate);
   if (!s.finite)          return "non-finite samples";
   if (s.peak > 4)         return "samples far outside range (peak " + s.peak.toFixed(1) + ")";
   if (s.peak < 0.001)     return "silence";
   if (s.rms  < 0.0005)    return "effectively silent";
   if (s.zcr  > 0.45)      return "noise rather than speech (zcr " + s.zcr.toFixed(2) + ")";
-  if (s.hf   > KOKORO_HF_MAX) return "energy piled above 6 kHz (hf " + s.hf.toFixed(2) + ")";
+  if (s.hf   > e.hfMax)   return "energy piled above 6 kHz (hf " + s.hf.toFixed(3) + ")";
   return null;
 }
 
@@ -7181,90 +7506,95 @@ function markGpuBad(bad) {
 }
 
 /* One generation request to a running worker. Kept separate from
-   generateKokoro() because the self-test needs it before kokoroReady resolves.
+   generateTts() because the self-test needs it before ttsReady resolves.
 
    Returns the request id alongside the promise rather than the promise alone:
    the id is the only handle on work already inside the worker, and cancelling
    is the whole reason the speech queue can pre-empt a line whose audio is
-   still being made. `cancelKokoro(id)` is a message, not a guarantee — see the
+   still being made. `cancelTts(id)` is a message, not a guarantee — see the
    worker's own comment. */
-function requestKokoro(w, text, voice, speed) {
-  const id = ++kokoroSeq;
+function requestTts(w, text, voice, speed) {
+  const id = ++ttsSeq;
   const done = new Promise((resolve, reject) => {
-    kokoroPending.set(id, { resolve, reject });
+    ttsPending.set(id, { resolve, reject });
     w.postMessage({ type: "gen", id, text, voice, speed });
   });
   return { id, done };
 }
 
-function cancelKokoro(id) {
-  if (!kokoroWorker || id === null || id === undefined) return;
-  kokoroWorker.postMessage({ type: "cancel", id });
+function cancelTts(id) {
+  if (!ttsWorker || id === null || id === undefined) return;
+  ttsWorker.postMessage({ type: "cancel", id });
 }
 
-function kokoroSelfTestLines() {
-  const lines = [{ text: KOKORO_SELFTEST, voice: KOKORO_CAST.TAC, speed: 1 }];
+function ttsSelfTestLines(engineId) {
+  const e = ttsEngine(engineId);
+  if (!e) return [];
+  const lines = [{ text: KOKORO_SELFTEST, voice: e.cast.TAC, speed: 1 }];
   for (const k of ORDER_OF_STATIONS) {
-    lines.push({ text: TEST_LINES[k], voice: kokoroVoiceFor(k), speed: (voiceCfg[k] && voiceCfg[k].rate) || 1 });
+    lines.push({ text: TEST_LINES[k], voice: ttsVoiceFor(k, e.id), speed: (voiceCfg[k] && voiceCfg[k].rate) || 1 });
   }
   return lines;
 }
 
 /* Resolves with the clips (to seed the cache) or rejects naming the line
    and the signature that failed. */
-async function kokoroGpuSelfTest(w) {
-  const lines = kokoroSelfTestLines();
+async function ttsGpuSelfTest(w) {
+  const lines = ttsSelfTestLines();
   const clips = [];
   for (let i = 0; i < lines.length; i++) {
     const L = lines[i];
     setComputeState("checking", "line " + (i + 1) + " of " + lines.length);
     status("Checking the voice hardware… " + (i + 1) + " of " + lines.length);
-    const raw = await requestKokoro(w, L.text, L.voice, L.speed).done;
-    const bad = audioLooksSane(raw.audio);
+    const raw = await requestTts(w, L.text, L.voice, L.speed).done;
+    const bad = audioLooksSane(raw.audio, ttsEngine());
     if (bad) throw new Error("WebGPU produced " + bad + ' on line ' + (i + 1) + ' ("' + L.text + '")');
-    clips.push({ key: kokoroCacheKey(L.voice, L.speed, L.text), raw });
+    clips.push({ key: ttsCacheKey(L.voice, L.speed, L.text), raw });
   }
   return clips;
 }
 
-function startKokoro() {
-  if (kokoroReady) return kokoroReady;
+function startTts() {
+  if (ttsReady) return ttsReady;
 
   const bar = document.getElementById("ttsBar");
   const fill = bar ? bar.querySelector("i") : null;
-  const gpu = kokoroUseGpu && kokoroGpuAvailable();
+  const eng = ttsEngine();
+  if (!eng) return Promise.reject(new Error("no on-device engine selected"));
+  const gpu = ttsUseGpu && ttsGpuAvailable();
+  const load = eng.load[gpu ? "webgpu" : "wasm"];
 
-  kokoroReady = new Promise((resolve, reject) => {
+  ttsReady = new Promise((resolve, reject) => {
     try {
-      const url = URL.createObjectURL(new Blob([kokoroWorkerSource()], { type: "text/javascript" }));
-      kokoroWorker = new Worker(url, { type: "module" });
+      const url = URL.createObjectURL(new Blob([ttsWorkerSource(eng)], { type: "text/javascript" }));
+      ttsWorker = new Worker(url, { type: "module" });
     } catch (err) { reject(err); return; }
 
-    kokoroWorker.onerror = ev => reject(new Error((ev && ev.message) || "voice worker failed to start"));
-    kokoroWorker.onmessage = ev => {
+    ttsWorker.onerror = ev => reject(new Error((ev && ev.message) || "voice worker failed to start"));
+    ttsWorker.onmessage = ev => {
       const m = ev.data;
       if (m.type === "progress") {
         if (fill && m.total) fill.style.width = Math.round(100 * (m.loaded / m.total)) + "%";
       } else if (m.type === "ready") {
         if (bar) bar.hidden = true;
-        if (!gpu) { setComputeState("ready"); status("Crew voices ready."); resolve(kokoroWorker); return; }
+        if (!gpu) { setComputeState("ready"); status("Crew voices ready."); resolve(ttsWorker); return; }
         // Prove the GPU backend actually produces speech before trusting it.
-        kokoroGpuSelfTest(kokoroWorker).then(clips => {
-          for (const c of clips) kokoroCachePut(c.key, c.raw);
+        ttsGpuSelfTest(ttsWorker).then(clips => {
+          for (const c of clips) ttsCachePut(c.key, c.raw);
           markGpuBad(false);
           lastGpuCheck = "passed, " + clips.length + " lines clean";
           setComputeState("passed");
           status("Crew voices ready on WebGPU.");
-          resolve(kokoroWorker);
+          resolve(ttsWorker);
         }, err => {
           markGpuBad(true);
           lastGpuCheck = "failed: " + ((err && err.message) || String(err));
           reject(err);
         });
       } else if (m.type === "audio") {
-        const p = kokoroPending.get(m.id);
+        const p = ttsPending.get(m.id);
         if (p) {
-          kokoroPending.delete(m.id);
+          ttsPending.delete(m.id);
           p.resolve({
             audio: m.audio,
             sampling_rate: m.rate,
@@ -7277,35 +7607,32 @@ function startKokoro() {
         /* The worker confirming it threw the work away. Rejecting rather than
            resolving keeps the promise from ever being mistaken for audio; the
            queue has already stopped looking at this handle. */
-        const p = kokoroPending.get(m.id);
-        if (p) { kokoroPending.delete(m.id); p.reject(new Error("generation cancelled")); }
+        const p = ttsPending.get(m.id);
+        if (p) { ttsPending.delete(m.id); p.reject(new Error("generation cancelled")); }
       } else if (m.type === "error") {
         if (m.id === undefined || m.id === null) { reject(new Error(m.message)); return; }
-        const p = kokoroPending.get(m.id);
-        if (p) { kokoroPending.delete(m.id); p.reject(new Error(m.message)); }
+        const p = ttsPending.get(m.id);
+        if (p) { ttsPending.delete(m.id); p.reject(new Error(m.message)); }
       }
     };
 
     if (bar) bar.hidden = false;
     setComputeState("loading");
-    status(gpu ? "Downloading the full-precision model for WebGPU. About 325 megabytes, once."
-               : "Downloading the quantised model for the CPU. About 92 megabytes, once.");
-    // fp32 is the only precision reported clean on WebGPU (fp16, q8 and q4 all
-    // garble there); q8 is right for wasm, where precision is not the problem.
-    kokoroWorker.postMessage({
-      type: "load",
-      dtype:  gpu ? "fp32"   : "q8",
-      device: gpu ? "webgpu" : "wasm"
-    });
+    status(load.note);
+    /* Which precision runs on which device is the engine's own fact: Kokoro
+       takes q8 on wasm and fp32 on WebGPU (fp16, q8 and q4 all garble there);
+       Supertonic publishes only fp32, so its device changes the runner and
+       not the download. */
+    ttsWorker.postMessage({ type: "load", dtype: load.dtype, device: load.device });
   });
 
-  kokoroReady.catch(err => {
+  ttsReady.catch(err => {
     const b = document.getElementById("ttsBar");
     if (b) b.hidden = true;
-    if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; }
-    kokoroReady = null;
-    for (const p of kokoroPending.values()) p.reject(err);
-    kokoroPending.clear();
+    if (ttsWorker) { ttsWorker.terminate(); ttsWorker = null; }
+    ttsReady = null;
+    for (const p of ttsPending.values()) p.reject(err);
+    ttsPending.clear();
 
     // A bad GPU backend is not a reason to give up on Kokoro — retry on wasm,
     // which is slower but correct everywhere.
@@ -7313,45 +7640,44 @@ function startKokoro() {
       /* The radio moves with the decision: the captain asked for WebGPU, the
          self-test refused it, and the drawer must show what the page is
          actually about to load rather than what was asked for.
-         `paintComputeNotes` moves it, from `kokoroUseGpu` — the fact that just
+         `paintComputeNotes` moves it, from `ttsUseGpu` — the fact that just
          changed — rather than from a second `checked` assignment here. The
          live state is reset because what happens next is the CPU's load; the
          verdict the captain needs to read is in `lastGpuCheck`. */
-      kokoroUseGpu = false;
+      ttsUseGpu = false;
       savePrefs();
       lastVoiceError = (err && err.message) || String(err);
       setComputeState("idle");
       status("WebGPU gave distorted audio on this machine. Falling back to the CPU path.");
-      if (voiceEngine === "kokoro") startKokoro().catch(() => {});
+      if (onDeviceVoices()) startTts().catch(() => {});
       return;
     }
 
     lastVoiceError = (err && err.message) || String(err);
     voiceEngine = "browser";
-    const r = document.getElementById("engBrowser");
-    if (r) r.checked = true;
+    paintEngineRadios();
     setComputeState("idle");
     buildVoiceRows();
     status("Could not load the crew voices here — using the browser's own.");
   });
 
-  return kokoroReady;
+  return ttsReady;
 }
 
 /* Generation, with the request id kept reachable so it can be cancelled after
    the worker has started but before it has answered. Waiting for the worker to
    load is part of the request, so a cancel arriving during the download is
    honoured too. */
-function generateKokoro(text, voice, speed) {
+function generateTts(text, voice, speed) {
   const req = { id: null, cancelled: false };
-  req.cancel = () => { req.cancelled = true; cancelKokoro(req.id); };
-  req.done = startKokoro().then(w => {
+  req.cancel = () => { req.cancelled = true; cancelTts(req.id); };
+  req.done = startTts().then(w => {
     if (req.cancelled) throw new Error("generation cancelled");
-    const r = requestKokoro(w, text, voice, speed);
+    const r = requestTts(w, text, voice, speed);
     req.id = r.id;
     /* The cancel may have landed while the worker was still loading, in which
        case the id did not exist yet to be sent. Send it now. */
-    if (req.cancelled) cancelKokoro(req.id);
+    if (req.cancelled) cancelTts(req.id);
     return r.done;
   });
   return req;
@@ -7371,7 +7697,7 @@ function generateKokoro(text, voice, speed) {
    what makes this "low priority": the worker never has more than this one
    line queued ahead of a real spoken line, so a hull breach mid-warm-up
    waits for at most the line already in progress, never a backlog. It
-   starts only after startKokoro() — including its GPU-path self-test — has
+   starts only after startTts() — including its GPU-path self-test — has
    resolved; generating on a worker that is not yet ready would just queue
    behind the download. It stops the moment the engine or a voice setting
    changes, checked once per line rather than mid-generation:
@@ -7383,7 +7709,7 @@ let warmProgress = { total: 0, cached: 0, generated: 0, running: false };
 function warmSignature() {
   return voiceEngine + "|" + ORDER_OF_STATIONS.map(k => {
     const c = voiceCfg[k] || {};
-    return kokoroVoiceFor(k) + ":" + (c.rate || 1);
+    return ttsVoiceFor(k) + ":" + (c.rate || 1);
   }).join(",");
 }
 
@@ -7414,13 +7740,13 @@ async function warm(pairs) {
   const startedAs = warmSignature();
   for (const { who, text } of pairs) {
     if (warmSignature() !== startedAs) break;     // engine or a voice setting moved under us
-    const voice = kokoroVoiceFor(who);
+    const voice = ttsVoiceFor(who);
     const speed = (voiceCfg[who] && voiceCfg[who].rate) || 1;
-    const key = kokoroCacheKey(voice, speed, text);
-    if (kokoroCache.has(key)) { warmProgress.cached++; continue; }
+    const key = ttsCacheKey(voice, speed, text);
+    if (ttsCache.has(key)) { warmProgress.cached++; continue; }
     try {
-      const raw = await generateKokoro(text, voice, speed).done;
-      kokoroCachePut(key, raw);
+      const raw = await generateTts(text, voice, speed).done;
+      ttsCachePut(key, raw);
       warmProgress.generated++;
     } catch (e) { /* one line failing to warm is not a reason to give up on the rest */ }
     status("Warming crew voices… " + (warmProgress.cached + warmProgress.generated) + " of " + warmProgress.total);
@@ -7436,8 +7762,8 @@ async function warm(pairs) {
    at hand makes warmable. Kept separate from warm() itself so a caller with
    its own S — the page, and harness/page.test.mjs — decides what "at hand"
    means rather than this module reaching for a global. */
-function warmKokoroCache(S) {
-  return startKokoro().then(() => warm(warmLines(S))).catch(() => {});
+function warmTtsCache(S) {
+  return startTts().then(() => warm(warmLines(S))).catch(() => {});
 }
 
 /* Playback of generated audio. Returns the node alongside the promise so a
@@ -7479,20 +7805,20 @@ function ttsGenerate(text, who, handle) {
      "played" instantly, so the queue drains exactly as it would if it were
      heard, and the bridge log — which never waited on speech — is unchanged. */
   if (!speechOn || !line) return Promise.resolve({ silent: true, who, text: line });
-  if (voiceEngine !== "kokoro") return Promise.resolve({ browser: true, who, text: line });
+  if (!onDeviceVoices()) return Promise.resolve({ browser: true, who, text: line });
 
-  const voice = kokoroVoiceFor(who);
+  const voice = ttsVoiceFor(who);
   const speed = (voiceCfg[who] && voiceCfg[who].rate) || 1;
-  const key = kokoroCacheKey(voice, speed, line);
-  const hit = kokoroCache.get(key);
+  const key = ttsCacheKey(voice, speed, line);
+  const hit = ttsCache.get(key);
   if (hit) return Promise.resolve({ raw: hit, who, text: line });
 
-  const req = generateKokoro(line, voice, speed);
+  const req = generateTts(line, voice, speed);
   /* The queue hands its own handle in so a backend with something to abort can
      hang it here; `ttsCancel` below is given the same handle back. */
-  if (handle) handle.kokoro = req;
+  if (handle) handle.tts = req;
   return req.done.then(raw => {
-    kokoroCachePut(key, raw);
+    ttsCachePut(key, raw);
     return { raw, who, text: line };
   }, err => {
     if (req.cancelled) throw err;              // cancelled on purpose: not a failure to report
@@ -7517,7 +7843,7 @@ function ttsPlay(audio, handle) {
    its audio thrown away. The queue counts the throw-away either way, which is
    the honest number. */
 function ttsCancel(handle) {
-  if (handle && handle.kokoro) handle.kokoro.cancel();
+  if (handle && handle.tts) handle.tts.cancel();
 }
 
 function ttsStop(handle) {
@@ -7532,19 +7858,65 @@ const TEST_LINES = {
   COMM: "Comms, Captain. Channel is open on all frequencies."
 };
 
+/* The on-device engine radios, built from TTS_ENGINES rather than written out
+   in page.html. The browser option is markup because it is not an engine — it
+   has no model, no download and no device — and everything below it is one
+   row per registry entry, in declaration order. A third engine appears here
+   with its own label, its own sentence and its own place in the group without
+   this function or the page changing.
+
+   Called once at start-up; the checked state is painted by paintEngineRadios()
+   whenever the choice moves, the same way the compute group works. */
+function buildEngineOptions() {
+  const host = document.getElementById("engineOptions");
+  if (!host) return;
+  host.textContent = "";
+  for (const id of TTS_ENGINE_IDS) {
+    const e = TTS_ENGINES[id];
+    const wrap = document.createElement("div");
+    wrap.className = "opt";
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "engine";
+    input.id = "eng" + id.charAt(0).toUpperCase() + id.slice(1);
+    input.value = id;
+    const label = document.createElement("label");
+    label.setAttribute("for", input.id);
+    const name = document.createElement("span");
+    name.className = "optname";
+    name.textContent = e.label;
+    const why = document.createElement("span");
+    why.className = "optwhy";
+    why.textContent = e.blurb;
+    label.append(name, why);
+    wrap.append(input, label);
+    host.append(wrap);
+  }
+  paintEngineRadios();
+}
+
+/* One home for "which engine radio is checked". The radios are built above and
+   the choice can move without a click — a failed load falls back to browser
+   voices — so nothing sets `checked` by hand anywhere else. */
+function paintEngineRadios() {
+  for (const r of document.querySelectorAll('input[name="engine"]')) {
+    r.checked = (r.value === voiceEngine);
+  }
+}
+
 function buildVoiceRows() {
   const host = document.getElementById("voiceRows");
   if (!host) return;
   host.textContent = "";
 
-  const useKokoro = voiceEngine === "kokoro";
+  const eng = ttsEngine();
 
-  if (!useKokoro && (!("speechSynthesis" in window) || !voices.length)) {
+  if (!eng && (!("speechSynthesis" in window) || !voices.length)) {
     const p = document.createElement("p");
     p.className = "note";
     p.style.margin = "0";
     p.textContent = "This browser reports no speech voices, so the officers stay silent. "
-      + "Switch to Kokoro above for voices that do not depend on the operating system.";
+      + "Choose an on-device engine above for voices that do not depend on the operating system.";
     host.append(p);
     return;
   }
@@ -7560,20 +7932,17 @@ function buildVoiceRows() {
 
     const sel = document.createElement("select");
     sel.setAttribute("aria-label", OFFICERS[key].station + " voice");
-    if (useKokoro) {
-      const current = kokoroVoiceFor(key);
-      for (const id of KOKORO_VOICE_IDS) {
+    if (eng) {
+      const current = ttsVoiceFor(key);
+      for (const id of eng.voiceIds) {
         const o = document.createElement("option");
         o.value = id;
-        // af_bella -> "Bella · American female"
-        const region = id[0] === "b" ? "British" : "American";
-        const gender = id[1] === "f" ? "female" : "male";
-        o.textContent = id.slice(3).replace(/^./, c => c.toUpperCase()) + " · " + region + " " + gender;
+        o.textContent = eng.voiceLabel(id);
         if (id === current) o.selected = true;
         sel.append(o);
       }
       sel.addEventListener("change", () => {
-        cfg.kokoro = sel.value;
+        cfg.voice[eng.id] = sel.value;
         savePrefs();
         speak(key, TEST_LINES[key]);
       });
@@ -7600,7 +7969,7 @@ function buildVoiceRows() {
 
     const knobs = document.createElement("div");
     knobs.className = "knobs";
-    if (!useKokoro) {
+    if (!eng) {
       knobs.append(makeKnob("Pitch", cfg.pitch, 0.5, 2, 0.02, v => { cfg.pitch = v; savePrefs(); }));
     }
     knobs.append(makeKnob("Rate", cfg.rate, 0.5, 2, 0.02, v => { cfg.rate = v; savePrefs(); }));
@@ -7641,7 +8010,7 @@ if ("speechSynthesis" in window) {
    setting the drawer changes is written here, not by reaching in. */
 function setSpeechOn(v) { speechOn = v; }
 function setVoiceEngine(v) { voiceEngine = v; }
-function setKokoroUseGpu(v) { kokoroUseGpu = v; }
+function setTtsUseGpu(v) { ttsUseGpu = v; }
 function setVoiceInputEngine(v) {
   voiceInputEngine = INPUT_ENGINES.includes(v) ? v : "auto";
   /* Asking for on-device again is asking for the download to be retried:
@@ -7653,8 +8022,8 @@ function setVoiceInputEngine(v) {
 /* Precision and device are fixed once the weights load, so switching engines
    or the WebGPU toggle means starting the worker over, not reconfiguring it
    in place. Called from the settings drawer. */
-function resetKokoroWorker() {
-  if (kokoroWorker) { kokoroWorker.terminate(); kokoroWorker = null; kokoroReady = null; kokoroCache.clear(); }
+function resetTtsWorker() {
+  if (ttsWorker) { ttsWorker.terminate(); ttsWorker = null; ttsReady = null; ttsCache.clear(); }
   /* Whatever the last device concluded is about the last device. Leaving
      "passed" up while a different set of weights is loading would be the
      drawer lying about work that has not happened yet. */
@@ -9438,7 +9807,7 @@ const pause = ms => new Promise(r => setTimeout(r, ms));
    other two act on), the fixed-step clock that drives it, everything drawn or
    read out, and the bootstrap that wires the page's buttons and listeners to
    all of the above — including a few setter calls (setBrain, setFastPath,
-   setSpeechOn, setVoiceEngine, setKokoroUseGpu, resetKokoroWorker) into
+   setSpeechOn, setVoiceEngine, setTtsUseGpu, resetTtsWorker) into
    crew.mjs and voice.mjs: a real ES module cannot
    assign through an imported binding, so a setting this module's drawer
    changes on another module's state is written by calling into that module,
@@ -10502,7 +10871,8 @@ function buildQuick() {
 async function runVoiceTest() {
   const engine = voiceEngine;
   const hasBrowserVoices = ("speechSynthesis" in window) && voices.length > 0;
-  status("Testing " + (engine === "kokoro" ? "Kokoro" : "browser") + " voices…");
+  const eng = ttsEngine(engine);
+  status("Testing " + (eng ? eng.label.split(",")[0] : "browser") + " voices…");
   const rows = [];
   let voiced = 0;
   for (const k of ORDER_OF_STATIONS) {
@@ -10521,11 +10891,12 @@ async function runVoiceTest() {
       how = "muted, nothing generated";
     } else if (a.raw) {
       heard = true;
-      const secs = a.raw.audio ? (a.raw.audio.length / KOKORO_RATE).toFixed(1) + " s of audio" : "audio";
-      how = "Kokoro, " + secs + " in " + ms + " ms" + (ms < 40 ? " (already cached)" : "");
-    } else if (engine === "kokoro") {
+      const secs = a.raw.audio && eng ? (a.raw.audio.length / eng.rate).toFixed(1) + " s of audio" : "audio";
+      how = (eng ? eng.label.split(",")[0] : "on-device") + ", " + secs + " in " + ms + " ms"
+          + (ms < 40 ? " (already cached)" : "");
+    } else if (eng) {
       heard = hasBrowserVoices;
-      how = "browser voice instead: Kokoro failed — " + (lastVoiceError || "no error recorded")
+      how = "browser voice instead: " + eng.label.split(",")[0] + " failed — " + (lastVoiceError || "no error recorded")
           + (hasBrowserVoices ? "" : "; and this browser has no speech voices, so nothing was heard");
     } else if (!hasBrowserVoices) {
       how = "browser engine, but this browser has no speech voices installed";
@@ -10539,12 +10910,12 @@ async function runVoiceTest() {
     rows.push(station + ": " + how);
   }
   const summary = "Voice test: " + voiced + " of " + ORDER_OF_STATIONS.length + " lines voiced"
-    + (voiced === ORDER_OF_STATIONS.length ? " through " + (engine === "kokoro" ? "Kokoro" : "the browser") + "."
+    + (voiced === ORDER_OF_STATIONS.length ? " through " + (eng ? eng.label.split(",")[0] : "the browser") + "."
        : voiced ? "; see Diagnostics for the rest." : " — see Diagnostics.");
   const st = speech.stats();
   const report = [
     summary,
-    "engine " + engine + (engine === "kokoro" ? " (" + KOKORO_RUNTIME + ")" : ""),
+    "engine " + engine + (eng ? " (" + eng.runtime + ")" : ""),
     ...rows,
     "queue now: " + st.admitted + " admitted, " + (st.spoken + st.deferredThenSpoken) + " spoken, "
       + st.pending + " waiting, " + st.inFlight + " in flight, " + st.dropped.total + " dropped"
@@ -10578,9 +10949,9 @@ async function buildDiagnostics() {
   L.push("── voice ──");
   add("engine", voiceEngine);
   add("speechOn", String(speechOn));
-  add("kokoro loaded", String(!!kokoroWorker && !!kokoroReady));
-  add("kokoro runtime", KOKORO_RUNTIME);
-  add("kokoro cache", kokoroCache.size + " clips");
+  add("engine loaded", String(!!ttsWorker && !!ttsReady));
+  add("engine runtime", ttsEngine() ? ttsEngine().runtime : "(browser voices)");
+  add("clip cache", ttsCache.size + " clips");
   /* The warm set for the state right now, and how much of it is actually
      cached — warmLines(S) is pure and cheap, so recomputing it here rather
      than reading back whatever warm() last saw is one fewer thing that can
@@ -10588,25 +10959,25 @@ async function buildDiagnostics() {
      (including lines it skipped because they were already cached before it
      ran), which is why both numbers are worth printing. */
   const warmSet = warmLines(S);
-  const warmCached = warmSet.filter(p => kokoroCache.has(kokoroCacheKey(kokoroVoiceFor(p.who),
+  const warmCached = warmSet.filter(p => ttsCache.has(ttsCacheKey(ttsVoiceFor(p.who),
     (voiceCfg[p.who] && voiceCfg[p.who].rate) || 1, p.text))).length;
   add("warm set", warmSet.length + " lines, " + warmCached + " cached now");
   add("warm pass", warmProgress.running ? "running, " + (warmProgress.cached + warmProgress.generated)
         + " of " + warmProgress.total
         : warmProgress.total ? "done, " + warmProgress.cached + " already cached, " + warmProgress.generated + " generated"
         : "(not run)");
-  add("webgpu available", String(kokoroGpuAvailable()));
-  add("webgpu requested", String(kokoroUseGpu));
+  add("webgpu available", String(ttsGpuAvailable()));
+  add("webgpu requested", String(ttsUseGpu));
   add("webgpu marked bad", String(gpuMarkedBad()));
   add("webgpu self-test", lastGpuCheck || "(not run)");
   add("last voice error", lastVoiceError || "(none)");
   add("browser voices", (voices || []).length + " installed");
   for (const k of ORDER_OF_STATIONS) {
     const c = voiceCfg[k] || {};
-    add("  " + OFFICERS[k].station, (voiceEngine === "kokoro" ? kokoroVoiceFor(k) : (c.voiceURI || "(default)"))
+    add("  " + OFFICERS[k].station, (onDeviceVoices() ? ttsVoiceFor(k) : (c.voiceURI || "(default)"))
         + "  rate " + (c.rate || 1).toFixed(2));
   }
-  if (kokoroGpuAvailable()) {
+  if (ttsGpuAvailable()) {
     try {
       const ad = await navigator.gpu.requestAdapter();
       const info = ad && (ad.info || (ad.requestAdapterInfo ? await ad.requestAdapterInfo() : null));
@@ -10979,7 +11350,7 @@ async function buildRecording() {
           + "; the timeline below begins after T+" + Number(r.dropped.upTo).toFixed(1) + " **"
         : "   (nothing dropped)"));
   add("input tier", activeInputTier() + ", preference " + voiceInputEngine);
-  add("voice engine", voiceEngine + (voiceEngine === "kokoro" ? " (" + (kokoroUseGpu ? "webgpu" : "cpu") + ")" : ""));
+  add("voice engine", voiceEngine + (onDeviceVoices() ? " (" + (ttsUseGpu ? "webgpu" : "cpu") + ")" : ""));
   add("brain", brain + ", parser first " + (fastPathOn ? "on" : "off"));
   add("userAgent", navigator.userAgent);
   L.push("");
@@ -11097,8 +11468,9 @@ async function wireSettings() {
 
   const noteEl = document.getElementById("voiceNote");
   const paintNote = () => {
-    noteEl.textContent = voiceEngine === "kokoro"
-      ? "Twenty-eight voices ship with the model, so the crew sounds the same on every machine. Rate sets speaking speed."
+    const e = ttsEngine();
+    noteEl.textContent = e
+      ? e.voiceIds.length + " voices ship with the model, so the crew sounds the same on every machine. Rate sets speaking speed."
       : "Voices come from your own operating system, so the list differs per device. Pitch and rate separate two officers sharing a voice.";
   };
   paintNote();
@@ -11112,7 +11484,7 @@ async function wireSettings() {
     r.addEventListener("change", () => {
       if (!r.checked) return;
       const gpu = r.value === "webgpu";
-      setKokoroUseGpu(gpu);
+      setTtsUseGpu(gpu);
       if (gpu) markGpuBad(false);      // an explicit retry deserves a clean slate
       recNote("setting", { what: "compute", value: r.value });
       savePrefs();
@@ -11120,23 +11492,29 @@ async function wireSettings() {
          different model file, not a setting on the one already here. Starting
          the download over is the work, and the note now says so rather than
          leaving the bar to look like a fault. */
-      resetKokoroWorker();
+      resetTtsWorker();
       paintComputeNotes();
-      if (voiceEngine === "kokoro") startKokoro().catch(() => {});
+      if (onDeviceVoices()) startTts().catch(() => {});
     });
   }
 
+  /* The on-device radios are built from TTS_ENGINES (buildEngineOptions, in
+     voice.mjs), so this wires whatever that produced rather than a list of
+     ids. Switching engine is switching model: the worker holding the old
+     weights is discarded, exactly as switching compute device does. */
+  buildEngineOptions();
   for (const r of document.querySelectorAll('input[name="engine"]')) {
-    r.checked = (r.value === voiceEngine);
     r.addEventListener("change", () => {
       if (!r.checked) return;
+      const was = voiceEngine;
       setVoiceEngine(r.value);
       recNote("setting", { what: "voice engine", value: r.value });
       savePrefs();
       paintNote();
       paintComputeNotes();
       buildVoiceRows();
-      if (voiceEngine === "kokoro") startKokoro().catch(() => {});
+      if (was !== r.value) resetTtsWorker();
+      if (onDeviceVoices()) startTts().catch(() => {});
       else status(standingBy());
     });
   }
@@ -11175,7 +11553,7 @@ async function wireSettings() {
       voiceCfg[k].pitch = OFFICERS[k].pitch;
       voiceCfg[k].rate = OFFICERS[k].rate;
       voiceCfg[k].voiceURI = null;
-      voiceCfg[k].kokoro = null;
+      voiceCfg[k].voice = {};
     }
     assignDefaultVoices();
     savePrefs();
@@ -11355,8 +11733,8 @@ function startGame() {
   /* BACKLOG "Pre-generate the templated callouts": once the captain has taken
      the conn there is a real user gesture to hang audio on, so this is where
      the warm-up pass starts \u2014 never earlier, and never on the browser engine,
-     where warmKokoroCache() (voice.mjs) returns at once with nothing to do. */
-  if (voiceEngine === "kokoro") warmKokoroCache(S);
+     where warmTtsCache() (voice.mjs) returns at once with nothing to do. */
+  if (onDeviceVoices()) warmTtsCache(S);
 
   /* And the same moment is where the on-device recogniser starts arriving.
      It is the DEFAULT input tier where it can run (voice.mjs,
