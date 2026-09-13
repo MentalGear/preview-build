@@ -1,0 +1,1 @@
+var e=`/preview-build/preview-deploy/claude-npc-knowledge-system-05vm5t/assets/cozo_lib_wasm_bg-BBJJLXC4.wasm`;export{e as default};
