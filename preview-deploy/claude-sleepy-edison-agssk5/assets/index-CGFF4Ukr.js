@@ -16556,16 +16556,24 @@ varying vec3 vNormal;
 varying vec3 vWorldPos;
 varying vec3 vColor;
 varying float vWindWeight;
+// Round 17: carries fadeT (0 at spawn, 1 once fully faded in) to the fragment shader, which uses
+// it to drive the dithered/screen-door materialize-in effect instead of the fragment shader
+// re-deriving it from scratch - see VEGETATION_FRAGMENT_GLSL and SPAWN_SCALE_MIN's doc above.
+varying float vFadeT;
 
 // Round 15 item A ("popping in" fix): aInstExtra.w carries the uTime at which this instance last
 // became part of the uploaded buffer (see VegetationSystem/TalusSystem.rebuild and
 // DenseGrassSystem's GrassRebuildJob) - SPAWN_INSTANT (a huge negative sentinel, see
 // vegetation.ts's exported constant of the same name) means "already fully faded in", used for
-// the un-throttled initial bake/location-switch paths. Scaling aPosition (mesh-local, base at the
-// origin for every species' mesh here) by this ramp grows the whole instance from its own root
-// point in world space, since translation is applied by the model matrix afterward - cheap, pure
-// vertex-shader math, no new attribute beyond the one spare float this already had.
+// the un-throttled initial bake/location-switch paths.
+//
+// Round 17: replaced the round-15 full 0->1 scale-in (growing an instance from a single point,
+// which for vegetation specifically reads as the plant literally growing) with a genuine
+// dithered/screen-door FADE (see VEGETATION_FRAGMENT_GLSL) plus only a small residual scale ramp
+// (SPAWN_SCALE_MIN -> 1) as a hybrid - see the exported JS constant's doc in vegetation.ts for the
+// full investigation/rationale (why true alpha blending was rejected in favor of this).
 const float SPAWN_FADE_SECONDS = 0.4;
+const float SPAWN_SCALE_MIN = 0.72;
 // Round 15 item B (root-tinting); round 16: strengthened 0.32 -> 0.55 (see the exported JS
 // constant of the same name's doc for why). Keep the two in sync.
 const float ROOT_TINT_STRENGTH = 0.55;
@@ -16577,8 +16585,10 @@ void main(void) {
   float age = uTime - aInstExtra.w;
   float fadeT = clamp(age / SPAWN_FADE_SECONDS, 0.0, 1.0);
   fadeT = fadeT * fadeT * (3.0 - 2.0 * fadeT); // smoothstep ease, mirrors talus.ts's own ramp
+  vFadeT = fadeT;
 
-  vec4 worldPos4 = model * vec4(aPosition * fadeT, 1.0);
+  float scaleRamp = mix(SPAWN_SCALE_MIN, 1.0, fadeT);
+  vec4 worldPos4 = model * vec4(aPosition * scaleRamp, 1.0);
   vec3 worldPos = worldPos4.xyz;
 
   // Cheap wind sway: only vertices tagged with a nonzero wind-weight (vertex-color alpha, baked
@@ -16624,6 +16634,7 @@ varying vec3 vNormal;
 varying vec3 vWorldPos;
 varying vec3 vColor;
 varying float vWindWeight;
+varying float vFadeT;
 
 uniform vec3 view_position;
 uniform vec3 light_globalAmbient;
@@ -16632,7 +16643,21 @@ uniform float fog_density;
 uniform vec3 uSunDirection;
 uniform vec3 uSunColor;
 
+// Round 17: dithered/screen-door pseudo-transparency - see SPAWN_SCALE_MIN's doc in vegetation.ts
+// for why this replaces a real alpha-blended fade. Classic "interleaved gradient noise" (Jimenez,
+// "Next Generation Post-Processing in Call of Duty: Advanced Warfare") - a cheap, well-distributed
+// per-pixel dither pattern with no texture lookup. Discarding fragments where the noise exceeds
+// vFadeT means ~0% of a just-spawned instance's fragments survive and 100% do once fully faded,
+// with a smoothly growing fraction in between - a real "coming into being" read, still entirely
+// within the existing opaque/alpha-tested render path (no blend state, no depth-sort dependency).
+float ditherNoise(vec2 fragCoord) {
+  return fract(52.9829189 * fract(dot(fragCoord, vec2(0.06711056, 0.00583715))));
+}
+
 void main(void) {
+  if (vFadeT < 0.999) {
+    if (ditherNoise(gl_FragCoord.xy) > vFadeT) discard;
+  }
   vec3 N = normalize(vNormal);
   vec3 V = normalize(view_position - vWorldPos);
   // Vegetation is thin/double-sided geometry (blades, cone shells) with backfaces enabled (see
@@ -16679,14 +16704,24 @@ uniform float uTime;
 varying vec3 vNormal;
 varying vec3 vWorldPos;
 varying vec3 vColor;
+// Round 17: carries fadeT to the fragment shader's dithered materialize-in discard - mirrors
+// vegetation.ts's VEGETATION_VERTEX_GLSL/FRAGMENT_GLSL exactly, see SPAWN_SCALE_MIN's doc there
+// for the full investigation/rationale (true alpha blending rejected in favor of this).
+varying float vFadeT;
 
 // Round 15 item A ("popping in" fix) - mirrors vegetation.ts's VEGETATION_VERTEX_GLSL exactly
 // (same duration/easing, so talus reads as the same coherent behavior as grove vegetation/dense
 // grass): aInstExtra.z carries the uTime at which this rock last became part of the uploaded
 // buffer (see TalusSystem.rebuild); SPAWN_INSTANT (vegetation.ts's exported sentinel) means
-// "already fully faded in" (construction/syncNow). Scaling aPosition (mesh-local, base at the
-// origin - see buildRockMesh) grows the boulder from its own base point in world space.
+// "already fully faded in" (construction/syncNow).
+//
+// Round 17: replaced the round-15 full 0->1 scale-in with a small residual scale ramp
+// (SPAWN_SCALE_MIN -> 1) plus a dithered fragment-shader fade (see ROCK_FRAGMENT_GLSL) - mirrors
+// vegetation.ts's own round-17 change (SPAWN_SCALE_MIN is vegetation.ts's exported constant; kept
+// as a literal here rather than imported since it's GLSL, not JS - same pattern SPAWN_FADE_SECONDS
+// already used).
 const float SPAWN_FADE_SECONDS = 0.4;
+const float SPAWN_SCALE_MIN = 0.72;
 
 void main(void) {
   mat4 instMat = mat4(aInstCol0, aInstCol1, aInstCol2, aInstCol3);
@@ -16695,8 +16730,10 @@ void main(void) {
   float age = uTime - aInstExtra.z;
   float fadeT = clamp(age / SPAWN_FADE_SECONDS, 0.0, 1.0);
   fadeT = fadeT * fadeT * (3.0 - 2.0 * fadeT);
+  vFadeT = fadeT;
 
-  vec4 worldPos4 = model * vec4(aPosition * fadeT, 1.0);
+  float scaleRamp = mix(SPAWN_SCALE_MIN, 1.0, fadeT);
+  vec4 worldPos4 = model * vec4(aPosition * scaleRamp, 1.0);
   vNormal = normalize(mat3(model) * aNormal);
   vWorldPos = worldPos4.xyz;
   // Per-instance value jitter (aInstExtra.x) + a small warm/cool hue jitter (aInstExtra.y) -
@@ -16712,6 +16749,7 @@ precision highp float;
 varying vec3 vNormal;
 varying vec3 vWorldPos;
 varying vec3 vColor;
+varying float vFadeT;
 
 uniform vec3 view_position;
 uniform vec3 light_globalAmbient;
@@ -16720,7 +16758,15 @@ uniform float fog_density;
 uniform vec3 uSunDirection;
 uniform vec3 uSunColor;
 
+// Round 17: mirrors vegetation.ts's VEGETATION_FRAGMENT_GLSL dither exactly - see its doc for why.
+float ditherNoise(vec2 fragCoord) {
+  return fract(52.9829189 * fract(dot(fragCoord, vec2(0.06711056, 0.00583715))));
+}
+
 void main(void) {
+  if (vFadeT < 0.999) {
+    if (ditherNoise(gl_FragCoord.xy) > vFadeT) discard;
+  }
   vec3 N = normalize(vNormal);
   vec3 V = normalize(view_position - vWorldPos);
   if (dot(N, V) < 0.0) N = -N;
