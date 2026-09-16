@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canyon Explorer — Grass Density Lab</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23c86a2e'/%3E%3Cpath d='M0 70 L30 35 L50 60 L70 25 L100 65 L100 100 L0 100 Z' fill='%238a3a1e'/%3E%3Ccircle cx='75' cy='25' r='12' fill='%23ffd89a'/%3E%3C/svg%3E" />
+    <!--
+      Same zero-external-network approach as the main artifact-build-src pipeline: PlayCanvas is
+      bundled directly into this app's own JS via a normal `import * as pc from 'playcanvas'`
+      (see src/main.ts and every src/terrain, src/scene module) instead of an external CDN
+      <script> tag - a published Claude Artifact's CSP blocks the runtime fetch/XHR/WebSocket
+      traffic the engine's CDN loading path triggers even from an approved host, so bundling is
+      what actually eliminates that dependency. This page has NO external script tags at all.
+    -->
+    <style>
+      :root {
+        --bg: #120b07;
+        --panel: rgba(28, 20, 14, 0.74);
+        --panel-border: rgba(255, 197, 138, 0.22);
+        --text: #f3e4d0;
+        --text-dim: rgba(243, 228, 208, 0.68);
+        --accent: #e2872f;
+        --accent-strong: #ffb060;
+        --accent-ink: #221304;
+        --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        font-family: var(--font-body);
+        color: var(--text);
+      }
+
+      #app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      canvas#canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        touch-action: none;
+        background: var(--bg);
+      }
+
+      #hud {
+        position: absolute;
+        top: max(16px, env(safe-area-inset-top, 0px));
+        left: max(16px, env(safe-area-inset-left, 0px));
+        right: 16px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      #hud > * { pointer-events: auto; }
+
+      .panel {
+        background: var(--panel);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--panel-border);
+        border-radius: 12px;
+        padding: 11px 13px;
+        color: var(--text);
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
+        max-width: min(340px, 100%);
+        box-sizing: border-box;
+      }
+
+      #title {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        margin: 0 0 2px 0;
+      }
+      #subtitle {
+        font-size: 11.5px;
+        color: var(--text-dim);
+        margin: 0;
+      }
+
+      #caption {
+        font-size: 11.5px;
+        line-height: 1.5;
+        color: var(--text-dim);
+      }
+
+      /* Live FPS readout - the most prominent panel, per the "see the performance cost as you
+         click" requirement: large, high-contrast, warm-accent numeral, not tucked in status
+         text. */
+      #fps-panel {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      #fps-big {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--accent-strong);
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.01em;
+      }
+      #fps-sub {
+        font-size: 11px;
+        color: var(--text-dim);
+        font-variant-numeric: tabular-nums;
+      }
+
+      #densities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .loc-btn {
+        background: rgba(100, 66, 32, 0.5);
+        border: 1px solid var(--panel-border);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 7px 11px;
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.1s ease;
+      }
+      .loc-btn:hover { background: rgba(210, 128, 54, 0.55); }
+      .loc-btn:focus-visible {
+        outline: 2px solid var(--accent-strong);
+        outline-offset: 2px;
+      }
+      .loc-btn.active {
+        background: var(--accent);
+        border-color: var(--accent-strong);
+        color: var(--accent-ink);
+        font-weight: 600;
+      }
+
+      #status {
+        font-size: 11.5px;
+        color: var(--text-dim);
+        min-height: 14px;
+      }
+      #help {
+        font-size: 11px;
+        line-height: 1.55;
+        color: var(--text-dim);
+      }
+
+      #loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        background: radial-gradient(ellipse at center, #291a0d 0%, #120b07 100%);
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: 13.5px;
+        z-index: 20;
+        transition: opacity 0.4s ease;
+      }
+      #loading.hidden { opacity: 0; pointer-events: none; }
+
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 180, 100, 0.25);
+        border-top-color: var(--accent-strong);
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .spinner { animation-duration: 2.4s; }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-ChgEqDyr.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="canvas"></canvas>
+      <div id="hud">
+        <div class="panel">
+          <p id="title">Grass Density Lab</p>
+          <p id="subtitle">Yosemite Valley &middot; ground-level test camera</p>
+          <div id="caption">Grass density test — higher density looks better but costs more frame time, especially in software-rendered browsers/sandboxes.</div>
+        </div>
+        <div class="panel" id="fps-panel">
+          <span id="fps-big">-- fps</span>
+          <span id="fps-sub">-- ms/frame</span>
+        </div>
+        <div class="panel" id="densities"></div>
+        <div class="panel">
+          <div id="status">Loading…</div>
+          <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
+        </div>
+      </div>
+      <div id="loading">
+        <div class="spinner"></div>
+        <div id="loading-text">Loading terrain&hellip;</div>
+      </div>
+    </div>
+  </body>
+</html>
