@@ -95,6 +95,19 @@
         line-height: 1.5;
         opacity: 0.8;
       }
+      /* Low-key discoverability hint for the Escape-toggled diagnostic panel (see #diag-overlay
+         below, src/diagnostics.ts, main.ts) - that panel has no other affordance pointing at it,
+         so without this it's effectively a hidden feature. Deliberately quieter than #help (dimmer,
+         smaller, no bullet-separated list) so it reads as a footnote, not a second call-to-action -
+         same dark-glass/warm-accent panel it already sits inside, just a muted warm-accent tint
+         instead of the default off-white text color. */
+      #diag-hint {
+        font-size: 10px;
+        line-height: 1.5;
+        opacity: 0.55;
+        color: #e6b98a;
+        margin-top: 2px;
+      }
       #perf-header {
         display: flex;
         align-items: center;
@@ -250,7 +263,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Up40YZWu.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-DTPkqeli.js"></script>
   </head>
   <body>
     <div id="app">
@@ -271,6 +284,7 @@
         <div class="panel">
           <div id="status">Ready</div>
           <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
+          <div id="diag-hint">Esc &mdash; diagnostics</div>
         </div>
         <!-- Perf/diagnostic overlay (see src/perf.ts, main.ts). Rolling-average fps is also
              appended to #status above; this panel adds the fuller breakdown (min/max/1% low,
