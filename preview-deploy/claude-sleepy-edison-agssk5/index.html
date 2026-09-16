@@ -123,7 +123,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-BlWGBLuC.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-CsikzjeX.js"></script>
   </head>
   <body>
     <div id="app">
@@ -134,6 +134,13 @@
           <p id="subtitle">Real-world terrain, stylized rendering</p>
         </div>
         <div class="panel" id="locations"></div>
+        <!-- "Classic View" backup toggle (see scene/sky.ts, terrain/locations.ts's
+             LocationPreset.classicView, and main.ts). Hidden by default and only shown for a
+             location whose default view has a golden-hour atmosphere variant with a classic
+             backup to switch to (currently just Grand Canyon). -->
+        <div class="panel" id="classic-view-panel" style="display: none;">
+          <button id="classic-view-toggle" class="loc-btn">Classic View</button>
+        </div>
         <div class="panel">
           <div id="status">Ready</div>
           <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
