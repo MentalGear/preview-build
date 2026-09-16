@@ -1,0 +1,13 @@
+Pine_1.gltf / Pine_1.bin / Bark_NormalTree.png / Bark_NormalTree_Normal.png / Leaf_Pine_C.png
+
+Source: Quaternius "Stylized Nature MegaKit" (Standard/free tier), downloaded from
+https://quaternius.itch.io/stylized-nature-megakit on 2026-09-16.
+
+License: CC0 1.0 Universal (Public Domain Dedication)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Free for personal, educational and commercial use, no attribution required.
+Models by Quaternius (https://quaternius.com, https://www.patreon.com/quaternius).
+
+Used here only for a vegetation-pipeline pilot comparison (see
+src/terrain/vegPilot.ts) - not yet part of the shipped app.
