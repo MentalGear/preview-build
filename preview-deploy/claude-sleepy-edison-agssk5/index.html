@@ -95,6 +95,38 @@
         line-height: 1.5;
         opacity: 0.8;
       }
+      #perf-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      #perf-title {
+        font-size: 11px;
+        font-weight: 700;
+        opacity: 0.85;
+        letter-spacing: 0.02em;
+      }
+      #perf-toggle {
+        padding: 3px 8px;
+        font-size: 10px;
+      }
+      #perf-detail {
+        font-size: 11px;
+        opacity: 0.85;
+        line-height: 1.6;
+        margin-top: 4px;
+      }
+      #perf-detail.collapsed {
+        display: none;
+      }
+      #perf-fps-line {
+        font-variant-numeric: tabular-nums;
+      }
+      #perf-ms-line {
+        font-variant-numeric: tabular-nums;
+        opacity: 0.75;
+      }
       #loading {
         position: absolute;
         inset: 0;
@@ -123,7 +155,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-CsikzjeX.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-CvWuBUTr.js"></script>
   </head>
   <body>
     <div id="app">
@@ -144,6 +176,21 @@
         <div class="panel">
           <div id="status">Ready</div>
           <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
+        </div>
+        <!-- Perf/diagnostic overlay (see src/perf.ts, main.ts). Rolling-average fps is also
+             appended to #status above; this panel adds the fuller breakdown (min/max/1% low,
+             plus a JS-update-vs-render ms split) without cluttering that single-line summary.
+             Visible by default since this is meant as a real diagnostic tool, not something
+             that hides how slow a software-rendered frame actually is - see main.ts. -->
+        <div class="panel" id="perf-panel">
+          <div id="perf-header">
+            <span id="perf-title">Perf</span>
+            <button id="perf-toggle" class="loc-btn" type="button">Hide</button>
+          </div>
+          <div id="perf-detail">
+            <div id="perf-fps-line">Collecting samples&hellip;</div>
+            <div id="perf-ms-line"></div>
+          </div>
         </div>
       </div>
       <div id="loading">
