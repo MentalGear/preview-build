@@ -127,6 +127,101 @@
         font-variant-numeric: tabular-nums;
         opacity: 0.75;
       }
+      /* Escape-toggled diagnostic panel (see src/diagnostics.ts, main.ts). Distinct from the
+         always-visible #perf-panel above: this is a much fuller capture (backend/GPU info,
+         refresh-rate estimate, ring-buffered frame/event history) meant to be opened on demand
+         and downloaded, not glanced at continuously - so it's hidden until Escape is pressed and
+         sits centered/floating rather than in the corner HUD stack. Same dark-glass/warm-accent
+         visual language as .panel above, just larger and with its own backdrop scrim so it reads
+         clearly over the 3D scene. */
+      #diag-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 7, 4, 0.45);
+      }
+      #diag-overlay.hidden {
+        display: none;
+      }
+      #diag-panel {
+        width: min(640px, 92vw);
+        max-height: 86vh;
+        overflow-y: auto;
+        background: rgba(26, 19, 13, 0.92);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 200, 140, 0.3);
+        border-radius: 12px;
+        padding: 16px 18px;
+        color: #f5e6d3;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      #diag-panel h2 {
+        font-size: 15px;
+        margin: 0 0 2px 0;
+      }
+      #diag-panel .diag-sub {
+        font-size: 11px;
+        opacity: 0.7;
+        margin: 0 0 12px 0;
+      }
+      #diag-panel h3 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        opacity: 0.75;
+        margin: 14px 0 6px 0;
+        border-top: 1px solid rgba(255, 200, 140, 0.18);
+        padding-top: 10px;
+      }
+      #diag-panel h3:first-of-type {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+      }
+      #diag-panel dl {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3px 10px;
+        margin: 0;
+      }
+      #diag-panel dt {
+        opacity: 0.65;
+        white-space: nowrap;
+      }
+      #diag-panel dd {
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+        word-break: break-word;
+      }
+      #diag-panel .diag-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      #diag-download {
+        background: rgba(230, 140, 50, 0.85);
+        border: 1px solid rgba(255, 220, 170, 0.8);
+        color: #241505;
+        font-weight: 700;
+        border-radius: 7px;
+        padding: 8px 14px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      #diag-download:hover {
+        background: rgba(250, 160, 65, 0.95);
+      }
+      #diag-download-status {
+        font-size: 11px;
+        opacity: 0.75;
+      }
       #loading {
         position: absolute;
         inset: 0;
@@ -155,7 +250,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-CvWuBUTr.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Up40YZWu.js"></script>
   </head>
   <body>
     <div id="app">
@@ -196,6 +291,50 @@
       <div id="loading">
         <div class="spinner"></div>
         <div id="loading-text">Fetching elevation data&hellip;</div>
+      </div>
+      <!-- Escape-toggled diagnostic panel (see src/diagnostics.ts, main.ts). Hidden by default;
+           main.ts toggles the "hidden" class on #diag-overlay when Escape is pressed. Content of
+           #diag-body is populated/refreshed entirely from JS - the markup here is just static
+           section scaffolding (dt/dd pairs filled in by id). -->
+      <div id="diag-overlay" class="hidden">
+        <div id="diag-panel" role="dialog" aria-label="Diagnostic panel">
+          <h2>Diagnostics</h2>
+          <p class="diag-sub">Press Escape to close &bull; live capture, safe to leave open</p>
+
+          <h3>Graphics backend</h3>
+          <dl>
+            <dt>Backend</dt><dd id="diag-backend">&mdash;</dd>
+            <dt>GPU</dt><dd id="diag-gpu">&mdash;</dd>
+            <dt>Est. display refresh rate</dt><dd id="diag-refresh">&mdash;</dd>
+          </dl>
+
+          <h3>Frame timing (live)</h3>
+          <dl>
+            <dt>FPS</dt><dd id="diag-fps">&mdash;</dd>
+            <dt>Frame time</dt><dd id="diag-frametime">&mdash;</dd>
+            <dt>Stutter events</dt><dd id="diag-stutters">&mdash;</dd>
+            <dt>Grass rebuilds</dt><dd id="diag-grass">&mdash;</dd>
+          </dl>
+
+          <h3>Scene</h3>
+          <dl>
+            <dt>Location</dt><dd id="diag-location">&mdash;</dd>
+            <dt>Camera</dt><dd id="diag-camera">&mdash;</dd>
+            <dt>Instances / tris / draws</dt><dd id="diag-scenestats">&mdash;</dd>
+          </dl>
+
+          <h3>Environment</h3>
+          <dl>
+            <dt>Viewport</dt><dd id="diag-viewport">&mdash;</dd>
+            <dt>Device pixel ratio</dt><dd id="diag-dpr">&mdash;</dd>
+            <dt>User agent</dt><dd id="diag-ua">&mdash;</dd>
+          </dl>
+
+          <div class="diag-footer">
+            <button id="diag-download" type="button">Download Log</button>
+            <span id="diag-download-status"></span>
+          </div>
+        </div>
       </div>
     </div>
   </body>
