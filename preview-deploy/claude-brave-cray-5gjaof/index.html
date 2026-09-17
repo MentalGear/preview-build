@@ -5,8 +5,8 @@
         <link rel="icon" type="image/png" href="./assets/playcanvas-ysrUGN-S.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bird Flight</title>
-      <script type="module" crossorigin src="./assets/index-CNZOpc-e.js"></script>
-      <link rel="stylesheet" crossorigin href="./assets/index-CYqC9Edh.css">
+      <script type="module" crossorigin src="./assets/index-B08x8_ES.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-D6edX3K6.css">
     </head>
     <body>
         <canvas id="application-canvas" tabindex="0"></canvas>
@@ -14,6 +14,23 @@
         <div id="stall-indicator" class="hidden">STALLED</div>
         <div id="version-info"></div>
         <div id="freelook-hint">C: mouse look (off)</div>
+        <div id="pause-menu" class="hidden">
+            <div id="pause-menu-panel">
+                <h1>Paused</h1>
+                <button id="pause-resume" type="button">Resume</button>
+                <div class="pause-menu-section">
+                    <h2>Level</h2>
+                    <button id="level-bird" type="button" class="level-option">Open Sky</button>
+                    <p class="pause-menu-desc">The default flight model - climb, dive, flap, no limits.</p>
+                    <button id="level-wingsuit" type="button" class="level-option">Wingsuit Prototype</button>
+                    <p class="pause-menu-desc">
+                        No flapping - stay low and glide. Fly through a launch pad near the ground to
+                        get thrown high; that's the only way up.
+                    </p>
+                </div>
+                <button id="pause-debug-log" type="button">Debug Log</button>
+            </div>
+        </div>
         <div id="debug-overlay" class="hidden">
             <div id="debug-overlay-header">
                 <span>Debug log (Esc to close)</span>
