@@ -122,9 +122,21 @@
         letter-spacing: 0.04em;
       }
       #cloud-density-buttons,
-      #cloud-size-buttons {
+      #cloud-size-buttons,
+      #cloud-quality-buttons {
         display: flex;
         gap: 6px;
+      }
+      /* "Cloud Quality" (see main.ts/terrain/cloudVolumetric.ts) - gates flyable clouds v3, the
+         bounded raymarched volume. A dimmer sub-label on the "Volumetric" option flags it as the
+         heavier/experimental choice, distinct from Density/Size's three equally-weighted presets
+         above (those just retune an already-cheap system; this switches on a materially more
+         expensive one). */
+      #cloud-quality-buttons .loc-btn .quality-sub {
+        display: block;
+        font-size: 0.72em;
+        opacity: 0.7;
+        font-weight: normal;
       }
       /* Attribution required by the imagery provider's terms whenever real imagery is displayed
          (see terrain/imagery.ts's ESRI_ATTRIBUTION) - same quiet footnote treatment as #diag-hint.
@@ -309,7 +321,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Dq4vy4qB.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-bn9rh7NG.js"></script>
   </head>
   <body>
     <div id="app">
@@ -405,6 +417,17 @@
               <button class="loc-btn" type="button" data-preset="small">Small</button>
               <button class="loc-btn active" type="button" data-preset="normal">Normal</button>
               <button class="loc-btn" type="button" data-preset="large">Large</button>
+            </div>
+            <!-- "Cloud Quality" (see main.ts, terrain/cloudVolumetric.ts) - flyable clouds v3: an
+                 opt-in, localized raymarched cloud volume with real depth/self-shadowing/light
+                 shafts, rendered only within a small bounded region near a cloud marker while this
+                 preset is "Volumetric" AND the camera is close to one. Defaults to "Standard" (v1's
+                 fog whiteout + v2's puffs only, unchanged) - this tier is deliberately opt-in, not
+                 the default, per its own perf caveats (see BACKLOG.md). -->
+            <div class="cloud-control-label">Cloud quality</div>
+            <div id="cloud-quality-buttons">
+              <button class="loc-btn active" type="button" data-preset="standard">Standard</button>
+              <button class="loc-btn" type="button" data-preset="volumetric">Volumetric<span class="quality-sub">experimental</span></button>
             </div>
           </div>
 
