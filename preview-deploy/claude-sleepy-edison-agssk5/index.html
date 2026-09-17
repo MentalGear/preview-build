@@ -90,6 +90,31 @@
         opacity: 0.85;
         min-height: 14px;
       }
+      /* Real-imagery terrain rendering toggle (see terrain/imagery.ts, main.ts). Lives inside
+         #diag-panel's "Settings" section (see #diag-overlay below) - same two-button shape as the
+         location group in the main HUD, just reused here. */
+      #imagery-buttons {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
+      /* "Clouds" toggle (see main.ts). Same shape as #imagery-buttons above, just a single button
+         and a bit of top spacing since it sits right after #imagery-attribution. */
+      #clouds-buttons {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      /* Attribution required by the imagery provider's terms whenever real imagery is displayed
+         (see terrain/imagery.ts's ESRI_ATTRIBUTION) - same quiet footnote treatment as #diag-hint.
+         Empty (and so invisible) until real-imagery mode actually loads successfully. */
+      #imagery-attribution {
+        font-size: 10px;
+        line-height: 1.4;
+        opacity: 0.55;
+        color: #e6b98a;
+        margin-top: 4px;
+      }
       #help {
         font-size: 11px;
         line-height: 1.5;
@@ -263,7 +288,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Dw_sp1ot.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-v8MLRP7V.js"></script>
   </head>
   <body>
     <div id="app">
@@ -284,7 +309,7 @@
         <div class="panel">
           <div id="status">Ready</div>
           <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
-          <div id="diag-hint">Esc &mdash; diagnostics</div>
+          <div id="diag-hint">Esc &mdash; diagnostics &amp; settings</div>
         </div>
         <!-- Perf/diagnostic overlay (see src/perf.ts, main.ts). Rolling-average fps is also
              appended to #status above; this panel adds the fuller breakdown (min/max/1% low,
@@ -314,6 +339,30 @@
         <div id="diag-panel" role="dialog" aria-label="Diagnostic panel">
           <h2>Diagnostics</h2>
           <p class="diag-sub">Press Escape to close &bull; live capture, safe to leave open</p>
+
+          <!-- Real-imagery terrain rendering toggle (see terrain/imagery.ts, terrain/terrainMesh.ts's
+               uImageryBlend, main.ts). Independent of location/Classic View - a separate rendering
+               concern rather than a per-location camera/lighting backup. Switches between this
+               app's default procedural/stylized toon terrain shading and real satellite/aerial
+               imagery draped onto the SAME terrain mesh, fetched from the free, keyless Esri World
+               Imagery tile service. Lives here (Escape menu) rather than the main HUD so opt-in
+               rendering toggles have one consolidated home instead of scattering buttons across the
+               corner HUD stack. -->
+          <h3>Settings</h3>
+          <div id="imagery-buttons">
+            <button id="imagery-stylized-btn" class="loc-btn active" type="button">Stylized</button>
+            <button id="imagery-real-btn" class="loc-btn" type="button">Real Imagery</button>
+          </div>
+          <div id="imagery-attribution"></div>
+
+          <!-- "Clouds" toggle (see scene/sky.ts's createCloudSkyDome/createGoldenHourSkyDome,
+               terrain/locations.ts's SkyTheme.clouds, main.ts). Not location-gated (every location
+               now has some form of cloud config) so always shown here, and defaults "active" since
+               clouds are on by default - see main.ts's cloudsEnabled. Grouped with the Real Imagery
+               toggle above under the same Settings heading rather than a separate section. -->
+          <div id="clouds-buttons">
+            <button id="clouds-toggle" class="loc-btn active" type="button">Clouds</button>
+          </div>
 
           <h3>Graphics backend</h3>
           <dl>
