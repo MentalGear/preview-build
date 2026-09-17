@@ -1,0 +1,1 @@
+var e=[{id:`de`,label:`Däitsch`},{id:`fr`,label:`Franséisch`},{id:`en`,label:`Englesch`}],t=398653625;function n(e){return`${Math.round(e/1e6)} MB`}var r=class extends Error{constructor(e){super(e),this.name=`SupertonicError`}};export{n as i,t as n,r,e as t};
