@@ -105,6 +105,27 @@
         gap: 6px;
         margin-top: 8px;
       }
+      /* "Cloud Density"/"Cloud Size" presets (see main.ts). Two more button groups directly below
+         #clouds-buttons above, same .loc-btn/.active shape throughout - a small uppercase label
+         above each group (the only thing distinguishing these three-/two-way groups from the
+         single-button toggles elsewhere in Settings) rather than a new control type. */
+      #cloud-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 8px;
+      }
+      .cloud-control-label {
+        font-size: 10px;
+        opacity: 0.6;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      #cloud-density-buttons,
+      #cloud-size-buttons {
+        display: flex;
+        gap: 6px;
+      }
       /* Attribution required by the imagery provider's terms whenever real imagery is displayed
          (see terrain/imagery.ts's ESRI_ATTRIBUTION) - same quiet footnote treatment as #diag-hint.
          Empty (and so invisible) until real-imagery mode actually loads successfully. */
@@ -288,7 +309,7 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-v8MLRP7V.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Dm07FjkW.js"></script>
   </head>
   <body>
     <div id="app">
@@ -362,6 +383,29 @@
                toggle above under the same Settings heading rather than a separate section. -->
           <div id="clouds-buttons">
             <button id="clouds-toggle" class="loc-btn active" type="button">Clouds</button>
+          </div>
+
+          <!-- "Cloud Density"/"Cloud Size" presets (see scene/sky.ts's coverageMultiplier/
+               scaleMultiplier params, main.ts). Multiply each location's authored cloud coverage/
+               noise scale rather than replacing it, so every location keeps its own tuned look at
+               the default "Scattered"/"Normal" preset (multiplier 1, byte-identical to the
+               pre-existing behavior) while still giving real live control over how much sky the
+               clouds cover and how big the puffs read. Grouped under the same Clouds control
+               above rather than a new heading - these only matter while Clouds is on, same as the
+               toggle itself. -->
+          <div id="cloud-controls">
+            <div class="cloud-control-label">Cloud density</div>
+            <div id="cloud-density-buttons">
+              <button class="loc-btn" type="button" data-preset="clear">Clear</button>
+              <button class="loc-btn active" type="button" data-preset="scattered">Scattered</button>
+              <button class="loc-btn" type="button" data-preset="overcast">Overcast</button>
+            </div>
+            <div class="cloud-control-label">Cloud size</div>
+            <div id="cloud-size-buttons">
+              <button class="loc-btn" type="button" data-preset="small">Small</button>
+              <button class="loc-btn active" type="button" data-preset="normal">Normal</button>
+              <button class="loc-btn" type="button" data-preset="large">Large</button>
+            </div>
           </div>
 
           <h3>Graphics backend</h3>
