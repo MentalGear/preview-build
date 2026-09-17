@@ -32,9 +32,11 @@ const CACHE_NAME = 'touch-talk-v1';
 async function precacheShell() {
 	const cache = await caches.open(CACHE_NAME);
 	const scope = self.registration.scope;
-	await cache.addAll([scope, `${scope}manifest.webmanifest`]);
 	try {
-		const html = await (await fetch(scope)).text();
+		const shellResponse = await fetch(scope, { cache: 'no-store' });
+		await cache.put(scope, shellResponse.clone());
+		await cache.add(`${scope}manifest.webmanifest`);
+		const html = await shellResponse.text();
 		const urls = new Set();
 		for (const match of html.matchAll(/(?:href|src)="([^"]+\.(?:js|css))"/g)) {
 			urls.add(new URL(match[1], scope).href);
@@ -66,12 +68,24 @@ self.addEventListener('activate', (event) => {
 });
 
 /**
- * Cache-first for same-origin GET requests (the app shell, JS/CSS bundles,
- * dictionaries), falling back to network and caching a successful result —
- * so a repeat visit (including fully offline) can still load the app and
- * its dictionaries. Cross-origin requests (the TTS API, the CORS proxy in
- * front of it) are deliberately left untouched, straight to network: those
- * responses are session-specific and shouldn't be served stale.
+ * Network-first for same-origin GET requests (the app shell, JS/CSS bundles,
+ * dictionaries): always try the network first and cache a successful result,
+ * only falling back to the cache if the network fetch fails outright (e.g.
+ * offline) — so a repeat visit still gets the latest deploy when online, and
+ * still opens (from whatever was last cached) when fully offline. Cross-origin
+ * requests (the TTS API, the CORS proxy in front of it) are deliberately left
+ * untouched, straight to network: those responses are session-specific and
+ * shouldn't be served stale.
+ *
+ * Navigation requests (the HTML shell) additionally pass `cache: 'no-store'`:
+ * without it, `fetch()` here still honors the *browser's own* HTTP cache per
+ * the server's `Cache-Control` header (GitHub Pages/Fastly serves index.html
+ * with `max-age=600`), so "network-first" at this Cache-API level could still
+ * silently resolve to a stale HTTP-cached response without ever reaching the
+ * CDN's current content. `no-store` forces every navigation through to the
+ * actual network. Not applied to JS/CSS/etc. — those are content-hashed
+ * filenames (a change always produces a new URL), so they're safe to let the
+ * browser cache normally.
  */
 self.addEventListener('fetch', (event) => {
 	const request = event.request;
@@ -83,7 +97,9 @@ self.addEventListener('fetch', (event) => {
 			const cache = await caches.open(CACHE_NAME);
 			const cached = await cache.match(request);
 			try {
-				const response = await fetch(request);
+				const response = await fetch(
+					request.mode === 'navigate' ? new Request(request, { cache: 'no-store' }) : request
+				);
 				if (response.ok) cache.put(request, response.clone());
 				return response;
 			} catch (err) {
