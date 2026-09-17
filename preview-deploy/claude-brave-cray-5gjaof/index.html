@@ -5,8 +5,8 @@
         <link rel="icon" type="image/png" href="./assets/playcanvas-ysrUGN-S.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Bird Flight</title>
-      <script type="module" crossorigin src="./assets/index-i3gfhfMp.js"></script>
-      <link rel="stylesheet" crossorigin href="./assets/index-D6edX3K6.css">
+      <script type="module" crossorigin src="./assets/index-CVzelWDe.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-BigUUMZP.css">
     </head>
     <body>
         <canvas id="application-canvas" tabindex="0"></canvas>
@@ -36,6 +36,24 @@
                         Reacts to climbing and diving - the track brightens on a climb and gets heavier
                         on a dive.
                     </p>
+                </div>
+                <div class="pause-menu-section">
+                    <h2>Audio</h2>
+                    <label class="volume-row" for="volume-music">
+                        <span class="volume-row-label">Music</span>
+                        <input type="range" id="volume-music" min="0" max="100" step="1" />
+                        <span class="volume-row-value" id="volume-music-value">100%</span>
+                    </label>
+                    <label class="volume-row" for="volume-wind">
+                        <span class="volume-row-label">Wind</span>
+                        <input type="range" id="volume-wind" min="0" max="100" step="1" />
+                        <span class="volume-row-value" id="volume-wind-value">70%</span>
+                    </label>
+                    <label class="volume-row" for="volume-sfx">
+                        <span class="volume-row-label">SFX</span>
+                        <input type="range" id="volume-sfx" min="0" max="100" step="1" />
+                        <span class="volume-row-value" id="volume-sfx-value">60%</span>
+                    </label>
                 </div>
                 <button id="pause-debug-log" type="button">Debug Log</button>
             </div>
