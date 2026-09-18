@@ -85,6 +85,15 @@
         color: #241505;
         font-weight: 700;
       }
+      /* Round 80 (defect audit - `switchLocation` race): location buttons are disabled (real
+         `disabled` attribute, see main.ts's setLocationButtonsDisabled) for the duration of a load,
+         so a fast double-click can't start a second overlapping load - dimmed the same way
+         .control-row.disabled dims a dependent settings-panel control, so "not clickable right now"
+         reads consistently across the whole HUD. */
+      .loc-btn:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
       #status {
         font-size: 11px;
         opacity: 0.85;
@@ -370,7 +379,7 @@
         transition: width 0.15s ease-out;
       }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-9_w5KSvA.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-Dthp8x5Y.js"></script>
   </head>
   <body>
     <div id="app">
