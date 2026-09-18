@@ -320,8 +320,33 @@
         animation: spin 0.9s linear infinite;
       }
       @keyframes spin { to { transform: rotate(360deg); } }
+      /* Numeric loading progress bar (see main.ts's LOAD_STEPS/setLoadProgress). Sits below
+         #loading-text, filled to an exact percentage computed from real completed work (weighted
+         load steps, with the elevation-tile-fetch step's real loaded/total count filling in its
+         own share) - never a timed/fake animation. Same warm-accent color as the spinner's active
+         arc (#ffb060) so it reads as one consistent loading language, just a second, more precise
+         way of showing the same progress. */
+      #loading-bar {
+        width: 220px;
+        max-width: 60vw;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 180, 100, 0.18);
+        overflow: hidden;
+      }
+      #loading-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: #ffb060;
+        border-radius: 3px;
+        /* Short, snappy transition (not the multi-second kind that would make the fill visibly
+           lag behind - or worse, look like a fake animated crawl toward - the real percentage it
+           was just set to) purely so a step-boundary jump (e.g. 45% -> 50%) doesn't look like a
+           single hard-cut frame. */
+        transition: width 0.15s ease-out;
+      }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-DbmQtjSs.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-TioVMUHC.js"></script>
   </head>
   <body>
     <div id="app">
@@ -362,7 +387,8 @@
       </div>
       <div id="loading">
         <div class="spinner"></div>
-        <div id="loading-text">Fetching elevation data&hellip;</div>
+        <div id="loading-text">Loading&hellip; 0% &mdash; Step 1/5: Fetching elevation data</div>
+        <div id="loading-bar"><div id="loading-bar-fill"></div></div>
       </div>
       <!-- Escape-toggled diagnostic panel (see src/diagnostics.ts, main.ts). Hidden by default;
            main.ts toggles the "hidden" class on #diag-overlay when Escape is pressed. Content of
