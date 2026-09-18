@@ -90,64 +90,6 @@
         opacity: 0.85;
         min-height: 14px;
       }
-      /* Real-imagery terrain rendering toggle (see terrain/imagery.ts, main.ts). Lives inside
-         #diag-panel's "Settings" section (see #diag-overlay below) - same two-button shape as the
-         location group in the main HUD, just reused here. */
-      #imagery-buttons {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 4px;
-      }
-      /* "Clouds" toggle (see main.ts). Same shape as #imagery-buttons above, just a single button
-         and a bit of top spacing since it sits right after #imagery-attribution. */
-      #clouds-buttons {
-        display: flex;
-        gap: 6px;
-        margin-top: 8px;
-      }
-      /* "Cloud Density"/"Cloud Size" presets (see main.ts). Two more button groups directly below
-         #clouds-buttons above, same .loc-btn/.active shape throughout - a small uppercase label
-         above each group (the only thing distinguishing these three-/two-way groups from the
-         single-button toggles elsewhere in Settings) rather than a new control type. */
-      #cloud-controls {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-top: 8px;
-      }
-      .cloud-control-label {
-        font-size: 10px;
-        opacity: 0.6;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-      #cloud-density-buttons,
-      #cloud-size-buttons,
-      #cloud-quality-buttons {
-        display: flex;
-        gap: 6px;
-      }
-      /* "Cloud Quality" (see main.ts/terrain/cloudVolumetric.ts) - gates flyable clouds v3, the
-         bounded raymarched volume. A dimmer sub-label on the "Volumetric" option flags it as the
-         heavier/experimental choice, distinct from Density/Size's three equally-weighted presets
-         above (those just retune an already-cheap system; this switches on a materially more
-         expensive one). */
-      #cloud-quality-buttons .loc-btn .quality-sub {
-        display: block;
-        font-size: 0.72em;
-        opacity: 0.7;
-        font-weight: normal;
-      }
-      /* Attribution required by the imagery provider's terms whenever real imagery is displayed
-         (see terrain/imagery.ts's ESRI_ATTRIBUTION) - same quiet footnote treatment as #diag-hint.
-         Empty (and so invisible) until real-imagery mode actually loads successfully. */
-      #imagery-attribution {
-        font-size: 10px;
-        line-height: 1.4;
-        opacity: 0.55;
-        color: #e6b98a;
-        margin-top: 4px;
-      }
       #help {
         font-size: 11px;
         line-height: 1.5;
@@ -165,6 +107,88 @@
         opacity: 0.55;
         color: #e6b98a;
         margin-top: 2px;
+      }
+      /* Escape panel Settings/Diagnostics/Controls tabs (see src/ui/settingsPanel.ts's
+         initPanelTabs) - a row of ordinary .loc-btn's, same active-state visual language as every
+         other button group in this app, so no new "tab" look needs inventing. */
+      #panel-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .tab-content.hidden {
+        display: none;
+      }
+      /* One reusable control-row pattern (label + control + optional one-line hint) backing every
+         setting in the Settings tab (see src/ui/settingsPanel.ts) - replaces what used to be a
+         separate hand-styled CSS block per control group. */
+      .control-row {
+        margin-bottom: 14px;
+      }
+      .control-row-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: 26px;
+      }
+      .control-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        opacity: 0.75;
+      }
+      .control-value {
+        font-size: 11px;
+        font-variant-numeric: tabular-nums;
+        opacity: 0.85;
+        white-space: nowrap;
+      }
+      .control-hint {
+        font-size: 10px;
+        line-height: 1.45;
+        opacity: 0.55;
+        color: #e6b98a;
+        margin-top: 4px;
+      }
+      .control-hint:empty {
+        display: none;
+      }
+      .control-slider {
+        width: 100%;
+        display: block;
+        accent-color: #e6923c;
+        margin: 8px 0 0 0;
+        cursor: pointer;
+      }
+      .control-slider:disabled {
+        cursor: default;
+      }
+      .segmented-group {
+        display: flex;
+        gap: 6px;
+      }
+      /* Small dim sub-label under a segmented option's main label (see settingsPanel.ts's Cloud
+         Quality row - flags Volumetric's real measured cost). */
+      .option-sub {
+        display: block;
+        font-size: 0.72em;
+        opacity: 0.7;
+        font-weight: normal;
+      }
+      /* Dependent controls (everything under "Clouds" besides the master toggle itself) while
+         that toggle is off - visually dimmed AND functionally non-interactive (the row's own
+         button/input elements get a real `disabled` attribute, not just this class - see
+         settingsPanel.ts's RowHandle.setDisabled), so a disabled slider isn't still reachable by
+         Tab. */
+      .control-row.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .loc-btn:focus-visible,
+      .control-slider:focus-visible {
+        outline: 2px solid rgba(255, 210, 150, 0.9);
+        outline-offset: 2px;
       }
       #perf-header {
         display: flex;
@@ -346,7 +370,7 @@
         transition: width 0.15s ease-out;
       }
     </style>
-    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-TioVMUHC.js"></script>
+    <script type="module" crossorigin src="/preview-build/preview-deploy/claude-sleepy-edison-agssk5/assets/index-9_w5KSvA.js"></script>
   </head>
   <body>
     <div id="app">
@@ -367,7 +391,7 @@
         <div class="panel">
           <div id="status">Ready</div>
           <div id="help">Drag to look &bull; WASD to move &bull; Scroll / Shift to change speed</div>
-          <div id="diag-hint">Esc &mdash; diagnostics &amp; settings</div>
+          <div id="diag-hint">Esc &mdash; settings &amp; diagnostics</div>
         </div>
         <!-- Perf/diagnostic overlay (see src/perf.ts, main.ts). Rolling-average fps is also
              appended to #status above; this panel adds the fuller breakdown (min/max/1% low,
@@ -390,105 +414,84 @@
         <div id="loading-text">Loading&hellip; 0% &mdash; Step 1/5: Fetching elevation data</div>
         <div id="loading-bar"><div id="loading-bar-fill"></div></div>
       </div>
-      <!-- Escape-toggled diagnostic panel (see src/diagnostics.ts, main.ts). Hidden by default;
-           main.ts toggles the "hidden" class on #diag-overlay when Escape is pressed. Content of
-           #diag-body is populated/refreshed entirely from JS - the markup here is just static
-           section scaffolding (dt/dd pairs filled in by id). -->
+      <!-- Escape-toggled Settings/Diagnostics/Controls panel (see src/ui/settingsPanel.ts,
+           main.ts, src/diagnostics.ts). Hidden by default; main.ts toggles the "hidden" class on
+           #diag-overlay when Escape is pressed. Three tabs share one dialog:
+             - "Settings" - Real Imagery, Clouds and its Density/Size/Altitude/Drift/Quality
+               sub-controls. Built ENTIRELY by settingsPanel.ts's createSettingsPanel() into
+               #settings-root below - no static control markup here at all, unlike the other two
+               tabs, since this one owns its own construction (see that module's doc).
+             - "Diagnostics" - this app's existing live frame-timing/GPU-info capture. Markup here
+               is unchanged from before the tab split (still static section scaffolding, dt/dd
+               pairs filled in by id from main.ts's updateDiagPanel) - only its container moved.
+             - "Controls" - the WASD/mouse-look keybindings (scene/flyCamera.ts), previously
+               undocumented anywhere in the app besides the terse #diag-hint footnote above.
+           initPanelTabs (settingsPanel.ts) owns which tab is visible; main.ts's Escape handler
+           only ever toggles the whole overlay, unchanged. -->
       <div id="diag-overlay" class="hidden">
-        <div id="diag-panel" role="dialog" aria-label="Diagnostic panel">
-          <h2>Diagnostics</h2>
+        <div id="diag-panel" role="dialog" aria-label="Settings and diagnostics">
+          <h2>Settings &amp; Diagnostics</h2>
           <p class="diag-sub">Press Escape to close &bull; live capture, safe to leave open</p>
 
-          <!-- Real-imagery terrain rendering toggle (see terrain/imagery.ts, terrain/terrainMesh.ts's
-               uImageryBlend, main.ts). Independent of location/Classic View - a separate rendering
-               concern rather than a per-location camera/lighting backup. Switches between this
-               app's default procedural/stylized toon terrain shading and real satellite/aerial
-               imagery draped onto the SAME terrain mesh, fetched from the free, keyless Esri World
-               Imagery tile service. Lives here (Escape menu) rather than the main HUD so opt-in
-               rendering toggles have one consolidated home instead of scattering buttons across the
-               corner HUD stack. -->
-          <h3>Settings</h3>
-          <div id="imagery-buttons">
-            <button id="imagery-stylized-btn" class="loc-btn active" type="button">Stylized</button>
-            <button id="imagery-real-btn" class="loc-btn" type="button">Real Imagery</button>
-          </div>
-          <div id="imagery-attribution"></div>
-
-          <!-- "Clouds" toggle (see scene/sky.ts's createCloudSkyDome/createGoldenHourSkyDome,
-               terrain/locations.ts's SkyTheme.clouds, main.ts). Not location-gated (every location
-               now has some form of cloud config) so always shown here, and defaults "active" since
-               clouds are on by default - see main.ts's cloudsEnabled. Grouped with the Real Imagery
-               toggle above under the same Settings heading rather than a separate section. -->
-          <div id="clouds-buttons">
-            <button id="clouds-toggle" class="loc-btn active" type="button">Clouds</button>
+          <div id="panel-tabs" role="tablist" aria-label="Panel section">
+            <button class="loc-btn panel-tab active" type="button" role="tab" id="tab-settings" aria-controls="tabpanel-settings" aria-selected="true">Settings</button>
+            <button class="loc-btn panel-tab" type="button" role="tab" id="tab-diagnostics" aria-controls="tabpanel-diagnostics" aria-selected="false">Diagnostics</button>
+            <button class="loc-btn panel-tab" type="button" role="tab" id="tab-controls" aria-controls="tabpanel-controls" aria-selected="false">Controls</button>
           </div>
 
-          <!-- "Cloud Density"/"Cloud Size" presets (see scene/sky.ts's coverageMultiplier/
-               scaleMultiplier params, main.ts). Multiply each location's authored cloud coverage/
-               noise scale rather than replacing it, so every location keeps its own tuned look at
-               the default "Scattered"/"Normal" preset (multiplier 1, byte-identical to the
-               pre-existing behavior) while still giving real live control over how much sky the
-               clouds cover and how big the puffs read. Grouped under the same Clouds control
-               above rather than a new heading - these only matter while Clouds is on, same as the
-               toggle itself. -->
-          <div id="cloud-controls">
-            <div class="cloud-control-label">Cloud density</div>
-            <div id="cloud-density-buttons">
-              <button class="loc-btn" type="button" data-preset="clear">Clear</button>
-              <button class="loc-btn active" type="button" data-preset="scattered">Scattered</button>
-              <button class="loc-btn" type="button" data-preset="overcast">Overcast</button>
-            </div>
-            <div class="cloud-control-label">Cloud size</div>
-            <div id="cloud-size-buttons">
-              <button class="loc-btn" type="button" data-preset="small">Small</button>
-              <button class="loc-btn active" type="button" data-preset="normal">Normal</button>
-              <button class="loc-btn" type="button" data-preset="large">Large</button>
-            </div>
-            <!-- "Cloud Quality" (see main.ts, terrain/cloudVolumetric.ts) - flyable clouds v3: an
-                 opt-in, localized raymarched cloud volume with real depth/self-shadowing/light
-                 shafts, rendered only within a small bounded region near a cloud marker while this
-                 preset is "Volumetric" AND the camera is close to one. Defaults to "Standard" (v1's
-                 fog whiteout + v2's puffs only, unchanged) - this tier is deliberately opt-in, not
-                 the default, per its own perf caveats (see BACKLOG.md). -->
-            <div class="cloud-control-label">Cloud quality</div>
-            <div id="cloud-quality-buttons">
-              <button class="loc-btn active" type="button" data-preset="standard">Standard</button>
-              <button class="loc-btn" type="button" data-preset="volumetric">Volumetric<span class="quality-sub">experimental</span></button>
+          <div id="tabpanel-settings" class="tab-content" role="tabpanel" aria-labelledby="tab-settings">
+            <div id="settings-root"></div>
+          </div>
+
+          <div id="tabpanel-diagnostics" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-diagnostics">
+            <h3>Graphics backend</h3>
+            <dl>
+              <dt>Backend</dt><dd id="diag-backend">&mdash;</dd>
+              <dt>GPU</dt><dd id="diag-gpu">&mdash;</dd>
+              <dt>Est. display refresh rate</dt><dd id="diag-refresh">&mdash;</dd>
+            </dl>
+
+            <h3>Frame timing (live)</h3>
+            <dl>
+              <dt>FPS</dt><dd id="diag-fps">&mdash;</dd>
+              <dt>Frame time</dt><dd id="diag-frametime">&mdash;</dd>
+              <dt>Stutter events</dt><dd id="diag-stutters">&mdash;</dd>
+              <dt>Grass rebuilds</dt><dd id="diag-grass">&mdash;</dd>
+            </dl>
+
+            <h3>Scene</h3>
+            <dl>
+              <dt>Location</dt><dd id="diag-location">&mdash;</dd>
+              <dt>Camera</dt><dd id="diag-camera">&mdash;</dd>
+              <dt>Instances / tris / draws</dt><dd id="diag-scenestats">&mdash;</dd>
+            </dl>
+
+            <h3>Environment</h3>
+            <dl>
+              <dt>Viewport</dt><dd id="diag-viewport">&mdash;</dd>
+              <dt>Device pixel ratio</dt><dd id="diag-dpr">&mdash;</dd>
+              <dt>User agent</dt><dd id="diag-ua">&mdash;</dd>
+            </dl>
+
+            <div class="diag-footer">
+              <button id="diag-download" type="button">Download Log</button>
+              <span id="diag-download-status"></span>
             </div>
           </div>
 
-          <h3>Graphics backend</h3>
-          <dl>
-            <dt>Backend</dt><dd id="diag-backend">&mdash;</dd>
-            <dt>GPU</dt><dd id="diag-gpu">&mdash;</dd>
-            <dt>Est. display refresh rate</dt><dd id="diag-refresh">&mdash;</dd>
-          </dl>
-
-          <h3>Frame timing (live)</h3>
-          <dl>
-            <dt>FPS</dt><dd id="diag-fps">&mdash;</dd>
-            <dt>Frame time</dt><dd id="diag-frametime">&mdash;</dd>
-            <dt>Stutter events</dt><dd id="diag-stutters">&mdash;</dd>
-            <dt>Grass rebuilds</dt><dd id="diag-grass">&mdash;</dd>
-          </dl>
-
-          <h3>Scene</h3>
-          <dl>
-            <dt>Location</dt><dd id="diag-location">&mdash;</dd>
-            <dt>Camera</dt><dd id="diag-camera">&mdash;</dd>
-            <dt>Instances / tris / draws</dt><dd id="diag-scenestats">&mdash;</dd>
-          </dl>
-
-          <h3>Environment</h3>
-          <dl>
-            <dt>Viewport</dt><dd id="diag-viewport">&mdash;</dd>
-            <dt>Device pixel ratio</dt><dd id="diag-dpr">&mdash;</dd>
-            <dt>User agent</dt><dd id="diag-ua">&mdash;</dd>
-          </dl>
-
-          <div class="diag-footer">
-            <button id="diag-download" type="button">Download Log</button>
-            <span id="diag-download-status"></span>
+          <div id="tabpanel-controls" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-controls">
+            <h3>Camera</h3>
+            <dl>
+              <dt>Look around</dt><dd>Drag with mouse or touch</dd>
+              <dt>Move</dt><dd>W A S D or Arrow keys</dd>
+              <dt>Rise / descend</dt><dd>Space / C (or Left Ctrl)</dd>
+              <dt>Sprint</dt><dd>Hold Shift</dd>
+              <dt>Dolly (zoom)</dt><dd>Mouse wheel</dd>
+            </dl>
+            <h3>Panel</h3>
+            <dl>
+              <dt>Open / close this panel</dt><dd>Esc</dd>
+            </dl>
           </div>
         </div>
       </div>
