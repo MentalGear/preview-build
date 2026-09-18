@@ -544,10 +544,22 @@
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   }
+
+/* Present to a screen reader, absent to the eye. Not `display:none` and not
+   `visibility:hidden` — both of those take it out of the accessibility tree,
+   which is the one place it needs to be. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
 </style>
 </head>
 <body>
-<!-- build 12b74aa -->
+<!-- build 00f6e04 -->
 <!-- The other end of an episode: the supplemental log, and what to do next. -->
 <div class="gate" id="endGate" hidden>
   <div class="card">
@@ -786,8 +798,19 @@
         <span class="spacer"></span>
         <span id="plotScale">Range 40 000 km</span>
       </div>
-      <canvas id="plot" width="720" height="520" role="img"
-              aria-label="Top-down tactical plot showing the Excalibur and nearby contacts"></canvas>
+      <canvas id="plot" width="720" height="520" role="img" aria-hidden="true"></canvas>
+      <!-- The plot in words. A canvas is a picture, and a picture of the
+           tactical situation is unreadable to a screen reader and to anything
+           else that is not a pair of eyes — which for a long time meant this
+           game's most important display had no text form at all. This list is
+           that form: the same contacts the canvas draws, written out, updated
+           with it. It is off-screen rather than absent because it is not a
+           fallback — it is the plot, for a reader rather than a viewer, and a
+           fallback is the thing that goes stale. `drawPlot()` (src/ui.mjs)
+           writes both from the same pass, so it cannot say something the
+           picture does not. -->
+      <div id="plotText" class="sr-only" role="region" aria-live="polite"
+           aria-label="Tactical plot, in words"></div>
       <div class="plot-head">
         <span id="contactCount">0 contacts</span>
         <span class="spacer"></span>
@@ -1445,6 +1468,77 @@ const DIGITS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "
 function sayBearing(deg) {
   const n = Math.round(((Number(deg) % 360) + 360) % 360);
   return String(n).padStart(3, "0").split("").map(d => DIGITS[Number(d)]).join("-");
+}
+
+/* ---------------------- written down vs said aloud ------------------------
+   A line like "Coming to 090°." is right in the bridge log and wrong in the
+   ear: the log is read, and "090°" is how a heading is written. Handed to a
+   speech engine it is a gamble on that engine's own text normalisation —
+   Kokoro happens to carry one, Supertonic takes raw text and has none, and
+   the officer reads out a degree sign.
+
+   So the two audiences get two forms of the same line. The sim keeps writing
+   the readable one; `spoken()` is applied where a line becomes audio, and
+   nowhere else. It is a pure string function — it schedules nothing, reads no
+   state, and cannot change what the bridge said, only how it sounds.
+
+   Two rules, and the distinction between them is the degree sign:
+
+   - **A heading is said digit by digit.** "090°" is "zero-nine-zero", never
+     "ninety". That is `sayBearing` above, which already exists because the
+     read-backs needed it; this is its second caller, not a second copy.
+   - **Every other number is a cardinal.** "Hull at 100 percent" is "one
+     hundred percent", not "one zero zero"; "8 torpedoes" is "eight". A
+     decimal reads as a cardinal, "point", then digits: "12.0" is "twelve
+     point zero".
+
+   The set of shapes that actually occur was taken from the sim rather than
+   imagined — every CALLOUTS instantiation and every registry line, of which
+   four carried a digit — and `harness/sim.test.mjs` asserts over that same
+   enumeration that nothing spoken still carries one. A callout written
+   tomorrow with a number in it fails there rather than surprising a captain.
+
+   Percentages and units are NOT handled here, because the sim already writes
+   them out: "23 percent", "kilometres per second". A second place that
+   expanded "%" would be a second answer to a question already settled. */
+const CARDINAL_ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+  "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const CARDINAL_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+
+function cardinal(n) {
+  n = Math.trunc(Math.abs(Number(n)));
+  if (!Number.isFinite(n)) return "";
+  if (n < 20) return CARDINAL_ONES[n];
+  if (n < 100) return CARDINAL_TENS[Math.floor(n / 10)] + (n % 10 ? "-" + CARDINAL_ONES[n % 10] : "");
+  if (n < 1000) return CARDINAL_ONES[Math.floor(n / 100)] + " hundred"
+    + (n % 100 ? " and " + cardinal(n % 100) : "");
+  if (n < 1000000) return cardinal(Math.floor(n / 1000)) + " thousand"
+    + (n % 1000 ? " " + cardinal(n % 1000) : "");
+  /* Past a million nothing in this sim says a number aloud, and a wrong guess
+     read out by an officer is worse than digits. Say the digits. */
+  return String(n).split("").map(d => DIGITS[Number(d)]).join(" ");
+}
+
+function spoken(text) {
+  return String(text == null ? "" : text)
+    /* A heading first, so its digits are gone before the cardinal rule sees
+       them. The degree sign goes with them — it is the marker, not a word. */
+    .replace(/(\d{1,3})\s*°/g, (_, d) => sayBearing(Number(d)))
+    .replace(/(\d+)\.(\d+)/g, (_, i, f) =>
+      cardinal(i) + " point " + f.split("").map(d => DIGITS[Number(d)]).join(" "))
+    /* A number that opened a sentence was carrying that sentence's capital;
+       the word replacing it has to carry it too, or the officer's line starts
+       lower case. Cheap, and it keeps a recorded transcript readable. */
+    .replace(/(^|[.!?]["\u201d)]*\s+)?(\d+)/g, (whole, lead, m, at) => {
+      const w = cardinal(m);
+      const opensSentence = at === 0 || (lead !== undefined && lead !== "");
+      return (lead || "") + (opensSentence ? w.charAt(0).toUpperCase() + w.slice(1) : w);
+    })
+    /* Anything left that an engine would read as a symbol rather than a word.
+       `°` is handled above; a bare one here means a heading was written in a
+       shape the first rule did not match, and saying "degrees" is the honest
+       fallback. */
+    .replace(/°/g, " degrees");
 }
 
 /* "Harrier", "Harrier and Kestrel", "Harrier, Kestrel and Sparrowhawk".
@@ -2121,6 +2215,36 @@ function createQueue(opts) {
    list of known actions and the refusal audit are all derived from it — see
    the comment above REGISTRY itself. */
 
+/* The seeded generator, declared here because the sim takes its rng AS STATE
+   — that is the whole reason a session can be replayed at all — and because it
+   had grown four homes: the page, the sim suite, the episode suite, and a
+   replay suite about to add a fifth. Four copies of one algorithm is four
+   chances for a replay to disagree with the run it is replaying, which is
+   exactly the failure the replay exists to rule out. mulberry32. */
+function seededRng(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* THE ONE WAY THE SHIP SAYS IT DID NOT UNDERSTAND.
+   Four sites wrote this phrase out, and a fifth was about to: a session's
+   metrics have to count the times the captain was not understood, and counting
+   by a string literal typed a fifth time is how the count and the phrase drift
+   apart on the day someone rewords one of them. It is a prefix rather than a
+   whole line because what follows it is the reason, which differs every time
+   and is the useful half. `notUnderstood()` is the test everything else uses;
+   nothing matches on the words. */
+const SAY_AGAIN = "Say again, Captain?";
+/* The reason given when nothing at all could be made of the order — shared
+   with crew.mjs, which answers the same way when the pipeline produces no
+   action, so the two cannot say it differently. */
+const NOT_CAUGHT = "The crew did not catch that order.";
+const notUnderstood = line => typeof line === "string" && line.startsWith(SAY_AGAIN);
+
 const WORLD_CULL_KM = 64000;     // what the SIM keeps, regardless of plot zoom
 
 /* Sim distance is kilometres and sim speed is km/s, but a real 12 km/s frigate
@@ -2135,11 +2259,11 @@ const TIME_COMPRESSION = 60;
 
 /* ------------------------------- the ship ---------------------------------
    Constraints as declarations (docs/plan.md, "Decided": "Ship spec stays
-   lightweight"). One flat table of what this hull IS — how fast she moves,
+   lightweight"). One flat table of what this ship IS — how fast she moves,
    how far her weapons reach, how much she carries, how quickly she recovers.
    The registry's `can` and `apply` read it, the tick reads it, and the action
    schema's own bounds are read out of it, so a number that used to be typed
-   at three call sites is typed once. The hull's top speed was already written
+   at three call sites is typed once. The ship's top speed was already written
    twice before this table existed, and the laser's reach twice more.
 
    Field names mirror EmptyEpsilon's ship templates where that costs nothing
@@ -2183,8 +2307,149 @@ const SHIP = {
   power:          { engines: 34, shields: 33, weapons: 33 },
   powerMin:       10,           // what a rebalance may ask for, either way…
   powerMax:       80,
-  powerDefault:   55            // …and what "power to shields" means with no number
+  powerDefault:   55,           // …and what "power to shields" means with no number
+
+  /* WHAT THIS SHIP CALLS ITS OWN SYSTEMS, and the ONLY part of the system
+     vocabulary that is the ship's rather than the language's.
+
+     Three facts were one before this, and separating them is what makes a
+     second ship config possible:
+
+       - the KEY   (`shields`) is the code's: S.ship.shields, the schema enum,
+         the registry, the ledger and every save depend on it, so it never
+         changes;
+       - what is HEARD (`plating`, `deflector`, `screens`) is the language's,
+         lives in SYSTEM_VOCAB (src/parser.mjs) and is the same on every hull —
+         a mod must not narrow the captain's vocabulary, which is the rule
+         SHIP.fitted is built on;
+       - what is SAID is THIS ship's, and is right here.
+
+     A modded Expanse-style hull with no deflector screens sets
+     `shields: { said: "plating", one: "plating" }` and the crew answers
+     "Plating up, Captain." The parser, the registry, the schema and the save
+     format do not move. Say "plating" on the Excalibur and you still hear
+     "Shields up" — the ship answers in its own fiction without the decoder
+     narrowing, the same way a corrected weapon word does.
+
+     `one` is the singular, because the quadrant callouts name it that way
+     ("Fore shield has collapsed"). For a mass noun the two are equal. */
+  systems: {
+    shields: { said: "shields", one: "shield" },
+    engines: { said: "engines", one: "engine" },
+    weapons: { said: "weapons", one: "weapon" }
+  },
+
+  /* WHAT THIS HULL CARRIES, and what the officer says when it does not.
+     Every one of these used to be a sentence typed inside a registry `can`:
+     "No FTL on this hull, Captain" was the registry's opinion about the ship,
+     which is the wrong place for it twice over. It put a fact about the ship
+     where a fact about the ORDER belongs, and it meant a second ship config
+     could not exist without editing the entries — the vocabulary, the parser
+     and the registry are identical on a ship that has a tractor emitter, and
+     only this table should have to change.
+
+     THE CAPTAIN'S VOCABULARY NEVER READS THIS. "Engage warp drive" decodes on
+     every ship; whether the answer is a course or a refusal is the sim's, and
+     the refusal is this table's. That is the whole point — a small vocabulary
+     that grew and shrank with each ship's fittings would be a vocabulary to
+     rebuild per ship, and the decoder would be making a claim about hardware
+     it cannot see.
+
+     `on: false` means no such fitting aboard and `absent` is the refusal.
+     `on: true` does NOT make the order work — none of these has a mechanic
+     behind it yet, and each one's mechanic is a BACKLOG entry — so the officer
+     says NOT_MODELLED instead, which is the honest answer and, more to the
+     point, is an answer rather than a crash on an entry with no `apply`. */
+  fitted: {
+    viewscreen:  { on: false, absent: "No viewscreen on this refit, Captain. Sensors and the plot are what we have." },
+    ftl:         { on: false, absent: "No FTL on this hull, Captain. Impulse only." },
+    transporter: { on: false, absent: "We have no transporter, Captain." },
+    cloak:       { on: false, absent: "Nothing to cloak with, Captain. They can see us." },
+    tractor:     { on: false, absent: "No tractor emitter fitted, Captain." },
+    /* Not hardware bolted on, but the same kind of fact and the same kind of
+       answer: a property of THIS ship that another would not share. The impulse
+       drive does not reverse, there are no damage-control parties in the
+       complement, sensors and life support are not on the tactical bus, and no
+       evasive patterns are loaded in the helm's library. Each is why an order is
+       refused, and none of it belongs in the order's own entry. */
+    astern:      { on: false, absent: "She has no astern on the impulse drive, Captain. I can bring her about and run the other way." },
+    repairParty: { on: false, absent: "No repair crews to send, Captain. What is broken stays broken." },
+    tacticalBus: { on: false, absent: "Sensors and life support are on their own circuits, Captain, not the tactical grid. I can shift power between engines, shields and weapons." },
+    evasivePattern: { on: false, absent: "No evasive pattern loaded, Captain. I can give you a heading and a speed." }
+  }
 };
+
+/* The ONE reader of SHIP.systems: what this ship calls a system out loud.
+   Every line that names one goes through it, so a renamed system is one edit to
+   the table and no edit anywhere else. Falls back to the key, so a system added
+   to the registry without a name still speaks. */
+function systemSaid(key, form) {
+  const n = SHIP.systems[key];
+  return (n && (form === "one" ? n.one : n.said)) || key;
+}
+const saidCap = (key, form) => capitalize(systemSaid(key, form));
+
+/* A fitting this ship HAS and this sim still cannot use. One line for all of
+   them because it is one fact — the hardware is on the manifest and there is no
+   mechanic behind it — and it is unreachable on the Excalibur, which carries
+   none of them. It exists so that a second ship config cannot walk an order
+   into a refusal entry that has no `apply`. */
+const NOT_MODELLED = "That is fitted, Captain, but we have no drill for it aboard.";
+
+/* WHAT THE SHIP IS READY TO DO, when the captain says the word and nothing is
+   waiting on it.
+
+   "Engage" is the most famous order on a bridge and it means two different
+   things: GO, and attack. The corpus said one, a scenario said the other, and
+   for two sessions the answer was "a person decides which reading this ship
+   wants". Neither reading is wrong — the word needs PRIOR CONTEXT, which is
+   what a release word is. So the parser stopped deciding (bare "engage" is a
+   reply, see the confirm rule in src/parser.mjs) and this table decides
+   instead, from the state of the ship rather than from the words.
+
+   A CLOSED SET, and deliberately small. Every entry says what it is ready to
+   do, in the officer's words, and what order that is. Two ready at once is a
+   QUESTION, never a guess: "engage" with a target locked and the ship at all
+   stop could mean either, and a ship that picks one and shoots is the worst
+   class of parse this project has.
+
+   The released order is NOT stamped `confirmed`. That matters: a held order
+   released by "mark" was already asked about, but nothing has been asked here,
+   so a shot at a contact nobody has confirmed hostile still meets the
+   confirmation gate and still gets a question rather than a torpedo. */
+const READINESS = [
+  { name: "the contact", said: "open fire",
+    ready: (S) => !!aimedAt(S, null),
+    order: () => ({ do: "fire" }) },
+  { name: "the helm", said: "get under way",
+    ready: (S) => S.ship.desiredSpeed === 0,
+    order: () => ({ do: "speed", speed: "full" }) }
+];
+/* What the ship could take "the word" to mean right now, in declaration order. */
+function readyFor(S) {
+  return READINESS.filter(r => r.ready(S));
+}
+
+/* WHY A REFUSAL REFUSES, from a closed set, because "this one is fine as it is"
+   has to cost something. Every entry with `refusal: true` declares one of
+   these; `not-fitted` requires a key SHIP.fitted actually names, and
+   harness/sim.test.mjs fails on an entry that declares neither — so a refusal
+   added tomorrow has to say which kind it is instead of quietly being the kind
+   nobody checks. */
+const REFUSAL_REASONS = {
+  "not-fitted": "this ship does not carry what the order names; SHIP.fitted decides and says so",
+  "officer-judgement": "the ship could and the officer will not — the reason is the officer's, not the ship's",
+  "already-true": "the order names a state this ship is permanently in, so the answer is information"
+};
+
+/* The ONE reader of SHIP.fitted. An entry names a fitting; this turns the ship's
+   manifest into the officer's line, so no entry carries a claim about what the
+   ship is fitted with. */
+function fittingRefusal(entry) {
+  const f = entry && entry.fitted && SHIP.fitted[entry.fitted];
+  if (!f) return null;
+  return f.on ? NOT_MODELLED : f.absent;
+}
 
 /* How long a question the crew asked stays open, in sim seconds. ATC's STANDBY
    keeps a request open; nothing here does, so the hold has to end somewhere,
@@ -2192,12 +2457,20 @@ const SHIP = {
    reads it and harness/sim.test.mjs drives past it. */
 const CONFIRM_HOLD_S = 20;
 
+/* How long an order the captain DEFERRED stays on hold, in sim seconds. It is
+   longer than the question above because the two waits are not the same: a
+   question the crew asked is answered in the next breath or the captain has
+   moved on, while "open fire on my mark" is said precisely because the moment
+   has not come. Both live on S.pending and the record carries which hold it is,
+   so advance() reads one field instead of knowing about two cases. */
+const DEFERRED_HOLD_S = 90;
+
 /* The standard speed orders, as fractions of that. One table, two facts: what
    a notch MEANS and what the helm says back. They used to be a switch in
    setSpeed and a chain of ternaries in the acknowledgement, which is how
    "half impulse" came to be acknowledged as "Full impulse, aye." — the ack
    knew about three notches and the sim about four. `flank` is the same notch
-   as `full` on this hull; it is kept because captains say it, and the reverse
+   as `full` on this ship; it is kept because captains say it, and the reverse
    lookup below finds `full` first, so a number never reads back as "flank".
 
    `said` is the notch as a PHRASE, not as a whole sentence: the read-back
@@ -2258,13 +2531,13 @@ function newShip() {
     laser: 100,         // charge %
     torpedoes: SHIP.tubeCount,
     target: null,        // contact id
-    /* Rules of engagement — see ROE_POSTURES and REGISTRY.roe. `hold` means
+    /* Rules of engagement — see WEAPONS_ALLOWED and REGISTRY["weapons-allowed"]. `hold` means
        the ship fires when the captain says so and not before; `free` lets
        tactical engage the locked contact as her weapons come ready. Written
        only by that entry, read by the tick's standing shot and by the weapons
        status read. She starts held: no ship opens fire on her own authority
        until she is told she may. */
-    roe: "hold",
+    weaponsAllowed: "hold",
     following: null,     // contact id being pursued
     matchSpeed: false,   // pursuit also matches the quarry's speed
     x: 0, y: 0
@@ -2486,10 +2759,10 @@ const CALLOUTS = {
   plotClear:    "Plot is clear, Captain.",
 
   /* Quadrant only — no live number, so every instantiation is warmable. */
-  shieldCollapsed: q => capitalize(q) + " shield has collapsed, Captain.",
+  shieldCollapsed: q => capitalize(q) + " " + systemSaid("shields", "one") + " has collapsed, Captain.",
   /* Quadrant AND a live percentage: warmable in the quadrant alone is not
      enough, since the number is only known at the moment of the hit. */
-  shieldsAtPercent: (q, pct) => capitalize(q) + " shields at " + pct + " percent.",
+  shieldsAtPercent: (q, pct) => capitalize(q) + " " + systemSaid("shields") + " at " + pct + " percent.",
   /* Contact name AND a live bearing — see shieldsAtPercent's comment. */
   // Spoken, so the bearing is said in digits: "two-seven-zero", never "270°".
   takingFire: (name, bearingDeg) => "Taking fire from " + name + ", bearing " + sayBearing(bearingDeg) + ".",
@@ -2834,7 +3107,7 @@ const STATUS_SCOPES = ["hull", "shields", "power", "weapons", "navigation", "con
    (BACKLOG.md → "External oracles"); this ship has one held posture and all
    three phrases set it, which the entry's brief says out loud rather than
    leaving the model to guess. */
-const ROE_POSTURES = {
+const WEAPONS_ALLOWED = {
   hold: { said: "weapons tight", status: "Weapons are tight — we fire on your order." },
   free: { said: "weapons free",  status: "Weapons free — tactical is engaging as they come ready." }
 };
@@ -2866,9 +3139,9 @@ const DEFS = {
   system:  { type: "string", enum: ["engines", "shields", "weapons"] },
   /* `all` means lasers plus one torpedo, when both are possible — see `fire`. */
   weapon:  { type: "string", enum: ["lasers", "torpedoes", "all"] },
-  /* Read out of ROE_POSTURES above rather than typed again, exactly as
+  /* Read out of WEAPONS_ALLOWED above rather than typed again, exactly as
      `frame` is read out of COURSE_FRAMES. */
-  posture: { type: "string", enum: Object.keys(ROE_POSTURES) },
+  posture: { type: "string", enum: Object.keys(WEAPONS_ALLOWED) },
   level:   { type: "string", enum: ["green", "yellow", "red"] },
   scope:   { type: "string", enum: ["all", ...STATUS_SCOPES] },
   percent: { type: "number", minimum: SHIP.powerMin, maximum: SHIP.powerMax },
@@ -2892,19 +3165,19 @@ const pct = n => Math.round(n) + " percent";
 const STATUS_FORMAT = {
   hull: S => "Hull at " + pct(S.ship.hull) + ".",
   shields: S => S.ship.shieldsUp
-    ? "Shields holding. Fore " + Math.round(S.ship.shields.fore) + ", aft " + Math.round(S.ship.shields.aft)
+    ? saidCap("shields") + " holding. Fore " + Math.round(S.ship.shields.fore) + ", aft " + Math.round(S.ship.shields.aft)
       + ", port " + Math.round(S.ship.shields.port) + ", starboard " + Math.round(S.ship.shields.starboard) + "."
-    : "Shields are down, Captain.",
+    : saidCap("shields") + " are down, Captain.",
   power: S => "Reactor at " + pct(S.ship.reactor) + ". Engines " + Math.round(S.ship.power.engines)
-    + ", shield grid " + Math.round(S.ship.power.shields)
+    + ", " + systemSaid("shields", "one") + " grid " + Math.round(S.ship.power.shields)
     + ", weapons " + Math.round(S.ship.power.weapons) + ".",
   /* The posture is part of the weapons picture, not a scope of its own: "what
      are we holding, and may we use it" is one question. Read from
-     ROE_POSTURES so the report and the read-back cannot describe the same
+     WEAPONS_ALLOWED so the report and the read-back cannot describe the same
      posture differently. */
   weapons: S => "Lasers at " + pct(S.ship.laser) + ". " + S.ship.torpedoes + " torpedo"
     + (S.ship.torpedoes === 1 ? "" : "es") + " in the tubes. "
-    + (ROE_POSTURES[S.ship.roe] || ROE_POSTURES.hold).status,
+    + (WEAPONS_ALLOWED[S.ship.weaponsAllowed] || WEAPONS_ALLOWED.hold).status,
   navigation: S => "Heading " + fmtHdg(S.ship.heading) + ", making "
     + S.ship.speed.toFixed(1) + " kilometres per second.",
   contacts: S => S.contacts.length
@@ -3019,7 +3292,7 @@ const READ_BACK = [
      weapon — torpedoes, aye", never as a silent laser shot. */
   { slot: "weapon", say: a => correctionSaid(a, "weaponInferred")
       + (a.weapon === "all" ? "all weapons" : a.weapon) },
-  { slot: "posture", say: a => (ROE_POSTURES[a.posture] || {}).said },
+  { slot: "posture", say: a => (WEAPONS_ALLOWED[a.posture] || {}).said },
   /* Power, said the way the reactor report says it. The captain who names an
      amount ("cut power to shields") keeps the entry's own `ack`; the one who
      does not hears which split engineering picked, in the same words. */
@@ -3230,16 +3503,17 @@ const REGISTRY = {
 
   shields: {
     officer: "TAC",
-    brief: "raise or lower the shields",
+    brief: "raise or lower the " + systemSaid("shields"),
     schema: { properties: { up: ref("bool") }, required: [] },
     can: () => null,
     apply: (S, a) => {
       const up = a.up === undefined ? true : a.up;
-      if (S.ship.shieldsUp === up) return "Shields already " + (up ? "raised" : "lowered") + ".";
+      if (S.ship.shieldsUp === up) return saidCap("shields") + " already " + (up ? "raised" : "lowered") + ".";
       S.ship.shieldsUp = up;
-      return "Shields " + (up ? "raised" : "lowered") + ".";
+      return saidCap("shields") + " " + (up ? "raised" : "lowered") + ".";
     },
-    ack: a => a.up === false ? "Lowering shields, Captain." : "Shields up."
+    ack: a => a.up === false ? "Lowering " + systemSaid("shields") + ", Captain."
+                              : saidCap("shields") + " up."
   },
 
   alert: {
@@ -3342,8 +3616,12 @@ const REGISTRY = {
      is asked every tick, so a contact nobody has confirmed hostile is not shot
      at because a posture was set earlier — the order is acknowledged and the
      ship says what it is waiting for. */
-  roe: {
+  "weapons-allowed": {
     officer: "TAC",
+    /* A posture IS the wait the captain is describing, so a deferral never holds
+       it: "hold fire until my order" makes the weapons tight NOW, and holding
+       the hold would leave them free until he said "mark". See applyAction. */
+    immediate: true,
     brief: "set the rules of engagement — `free` lets tactical fire on the locked "
          + "contact as her weapons come ready, `hold` stops her. HOLD FIRE, CEASE FIRE, "
          + "CHECK FIRE and WEAPONS TIGHT are one posture on this ship: `hold`",
@@ -3357,7 +3635,7 @@ const REGISTRY = {
        follows from it, which is a different sentence and never the same one
        twice — the captain hears what he ordered and then what it means. */
     apply: (S, a) => {
-      S.ship.roe = a.posture;
+      S.ship.weaponsAllowed = a.posture;
       if (a.posture !== "free") return "Holding fire.";
       const c = lockedContact(S);
       if (!c) return "Nothing locked, Captain — say the word when you have a target for me.";
@@ -3367,9 +3645,9 @@ const REGISTRY = {
         : c.name + " is not confirmed hostile, Captain. I will not engage her until she is.";
     },
     /* Reversible, and the previous posture is the only thing to put back. */
-    undo: (S) => { const was = S.ship.roe;
-      return () => { S.ship.roe = was;
-        return "Belaying that — " + (ROE_POSTURES[was] || ROE_POSTURES.hold).said + "."; }; },
+    undo: (S) => { const was = S.ship.weaponsAllowed;
+      return () => { S.ship.weaponsAllowed = was;
+        return "Belaying that — " + (WEAPONS_ALLOWED[was] || WEAPONS_ALLOWED.hold).said + "."; }; },
     readBack: true
   },
 
@@ -3495,6 +3773,32 @@ const REGISTRY = {
     ack: () => null            // the report itself is the line
   },
 
+  /* BRACE FOR IMPACT. The strongest single signal the 535-utterance corpus
+     produced: three phrasings of it, weights 5, 4 and 3, reach 12 — every
+     fiction in the dataset has a captain saying it, and the ship made nothing
+     of all three.
+
+     It is FORWARDED and the sim does as it pleases with it (the user's
+     decision, 2026-09-12). That is the cheap half deliberately: the order
+     decodes, reaches the registry, is acknowledged in character and is on the
+     ledger like any other, and `apply` is free to grow an effect — fewer crew
+     casualties on the next hit, a shield-facing change, a hull-damage
+     reduction — without one word of vocabulary moving. Pre-committing a
+     mechanic here was the alternative and it would have priced a five-minute
+     vocabulary gap as a sim change.
+
+     So `can` never refuses: a crew can always be told to take hold of
+     something. It declares no `refusal`, because it is not one — the ship does
+     what it was asked, and what it was asked happens to change nothing yet. */
+  brace: {
+    officer: "COMM",
+    brief: "order the crew to brace for an impact",
+    schema: { properties: {} },
+    can: () => null,
+    apply: () => "All hands, brace for impact!",
+    ack: () => null            // the apply line IS the acknowledgement
+  },
+
   /* "Stand by" changes nothing and commands nothing — it is an acknowledged
      wait, not a read like `status` or a no-op like a refusal. `officer`
      defaults to COMM, the bridge-wide station, but a named station (parsed
@@ -3502,6 +3806,9 @@ const REGISTRY = {
      act)` already does that for every action, so nothing here has to. */
   standby: {
     officer: "COMM",
+    /* This order IS the wait, so a deferral never holds it: "stand by to fire"
+       has to say "standing by" now and hold only the shot. See applyAction. */
+    immediate: true,
     brief: "acknowledge and hold — changes nothing",
     schema: { properties: {} },
     can: () => null,
@@ -3544,7 +3851,8 @@ const REGISTRY = {
   confirm: {
     officer: "COMM",
     answers: true,
-    brief: "answer yes to a question the crew asked — never sent unprompted",
+    brief: "answer yes to a question the crew asked, or say the word on an order "
+         + "already set up — never sent unprompted",
     schema: { properties: {} },
     can: () => null,
     /* Never reached: applyAction carries the held order out itself, because it
@@ -3575,21 +3883,22 @@ const REGISTRY = {
   evasive: {
     officer: "HELM", refusal: true, brief: "fly evasive patterns",
     schema: { properties: {} },
-    can: () => "No evasive pattern loaded, Captain. I can give you a heading and a speed."
+    fitted: "evasivePattern", because: "not-fitted"
   },
   repair: {
     officer: "ENG", refusal: true, brief: "send damage-control parties",
     schema: { properties: {} },
-    can: () => "No repair crews to send, Captain. What is broken stays broken."
+    fitted: "repairParty", because: "not-fitted"
   },
   viewscreen: {
     officer: "COMM", refusal: true, brief: "put anything on a viewscreen",
     schema: { properties: {} },
-    can: () => "No viewscreen on this refit, Captain. Sensors and the plot are what we have."
+    fitted: "viewscreen", because: "not-fitted"
   },
   ram: {
     officer: "HELM", refusal: true, brief: "ram, or steer a collision course",
     schema: { properties: {} },
+    because: "officer-judgement",
     can: () => "She is an explorer, Captain, not a battering ram. I will not put her hull into anything."
   },
   /* Understood, and impossible: every speed in this sim is a magnitude along
@@ -3601,32 +3910,33 @@ const REGISTRY = {
   astern: {
     officer: "HELM", refusal: true, brief: "make way astern, or reverse the engines",
     schema: { properties: {} },
-    can: () => "She has no astern on the impulse drive, Captain. I can bring her about and run the other way."
+    fitted: "astern", because: "not-fitted"
   },
   warp: {
     officer: "HELM", refusal: true, brief: "travel faster than light",
     schema: { properties: {} },
-    can: () => "No FTL on this hull, Captain. Impulse only."
+    fitted: "ftl", because: "not-fitted"
   },
   transporter: {
     officer: "ENG", refusal: true, brief: "beam anyone anywhere",
     schema: { properties: {} },
-    can: () => "We have no transporter, Captain."
+    fitted: "transporter", because: "not-fitted"
   },
   cloak: {
     officer: "TAC", refusal: true, brief: "cloak, or run silent",
     schema: { properties: {} },
-    can: () => "Nothing to cloak with, Captain. They can see us."
+    fitted: "cloak", because: "not-fitted"
   },
   "self-destruct": {
     officer: "ENG", refusal: true, brief: "self-destruct, or scuttle the ship",
     schema: { properties: {} },
+    because: "officer-judgement",
     can: () => "I will not arm that, Captain. Not while there is hull left."
   },
   tractor: {
     officer: "TAC", refusal: true, brief: "use a tractor beam",
     schema: { properties: {} },
-    can: () => "No tractor emitter fitted, Captain."
+    fitted: "tractor", because: "not-fitted"
   },
   /* UNDERSTOOD, AND ALREADY TRUE. "Tactical, prepare missiles" is correct
      English, correctly heard, and named nothing in this sim: torpedoes are a
@@ -3648,12 +3958,13 @@ const REGISTRY = {
   magazine: {
     officer: "TAC", refusal: true, brief: "bring weapons to a readiness state — they are never anything else",
     schema: { properties: {} },
+    because: "already-true",
     can: () => "Tubes are loaded and the lasers are charged, Captain. Say the word."
   },
   powerbus: {
     officer: "ENG", refusal: true, brief: "route power to sensors, life support or comms",
     schema: { properties: {} },
-    can: () => "Sensors and life support are on their own circuits, Captain, not the tactical grid. I can shift power between engines, shields and weapons."
+    fitted: "tacticalBus", because: "not-fitted"
   }
 };
 
@@ -3685,7 +3996,16 @@ const ACTION_SCHEMA = {
        are declared here for every branch too, and for the same second reason:
        what the PARSER worked out from a mishearing is not something the model
        is ever asked to fill in. */
-    properties: Object.assign({ do: { const: name }, chosen: ref("slots") },
+    properties: Object.assign({ do: { const: name }, chosen: ref("slots"),
+                                /* WHEN, the third fact about the action rather
+                                   than about any one action: the clause said
+                                   "on my mark", so this order is held. Declared
+                                   here for every branch for the same two
+                                   reasons as `chosen` — every entry can carry
+                                   it, and the model is never asked to fill it
+                                   in, since a deferral is something the parser
+                                   read and not an order the model composes. */
+                                deferred: ref("bool") },
                               Object.fromEntries(INFERRED_SLOTS.map(r => [r.flag, ref("bool")])),
                               REGISTRY[name].schema.properties || {}),
     required: ["do"].concat(REGISTRY[name].schema.required || []),
@@ -3834,11 +4154,11 @@ function applyAction(S, act) {
     return logOrder({ ok: false, refused: !!refused, officer: who || "COMM", line }); };
 
   if (!entry && act.do !== "unknown")
-    return say("Say again, Captain? The ship has no order called " + JSON.stringify(String(act.do)) + ".");
+    return say(SAY_AGAIN + " The ship has no order called " + JSON.stringify(String(act.do)) + ".");
   const bad = validate(ACTION_SCHEMA, act, DEFS);
-  if (bad) return say("Say again, Captain? " + bad + ".");
+  if (bad) return say(SAY_AGAIN + " " + bad + ".");
   if (act.do === "unknown")
-    return say("Say again, Captain? The crew did not catch that order.");
+    return say(SAY_AGAIN + " " + NOT_CAUGHT);
 
   const who = officerFor(entry, act);
 
@@ -3873,12 +4193,56 @@ function applyAction(S, act) {
        this call deliberately writes none: `confirm` releases the order that
        was asked about, and THAT order is the record. Two rows would count one
        decision as two orders in the supplemental log. */
-    return held ? applyAction(S, { ...held.act, confirmed: true })
-                : say("Nothing waiting on your word, Captain.", false, who);
+    if (held) return applyAction(S, { ...held.act, confirmed: true });
+    /* NOTHING HELD, so the word is "engage" with no question behind it and the
+       ship reads it off her own state (READINESS, above). One reading is an
+       order; two is a question; none is the answer this always gave. */
+    const ready = readyFor(S);
+    if (ready.length === 1) return applyAction(S, ready[0].order(S));
+    if (ready.length > 1)
+      return say("Engage what, Captain — " + ready[0].said + ", or " + ready[1].said + "?",
+                 false, who);
+    return say("Nothing waiting on your word, Captain.", false, who);
   }
+
+  /* WHAT THE HULL DOES NOT CARRY, answered before the entry's own precondition
+     and by the hull's manifest rather than by the entry — SHIP.fitted, and
+     `fittingRefusal` is its one reader. An order for a fitting this ship does
+     not have is refused in character on this ship and may be carried out on
+     another, and neither the vocabulary nor the registry changes between them. */
+  const unfitted = fittingRefusal(entry);
+  if (unfitted) return say(unfitted, true, who);
 
   const why = entry.can ? entry.can(S, act) : null;
   if (why) return say(why, true, who);
+
+  /* THE CAPTAIN SAID WAIT, so the order is held and not carried out. The parser
+     read a "when" that is not now — "open fire on my mark", "stand by to fire",
+     "launch when I say" (DEFERRAL_PHRASES, src/parser.mjs) — and stamped every
+     action the clause produced.
+
+     It reuses S.pending rather than adding a second kind of hold, because "an
+     order waiting on the captain's word" is exactly what that already is: the
+     word `mark` releases it through `confirm`, "belay" drops it, any other
+     order drops it because he has moved on, and it lapses on its own. One
+     mechanism, two ways in.
+
+     `immediate` names the entries a deferral must never hold: `weapons-allowed` and
+     `standby` ARE the wait, so holding them would hold the hold — "hold fire
+     until my order" has to make the weapons tight NOW. `answers` covers the
+     control words, which answer a question rather than wait on one. Both are
+     read off the entry, so an entry added tomorrow declares which it is.
+
+     It sits after `can` so the officer never stands by on an order he was
+     going to refuse, and before the confirmation gate below so a deferred shot
+     at an unscanned contact is asked about when the captain releases it and not
+     twice. */
+  if (!act.confirmed && act.deferred && !entry.immediate && !entry.answers) {
+    const line = REGISTRY.standby.apply(S, act);
+    S.pending = { act, reason: line, at: S.elapsed, hold: DEFERRED_HOLD_S };
+    S.lastLine = line;
+    return logOrder({ ok: false, refused: false, pending: true, officer: who, line });
+  }
 
   /* Speech discipline (docs/plan.md, "Decided"): irreversible or lethal orders
      against a contact nobody has confirmed hostile are asked about, not
@@ -3887,7 +4251,7 @@ function applyAction(S, act) {
   if (!act.confirmed && entry.confirm) {
     const reason = entry.confirm(S, act);
     if (reason) {
-      S.pending = { act, reason, at: S.elapsed };
+      S.pending = { act, reason, at: S.elapsed, hold: CONFIRM_HOLD_S };
       S.lastLine = reason;
       return logOrder({ ok: false, refused: true, pending: true, officer: who, line: reason });
     }
@@ -4124,7 +4488,7 @@ function engageable(S) {
 function standingFire(S) {
   /* A ship the crew has abandoned does not go on shooting, the same terminal
      check `applyAction` makes for every order the captain could still give. */
-  if (S.lost || S.ship.roe !== "free") return;
+  if (S.lost || S.ship.weaponsAllowed !== "free") return;
   const c = engageable(S);
   if (!c || laserProblem(S, c)) return;
   const line = fireLaser(S, c);
@@ -4147,7 +4511,7 @@ function advance(S, dt) {
 
   // A question nobody answered stops waiting; the order it held is not carried
   // out. Silently, because the crew asking twice is worse than not asking.
-  if (S.pending && S.elapsed - S.pending.at > CONFIRM_HOLD_S) S.pending = null;
+  if (S.pending && S.elapsed - S.pending.at > (S.pending.hold || CONFIRM_HOLD_S)) S.pending = null;
 
   // Pursuit owns the helm while it lasts, so it runs before the turn and
   // acceleration below rather than fighting them a tick later.
@@ -4896,12 +5260,57 @@ function episodeCloser(ledger, outcome) {
    it closed by construction over STATIONS instead (addressStation, below) and
    this entry was deleted rather than joined by a second one. "calms" resolves
    to COMM there, two edits from "comms", derived. */
+/* EVERY WORD THAT REACHES A SHIP SYSTEM, declared once. It was declared FOUR
+   times — NORMALISE folded some, SYSTEMS mapped others, TRIGGER_ALIAS rescued
+   two more inside a span, and the rest were spelled into individual rule
+   triggers — which is how "raise the deflector shields" could be understood by
+   the power slot and not by the shields rule. Adding one synonym meant editing
+   two tables and hoping.
+
+   `fold` and `also` are not a style choice; they are two different facts.
+
+   - `fold` — this word IS the system, everywhere, and tokenize rewrites it
+     before any rule sees it. A word belongs here when it can stand alone as the
+     system's name and means nothing else in this grammar: "plating", "screens".
+   - `also` — this word means the system only where a system is being NAMED (the
+     power slot, and a modifier in front of the word it qualifies). It keeps its
+     own identity everywhere else, because it has another owner: "impulse" is a
+     speed notch, "drive" is half of "warp drive", "thrust" is half of "reverse
+     thrust". Folding any of them would rewrite the token those triggers are
+     declared on and kill them — which harness/parser.test.mjs now fails on.
+
+   Named SYSTEM_VOCAB, not SYSTEM_WORDS: that name is taken by the set of nouns
+   the bare-"steady" guard reads, which is a different question ("is this noun a
+   system at all?") about a wider list including the reactor and life support.
+
+   THIS TABLE IS THE LANGUAGE'S AND NEVER THE SHIP'S. Every word reaches every
+   system on every hull, so a captain's vocabulary does not narrow when a mod
+   renames a system — the same rule SHIP.fitted is built on, for the same
+   reason. What a ship CALLS its systems is SHIP.systems (src/sim.mjs), it is
+   about what the officer SAYS, and nothing here reads it. */
+const SYSTEM_VOCAB = {
+  shields: { fold: ["shield", "sheilds", "sheild", "shels", "plating", "screens"],
+             also: ["deflector"] },
+  engines: { fold: ["engine", "motor", "motors", "propulsion"],
+             also: ["impulse", "drive", "thrust"] },
+  weapons: { fold: ["weapon", "gun", "guns"],
+             also: ["batteries", "lasers", "torpedoes"] }
+};
+
 const NORMALISE = {
-  shield: "shields", sheilds: "shields", sheild: "shields", shels: "shields",
+  /* The system words above, folded here rather than typed twice. */
+  ...Object.fromEntries(Object.entries(SYSTEM_VOCAB)
+    .flatMap(([key, w]) => w.fold.map(word => [word, key]))),
   laser: "lasers", phaser: "lasers", phasers: "lasers", phasor: "lasers", phasors: "lasers", lance: "lasers", lances: "lasers",
   torpedo: "torpedoes", torpedos: "torpedoes", torps: "torpedoes", torp: "torpedoes",
   missile: "torpedoes", missiles: "torpedoes", rocket: "torpedoes", rockets: "torpedoes",
-  engine: "engines", motor: "engines", motors: "engines", propulsion: "engines",
+  /* NOT folded to "engines": `drive` and `thrust` are engine words but they are
+     also somebody else's — "warp drive" is the FTL refusal and "reverse thrust"
+     is the astern one, and folding either would rewrite the token those triggers
+     are declared on and quietly kill them. They are spelled out in the stop
+     rule's own triggers instead, which is the narrow fix for a word with two
+     owners. harness/parser.test.mjs checks that no trigger anywhere is declared
+     on a token NORMALISE rewrites, so a fold added tomorrow cannot kill one. */
   weapon: "weapons", gun: "weapons", guns: "weapons",
   sensor: "sensors", contact: "contacts",
   dont: "don't", cant: "can't", wont: "won't",
@@ -4952,14 +5361,38 @@ function digitChars(t) {
 }
 
 function tokenize(text) {
-  const raw = String(text).toLowerCase().match(/[a-z0-9']+|[,;]/g) || [];
+  /* A SENTENCE END IS A CLAUSE BREAK, and it was not one until the first
+     simulated playtest typed at the ship in whole sentences. "Helm, increase
+     speed. Maintain heading zero four five" came in as a single clause,
+     because the full stop was thrown away here with the rest of the
+     punctuation — so the two orders inside it collapsed into one and the
+     captain was answered for half of what he said.
+
+     It stayed invisible because the corpus is SPOKEN: a recogniser hands over
+     a lowercase run of words with no full stops in it, so nothing this project
+     tested had a sentence end to break on. A captain who types has them, and a
+     recogniser that learns to punctuate will have them too. */
+  /* A decimal is one token, matched BEFORE the full stop can claim its dot —
+     "4.5" is a number a captain typed, not two clauses either side of a
+     sentence end. Spoken orders say "four point five" and never reach this,
+     which is why it took a typed captain to find it. */
+  const raw = String(text).toLowerCase().match(/[0-9]+\.[0-9]+|[a-z0-9']+|[,;.!?]/g) || [];
   const words = raw.map(w => NORMALISE[w] || w).filter(w => !EXPLETIVE.has(w));
   return dropDigitCommas(joinSplitWords(words));
 }
 
 /* Clause boundaries. A clause that is only a station name introduces the
    next one rather than standing alone. */
-const CLAUSE_BREAK = new Set([",", ";", "and", "then", "but"]);
+/* The ship's own systems, derived from the registry's `system` definition
+   rather than listed here, plus the words a captain uses for the same things.
+   Read by the bare-"steady" guard: "keep the reactor steady" is not a helm
+   order, and which nouns count as a system is the sim's fact, not this file's. */
+const SYSTEM_WORDS = new Set([
+  ...(DEFS && DEFS.system && DEFS.system.enum ? DEFS.system.enum : []),
+  "reactor", "core", "power", "engine", "sensors", "hull", "lasers", "torpedoes", "life"
+]);
+
+const CLAUSE_BREAK = new Set([",", ";", ".", "!", "?", "and", "then", "but"]);
 const STATIONS = {
   helm: "HELM", helmsman: "HELM", conn: "HELM",
   tactical: "TAC", weapons: "TAC",
@@ -5423,6 +5856,24 @@ function clauseControl(tokens) {
   for (const p of CONTROL_PHRASES) if (bareClauseIs(tokens, p.say)) return { ...p.act };
   return null;
 }
+/* A clause that is nothing but WHO the order was for. "Yellow alert, all decks",
+   "Status report, all stations" and "All wings, report in" put the address in a
+   clause of its own because the recogniser's comma landed there, and an address
+   is not an order the ship failed to understand — it belongs with filler and a
+   stray numeral in the things a captain says that are not a clause he meant.
+
+   Read out of STATIONS and CREW_ADDRESS rather than listed, so a station or a
+   crew-wide address added tomorrow is not a vocabulary gap tomorrow. "all
+   decks" and "all stations" are CREW_ADDRESS entries for exactly this reason:
+   they name the whole ship, which is who an alert is always for. */
+function clauseIsOnlyAddress(tokens) {
+  const body = tokens.filter(t => !FILLER.has(t) && t !== "," && t !== ";");
+  if (!body.length) return true;
+  for (const addr of CREW_ADDRESS)
+    if (addr.length === body.length && addr.every((w, k) => body[k] === w)) return true;
+  return body.length === 1 && body[0] in STATIONS;
+}
+
 /* Who a control token is addressed to, if anyone. The ordinary path claims its
    station token off the claim object; a control clause has no slots to claim,
    so it only needs the name. */
@@ -5465,7 +5916,8 @@ function clauseIsNegative(tokens) {
      fire", "check fire" and "weapons tight" used to be three special cases
      and a two-token window right here, because the ship had no way to say
      "stop shooting" except by refusing the fire rule — the captain got
-     silence, which is what a refusal sounds like. `roe` (REGISTRY.roe,
+     silence, which is what a refusal sounds like. `weapons-allowed`
+     (REGISTRY["weapons-allowed"],
      src/sim.mjs) is that order now, so these phrases are exactly what
      POSITIVE_IDIOM is for: words that look like a negation and are their own
      order, the same as "all stop" and "hold station".
@@ -5483,7 +5935,7 @@ function clauseIsNegative(tokens) {
   return tokens.some(t => NEGATOR.has(t));
 }
 
-/* The posture a clause orders, or null — the ONE reader of ROE_PHRASES that
+/* The posture a clause orders, or null — the ONE reader of POSTURE_PHRASES that
    is not the rule itself. It matches the same way a trigger does (the claim
    object's `span`, so "hold your fire" and "hold the fire" complete
    ["hold","fire"] through the filler between them) rather than by adjacency,
@@ -5493,8 +5945,50 @@ function clauseIsNegative(tokens) {
    that follows. */
 function clausePosture(tokens) {
   const c = makeClaim(tokens);
-  for (const p of ROE_PHRASES) for (const seq of p.say) if (c.span(seq)) return p.posture;
+  for (const p of POSTURE_PHRASES) for (const seq of p.say) if (c.span(seq)) return p.posture;
   return null;
+}
+
+/* DEFERRAL: a clause that says WHEN, and the when is not now.
+   "Open fire on my mark" fired immediately — the captain said wait and the ship
+   shot, which is the worst class of parse this project has: an action he did
+   not ask for YET, and the one kind he cannot take back. Found by hand, not by
+   the suite, because every check here asked whether the right action came out
+   and none asked whether it came out at the right time.
+
+   This is the same shape as polarity and mood, and it is the FIFTH instance of
+   it: a trigger word matching where the clause does not mean it. Polarity says
+   the clause commands the opposite, mood says it does not command at all, and
+   this says it does not command YET. So it is checked once, at clause level,
+   ahead of every rule — never as a guard inside the fire rule, which would fix
+   "open fire on my mark" and leave "come about on my mark" and every verb
+   added after it.
+
+   IT DOES NOT SUPPRESS THE ACTION, and that distinction is the whole design.
+   A clause the ship makes nothing of is the say-again case and the captain has
+   to say it all again; a clause it HEARD and is holding is an order standing by.
+   So the action is parsed in full and stamped `deferred`, and the sim holds it
+   on S.pending — the same hold a confirmation question uses, because "an order
+   waiting on the captain's word" is exactly what that already is. `mark` joins
+   the confirm rule's triggers as the word that releases it (see there: the
+   bare-clause guard is what keeps it clear of "heading three-one-zero mark
+   two"). Nothing here knows that; the parser reports the modality and the sim
+   decides, as it does for polarity.
+
+   Nothing is claimed, for the same reason clausePosture claims nothing: this
+   reads a throwaway claim so it cannot change the parse that follows. In
+   particular "stand by to fire" must still reach the standby rule — the
+   acknowledgement the captain hears IS that rule's line. */
+const DEFERRAL_PHRASES = [
+  ["my", "mark"], ["my", "order"], ["my", "command"], ["my", "signal"],
+  ["my", "word"], ["my", "go"],
+  ["when", "i", "say"], ["when", "i", "give", "the", "word"],
+  ["stand", "by", "to"], ["standby", "to"], ["prepare", "to"], ["get", "ready", "to"]
+];
+function clauseDefers(tokens) {
+  const c = makeClaim(tokens);
+  for (const seq of DEFERRAL_PHRASES) if (c.span(seq)) return true;
+  return false;
 }
 
 /* MOOD. Polarity said whether a clause commands the opposite; mood says whether
@@ -5524,6 +6018,20 @@ function clausePosture(tokens) {
    Questions are ANSWERED, not obeyed — so status is the one rule allowed to run
    on a non-imperative clause. That is its entire job. */
 const SUBJECT_LEAD = new Set(["we", "they", "he", "she", "i", "you", "that", "this", "there", "it"]);
+/* WHO THE ORDER IS SHOUTED AT, when it is not one station. "Everyone brace for
+   impact" is an imperative with a vocative in front of it, and mood read it as a
+   remark because "everyone" opens no trigger — while "all hands to battle
+   stations" passed, only because "all" happens to open the fire rule's own
+   trigger. That is an accident, not a rule, and it is why this is declared.
+
+   It is the same role STATIONS plays in the mood check below, so it is skipped in
+   the same place and exactly once. The whitelist is NOT weakened: what follows
+   the address still has to be a verb the ship knows, so "everyone is hit" and
+   "everybody knows that" reach the same dead end they always did — the token
+   after the address is "is" and "knows", and neither is an imperative head. */
+const CREW_ADDRESS = [["all", "hands"], ["everyone"], ["everybody"],
+                             ["all", "decks"], ["all", "stations"], ["all", "wings"],
+                             ["all", "engines"]];
 /* Verbs that open an order but are not themselves a trigger. */
 const GENERIC_IMPERATIVE = new Set(["go", "give", "get", "make", "take", "put", "bring", "keep",
   "send", "prepare", "ready", "arm", "load", "plot", "lay", "execute", "turn",
@@ -5565,16 +6073,44 @@ function opensTrigger(tokens, i) {
 }
 
 function clauseIsQuestion(tokens) {
-  const head = tokens.filter(t => t !== "," && t !== ";");
+  const bare = tokens.filter(t => t !== "," && t !== ";");
   // Filler may be skipped; a subject pronoun is the whole point, so it is kept
   // even though "we" and "us" also sit in FILLER for the rules' benefit.
   const skip = t => FILLER.has(t) && !SUBJECT_LEAD.has(t);
-  while (head.length && skip(head[0])) head.shift();
-  // "helm, can we make it" — but never past a word that is opening a trigger.
-  if (head.length && STATIONS[head[0]] && !opensTrigger(head, 0)) head.shift();
-  while (head.length && skip(head[0])) head.shift();
-  if (!head.length) return false;
-  return !imperativeHeads().has(head[0]);
+  /* Does this token stream open with a verb the ship knows? One optional
+     station address, filler either side, and never past a word opening a
+     trigger this clause completes. */
+  const opens = head => {
+    while (head.length && skip(head[0])) head.shift();
+    // "helm, can we make it" — but never past a word that is opening a trigger.
+    if (head.length && STATIONS[head[0]] && !opensTrigger(head, 0)) head.shift();
+    while (head.length && skip(head[0])) head.shift();
+    if (!head.length) return true;            // nothing but filler: not a question
+    return imperativeHeads().has(head[0]);
+  };
+  if (opens(bare.slice())) return false;
+
+  /* A CREW-WIDE ADDRESS, read only as a SECOND attempt, and that structure is
+     the whole safety argument — the same one the misheard-address repair makes.
+     This runs only on a clause the first reading already judged not to command,
+     so it can rescue one and can never reject one: no utterance that commanded
+     before this existed commands differently now.
+
+     Stripping the address unconditionally was tried first and was worse. "all
+     hands to battle stations" used to pass mood by accident — "all" opens the
+     fire rule's own trigger, so it was in the imperative whitelist — and
+     removing the address exposed the preposition behind it, which is not a
+     verb, so the clause went from an alert to nothing. A rescue cannot do that.
+
+     THE WHITELIST IS NOT WEAKENED: what follows the address still has to be a
+     verb the ship knows. "everyone is hit", "everybody knows that" and "all
+     hands are accounted for" reach the same dead end they always did. */
+  for (const addr of CREW_ADDRESS) {
+    if (bare.length < addr.length || !addr.every((w, k) => bare[k] === w)) continue;
+    if (opensTrigger(bare, 0)) continue;
+    return !opens(bare.slice(addr.length));
+  }
+  return true;
 }
 
 /* ---------------------------------------------------------------- claims */
@@ -5635,6 +6171,21 @@ function makeClaim(tokens) {
           if (used[j]) continue outer;
           if (matches(tokens[j], seq[k])) { k++; j++; }
           else if (FILLER.has(tokens[j])) j++;
+          /* A MODIFIER OF A WORD THIS TRIGGER ALREADY NAMES is stepped over too.
+             "Raise the deflector shields" is a shields order and got nothing,
+             because "deflector" is not filler — it is a real word that means
+             something, and what it means is the word beside it. SYSTEMS already
+             declares that (deflector → shields, impulse and drive → engines), so
+             this reads that table rather than adding a list of adjectives.
+
+             It is NARROW on purpose: the token is stepped over only when the
+             system it names is one THIS sequence already names, so "deflector"
+             is skippable inside a shields trigger and nowhere else. "full
+             impulse" is untouched — that sequence names no engines — and "cut
+             power to the engines" is untouched, because "power" names no system
+             at all and still blocks ["cut","engines"]. The token is claimed with
+             the rest of the span, since it is part of the phrase. */
+          else if (SYSTEMS[tokens[j]] && seq.includes(SYSTEMS[tokens[j]])) j++;
           else continue outer;
         }
         if (k === seq.length) return { at: i, len: j - i };
@@ -5731,9 +6282,12 @@ function slotHeading(c) {
   return v;
 }
 
-const SYSTEMS = { engines: "engines", shields: "shields", weapons: "weapons",
-                  deflector: "shields", impulse: "engines", drive: "engines",
-                  lasers: "weapons", torpedoes: "weapons" };
+/* Word → system key, for the power slot and for the modifier a trigger span
+   steps over. Derived from SYSTEM_WORDS: the key itself, plus every `also`
+   word. The `fold` words are already this key by the time anything reads a
+   token, so listing them here would be a third copy of the same fact. */
+const SYSTEMS = Object.fromEntries(Object.entries(SYSTEM_VOCAB)
+  .flatMap(([key, w]) => [[key, key], ...w.also.map(word => [word, key])]));
 function slotSystem(c) {
   const i = c.where(t => t in SYSTEMS);
   if (i < 0) return null;
@@ -5926,11 +6480,21 @@ function slotScope(c) {
    this half only decides which frame was spoken and reads its one slot. */
 const FRAME_WORDS = [
   { frame: "hold",
+    /* Bare "steady" holds the course, and it is also how you ask for anything
+       else to be held: "keep the reactor steady" used to turn the ship. The
+       longer forms below are unambiguous; the bare one is claimed only when
+       the clause names nothing else to be steady ABOUT, which `fill` checks. */
     triggers: [["steady", "as", "she", "goes"], ["steady", "as", "we", "go"],
                ["steady", "on"], ["steady"],
                ["hold", "course"], ["hold", "heading"], ["hold", "present", "course"],
                ["maintain", "course"], ["maintain", "heading"], ["maintain", "present", "course"]],
-    fill: () => ({}) },
+    fill: (c, ctx) => {
+      /* A bare "steady" about some other system is not a helm order. The
+         systems are the registry's own, not a list kept here. */
+      if (ctx.trigger.length === 1 && ctx.trigger[0] === "steady"
+          && c.where(t => SYSTEM_WORDS.has(t)) >= 0) return null;
+      return {};
+    } },
 
   { frame: "previous",
     triggers: [["resume", "previous", "course"], ["resume", "previous", "heading"],
@@ -5939,8 +6503,12 @@ const FRAME_WORDS = [
     fill: () => ({}) },
 
   { frame: "away",
+    /* "run" ALONE is not this order. "run a scan", "run a diagnostic", "run a
+       long range sweep" are all things a captain says, and every one of them
+       used to make the ship flee as well as do what was asked. The forms that
+       genuinely mean it all carry a second word, and they are all here. */
     triggers: [["get", "out"], ["get", "clear"], ["get", "away"], ["put", "distance"],
-               ["open", "range"], ["run"]],
+               ["open", "range"], ["run", "from"], ["run", "for", "it"]],
     /* The contact to run from is optional — with none, the sim runs from the
        nearest hostile, which is the only thing "here" can honestly mean. */
     fill: (c, ctx) => ({ target: slotTarget(c, ctx.names) || undefined }) },
@@ -6064,11 +6632,33 @@ const STATUS_TRIGGERS = [
   [["take", "another", "hit"], "hull"],
   [["who", "are", "they"], "contacts"],
   [["anything", "on", "sensors"], "contacts"],
+  /* A SWEEP IS A READING OF THE ENVIRONMENT, not a scan of a contact — the
+     ship enters a sector and asks what is out there (the user's definition,
+     2026-09-15). Eight corpus phrasings meant it and all eight got nothing.
+
+     It is `status` scoped to contacts and NOT a registry entry of its own,
+     because today the two are the same fact: this sim has no hidden contacts
+     and no terrain, so "what is out there" is exactly what the plot already
+     knows. When terrain lands — nebulae that hide what is inside them — they
+     stop being the same fact and a sweep becomes its own action, which is what
+     BACKLOG.md → "Terrain" is for.
+
+     IT IS DELIBERATELY NOT `scan`. A bare scan needs a locked contact and
+     answers "No contact selected to scan", and making a sweep scan everything
+     would have been worse than useless: `scan` sets `scanned`, and the fire
+     entry's confirmation gate stops asking once a contact reads scanned AND
+     hostile — so one "sweep" would have cleared the whole plot for weapons
+     release and deleted the ship's one safety interlock by way of a synonym. */
+  [["sweep"], "contacts"],   // ["sensor","sweep"] was tried; `sensor` folds to
+                             // `sensors`, so it was dead on arrival and the bare
+                             // trigger already covers it. Caught by the
+                             // NORMALISE check on the very next run after it
+                             // was added — see harness/parser.test.mjs.
   [["any", "response"], "comms"]
 ];
 
 /* ------------------------------------------- rules of engagement, in words
-   The two postures the ship has (REGISTRY.roe, src/sim.mjs) and the phrases
+   The two postures the ship has (REGISTRY["weapons-allowed"], src/sim.mjs) and the phrases
    that set them. ONE declaration with two readers: the rule below, and
    clauseIsNegative — which used to carry its own copy of the withheld-fire
    phrases as negations, since without an order to give there was nothing else
@@ -6081,7 +6671,7 @@ const STATUS_TRIGGERS = [
    of their own — a trigger match skips the filler between its parts — but
    "hold ALL fire" does, because "all" is a word this grammar means something
    by (the fire rule's own trigger) and is deliberately not filler. */
-const ROE_PHRASES = [
+const POSTURE_PHRASES = [
   { posture: "free", say: [["fire", "at", "will"], ["weapons", "free"], ["engage", "at", "will"]] },
   { posture: "hold", say: [["hold", "fire"], ["hold", "all", "fire"], ["cease", "fire"],
                            ["cease", "firing"], ["check", "fire"], ["check", "firing"],
@@ -6215,21 +6805,73 @@ const RULES = [
 
      NEGATIVE, the other half of the pair, is a control token above — it has to
      be, because polarity owns that word. */
+  /* `mark` is here because DEFERRAL_PHRASES put an order on hold and something
+     has to let it go. It is safe for the reason every other word in this list
+     is: `bareClauseIs` means the whole clause has to BE the word, so "heading
+     three-one-zero mark two" — where "mark" is astro notation and not a release
+     — leaves nothing over and never reaches this. The rule declares `anyMood`,
+     so none of these words joins the imperative whitelist either. */
   { name: "confirm", anyMood: true,
-    triggers: [["confirm"], ["affirmative"], ["affirm"], ["execute"], ["yes"], ["do", "it"]],
+    triggers: [["confirm"], ["affirmative"], ["affirm"], ["execute"], ["yes"], ["do", "it"], ["mark"],
+               /* "ENGAGE" IS A RELEASE WORD, and this is the decision that was
+                  left open for two sessions. It is the most famous order on a
+                  bridge and it means GO — and in a combat scenario "Tactical,
+                  engage" plainly means attack. The corpus said one, a scenario
+                  said the other, and picking a side would have been wrong for
+                  half the captains either way.
+
+                  It needs prior context, which is exactly what a release word
+                  is: the captain sets something up and then says the word. So
+                  the parser stops deciding. Bare "engage" comes here with the
+                  other replies, and the SIM resolves it against what the ship
+                  is actually ready to do (READINESS, src/sim.mjs) — a locked
+                  contact, or a ship at all stop with a course to run. Two
+                  readings ready at once is a question, not a guess.
+
+                  "engage the Kestrel" is untouched and still fires: the guard
+                  below is `bareClauseIs`, so a clause that names anything at
+                  all never reaches this. */
+               ["engage"]],
     run: (c, ctx) => bareClauseIs(c.tokens, ctx.trigger) ? { do: "confirm" } : null },
 
   { name: "alert",
     triggers: [["red", "alert"], ["battle", "stations"], ["general", "quarters"],
                ["condition", "red"], ["yellow", "alert"], ["condition", "yellow"],
                ["green", "alert"], ["condition", "green"], ["stand", "down"],
-               ["secure", "from", "alert"]],
+               /* "secure from" is the naval phrase and it means STAND DOWN.
+                  Before this it was not a trigger at all, so "secure from
+                  battle stations" fell through to the `battle stations`
+                  trigger behind it and set condition RED — the ship did the
+                  opposite of the order. It sits before that trigger in the
+                  clause, and the earliest match wins, so naming it is the
+                  whole fix. */
+               ["secure", "from"], ["secure", "from", "alert"]],
     run(c, ctx) {
       const t = ctx.trigger.join(" ");
       const level = /red|battle|quarters/.test(t) ? "red"
                   : /yellow/.test(t) ? "yellow" : "green";
       return { do: "alert", level };
     } },
+
+  /* BRACE. Three phrasings in the corpus and the ship made nothing of any of
+     them. "brace" is its own verb and collides with nothing: it is not a
+     negator, not a station address, and no other rule's trigger contains it.
+     The bare form is a real order — a captain who says only "Brace!" has said
+     everything — so unlike `shoot` it needs no object. */
+  { name: "brace",
+    /* ONE TRIGGER, and the two that were tried and removed are the interesting
+       part. "hold on" is a pause at least as often as it is an order to take
+       hold, and the two readings want different answers. "hang on" is worse: it
+       looked unambiguous in English, and "hang" is a documented MISHEARING of
+       "helm" (see repairAddress and nearestHeard) — making it a trigger head
+       put it in the imperative whitelist, so "hang, come about to two zero
+       zero" started passing mood as a real clause and the address repair, which
+       only ever rescues a clause that commanded nothing, stopped firing. The
+       captain lost the station correction to a brace synonym nobody asked for.
+       A word the recogniser already confuses with a station must not become a
+       verb the ship knows. */
+    triggers: [["brace"]],
+    run: () => ({ do: "brace" }) },
 
   /* "Stand by" is an acknowledged wait, not a negation: `stand down` is the
      alert rule's own trigger, an exact different sequence, so the two cannot
@@ -6249,10 +6891,26 @@ const RULES = [
       return { do: "shields", up: !/down|off|lower|drop/.test(t) };
     } },
 
+  /* STOPPING HAS MORE WORDS THAN "STOP". Thirteen corpus phrasings meant this
+     order and eleven of them got nothing: "cut the engines" (four ways), "kill
+     the engines" (three), "stop the ship", "turn off the engines", "cut the
+     drive", "cut thrust". Reach 12 — every fiction in the dataset has a captain
+     saying one of them — and it is the same coarse order the ship already has,
+     not a new mechanic, so this is vocabulary for `speed: 0` and nothing else.
+
+     THE ONE COLLISION, and it is why "power" is not filler: "cut power to the
+     engines" is a POWER order and must stay one. `cut` is a POWER_AMOUNTS word,
+     so the two phrasings differ by exactly the word "power" — and because a
+     trigger span steps over filler only, "power" sitting between "cut" and
+     "engines" stops `["cut","engines"]` from matching it. Asserted in
+     harness/parser.test.mjs rather than argued here. */
   { name: "stop",
     triggers: [["all", "stop"], ["full", "stop"], ["hold", "position"], ["hold", "station"],
                ["stop", "all", "engines"], ["stop", "engines"], ["stop", "the", "engines"],
-               ["finished", "with", "engines"], ["come", "to", "a", "stop"]],
+               ["finished", "with", "engines"], ["come", "to", "a", "stop"],
+               ["stop", "ship"], ["heave", "to"],
+               ["cut", "engines"], ["kill", "engines"], ["turn", "off", "engines"],
+               ["cut", "drive"], ["kill", "drive"], ["cut", "thrust"]],
     run() { return { do: "speed", speed: 0 }; } },
 
   { name: "follow-stop",
@@ -6265,6 +6923,11 @@ const RULES = [
                ["stay", "on"], ["stay", "with"], ["stay", "behind"], ["keep", "after"], ["match"]],
     run(c, ctx) {
       const target = slotTarget(c, ctx.names);
+      /* "STAY ON" needs a ship. "Stay on the Guard channel" and "stay on
+         station" are not pursuit orders, and following nobody is not an order
+         at all — the other triggers here ("pursue", "chase", "intercept") can
+         stand without a name because they mean nothing else. */
+      if (ctx.trigger[0] === "stay" && !target) return null;
       // Only an explicit mention of speed makes this a speed match; "match
       // course" and "match them" hold the bearing alone.
       const si = c.find(["speed"]) >= 0 ? c.find(["speed"]) : c.find(["velocity"]);
@@ -6302,11 +6965,11 @@ const RULES = [
      and the earlier rule claims the token: "hold fire" must never leave a
      bare "fire" behind for the shot rule to pick up, and "fire at will" is a
      posture rather than one round downrange. */
-  { name: "roe",
-    triggers: ROE_PHRASES.reduce((all, p) => all.concat(p.say), []),
+  { name: "weapons-allowed",
+    triggers: POSTURE_PHRASES.reduce((all, p) => all.concat(p.say), []),
     run(c, ctx) {
-      const hit = ROE_PHRASES.find(p => p.say.some(s => seqEq(s, ctx.trigger)));
-      return hit ? { do: "roe", posture: hit.posture } : null;
+      const hit = POSTURE_PHRASES.find(p => p.say.some(s => seqEq(s, ctx.trigger)));
+      return hit ? { do: "weapons-allowed", posture: hit.posture } : null;
     } },
 
   { name: "fire",
@@ -6314,7 +6977,20 @@ const RULES = [
        other verb: "all weapons on the kestrel" has no "fire"/"shoot"/"engage"
        anywhere in it — the weapon word IS the order. */
     triggers: [["open", "fire"], ["fire"], ["shoot"], ["engage"], ["hit"], ["keep", "firing"], ["launch"],
-               ["all"], ["everything"]],
+               /* A NOUN PHRASE that can only mean weapons, rather than the bare
+                  word "all". "all" alone used to be the trigger, and it fired
+                  every weapon on the ship for "all ahead flank", "all hands to
+                  battle stations" and "all hands on deck" — the worst parse a
+                  simulated playtest found. "all weapons" cannot mean speed or
+                  the crew, so it needs no guard. */
+               /* NOT ["all","guns"]: NORMALISE folds `guns` to `weapons` before
+                  any rule sees a token, so that trigger could never match and
+                  had been dead since it was written — "all guns on the Kestrel"
+                  arrives here as "all weapons on the Kestrel" and always did.
+                  Found by the generated check in harness/parser.test.mjs on its
+                  first run. */
+               ["all", "weapons"], ["all", "batteries"], ["all", "tubes"],
+               ["everything"]],
     /* The weapon the captain did not name. "launch" is a torpedo verb —
        nobody launches a laser — and every other way of saying it is the
        lasers. DECLARED rather than computed inside `run`, because that is what
@@ -6324,9 +7000,71 @@ const RULES = [
     run(c, ctx) {
       /* "all weapons" and "everything" ARE the captain's word for the weapon —
          the trigger is the slot — so this is heard, never chosen. */
-      const weapon = slotWeapon(c)
-        || ((ctx.trigger[0] === "all" || ctx.trigger[0] === "everything") ? "all" : undefined);
+      /* "everything" IS ordinary English on its own — "give me everything you
+         have" is a request for a report, not a broadside — so that one trigger
+         must also name what to fire at. The "all weapons" forms above need no
+         such guard: nothing else in the language means them. */
+      /* The fire verbs that are ORDINARY ENGLISH, and each was found firing the
+         guns on a sentence about something else. "Shoot me a status report"
+         and "shoot me the numbers" are requests. "Fire up the engines" starts
+         them. "Engage" is the most famous order in Star Trek and it means GO.
+         Each of them, used as a weapons order, names what to fire at or what
+         to fire with — so that is what they must do here. `fire` itself is not
+         in this set: a bare "Fire!" is unambiguous on a bridge. */
+      /* "ENGAGE" IS NOW IN THIS LIST, and the decision that was left open is
+         taken. It used to fire on its own because harness/scenarios/04-combat
+         said a bare "engage" means attack while the franchise corpus said it
+         means GO — the corpus disagreeing with itself, not a bug, and neither
+         reading could be declared the winner without being wrong for half the
+         captains who say it.
+
+         The resolution is that it is not a verb at all: it is a RELEASE word
+         that needs prior context, so bare "engage" goes to the confirm rule
+         above and the sim resolves it against what the ship is ready to do.
+         Here it keeps only the reading that names something — "engage the
+         Kestrel" — which is a weapons order by the same rule as "hit the
+         Kestrel". */
+      const NEEDS_AN_OBJECT = ["everything", "shoot", "hit", "engage"];
+      const bare = NEEDS_AN_OBJECT.includes(ctx.trigger[0]);
+      /* TWO DIFFERENT QUESTIONS, and conflating them briefly made every "hit
+         the Kestrel" fire ALL weapons: whether a trigger needs an object
+         (above) is not whether the trigger IS the captain's word for the
+         weapon (below). "all weapons" and "everything" are the weapon;
+         "shoot", "engage" and "hit" are verbs and leave the choice open. */
+      const meansAll = ctx.trigger[0] === "all" || ctx.trigger[0] === "everything";
+      /* "all" and "everything" are the captain's word for the weapon wherever
+         they sit, not only when they opened the order: "fire all weapons" and
+         "fire everything" used to come back as the lasers with the weapon
+         marked CHOSEN — the officer picking for a captain who had already
+         said. Claimed here so it is heard, and so the read-back does not tell
+         him something he did not say. */
+      const heard = slotWeapon(c);
+      const every = c.where(t => t === "all" || t === "everything");
+      const said = every >= 0 ? (c.take(every, 1), "all") : null;
+      /* Did the captain NAME a weapon, as opposed to the officer choosing one?
+         The guard below turns on this: "shoot the torpedoes" is an order even
+         with nobody named, "shoot me a report" is not. */
+      const slotWeaponNamed = !!(heard || said);
+      const weapon = heard || said || (meansAll ? "all" : undefined);
       const target = slotTarget(c, ctx.names);
+      /* AND THEY ARE ORDINARY ENGLISH BEFORE THEY ARE AN ORDER. Found by a
+         simulated playtest, and it was the worst parse in the game: "all ahead
+         flank" fired every weapon on the ship, and so did "all hands to battle
+         stations", "all hands on deck" and "give me everything you have". The
+         word alone cannot carry a weapons order — the rest of those clauses is
+         about speed, or the crew, or a status report.
+
+         So a clause whose ONLY claim to being a weapons order is "all" or
+         "everything" must also name what to fire AT. "all weapons on the
+         Kestrel" still fires, which is the case the trigger exists for; "all
+         weapons" with nobody named no longer does, and that is the cost —
+         "fire all weapons" is unaffected, because its order is the verb. */
+      if (bare && !target && !slotWeaponNamed) return null;
+      /* "FIRE UP the engines" starts them. `fire` is otherwise unambiguous on a
+         bridge and keeps its bare form, so this is one phrasal verb rather
+         than a guard on the verb — and it is checked on the token after the
+         trigger, which is where a phrasal verb's particle always is. */
+      if (ctx.trigger[0] === "fire" && c.tokens[ctx.at + ctx.trigger.length] === "up") return null;
       return { do: "fire", weapon, target: target || undefined };
     } },
 
@@ -6344,7 +7082,16 @@ const RULES = [
 
   { name: "hail",
     triggers: [["hail"], ["open", "a", "channel"], ["open", "channel"], ["signal"]],
-    run(c, ctx) { return { do: "hail", target: slotTarget(c, ctx.names) || undefined }; } },
+    run(c, ctx) {
+      const target = slotTarget(c, ctx.names);
+      /* "SIGNAL" IS A NOUN far more often than it is a verb. "Get me a bearing
+         on that signal", "a life-sign reading off that signal" and "the
+         distress signal" all used to open a channel to nobody. As a verb it
+         always has an object — you signal SOMEONE — so requiring one is the
+         same guard "all" and "everything" carry, for the same reason. */
+      if (ctx.trigger[0] === "signal" && !target) return null;
+      return { do: "hail", target: target || undefined };
+    } },
 
   { name: "course",
     triggers: COURSE_TRIGGERS,
@@ -6402,14 +7149,40 @@ function stampChosen(act, rule, ctx) {
 }
 
 /* Parse one utterance into zero or more actions, in the order spoken. */
-function parseOrders(text, contactNames) {
+/* PART OF AN ORDER IS NOT AN ORDER.
+   From the first simulated playtest: "Helm, come to heading zero four five,
+   speed eight kilometres per second" parsed the heading, dropped the speed,
+   and the helm answered "Coming to zero-four-five, aye" — so the captain had
+   no way to know half of what he said had gone on the floor. He spent three
+   more orders trying to change speed and never learned why none of them
+   worked.
+
+   The fix is NOT the missing verbs. The next captain uses a phrasing nobody
+   thought of, and a vocabulary that grows one playtest at a time is the thing
+   `bridge/BACKLOG.md` → "How the captain's vocabulary scales" exists to
+   refuse. The fix is that the ship says what it did not catch — which it can
+   always do, for any phrasing, because it already knows: a clause that
+   produced no action is right here, and counting is not vocabulary.
+
+   `parseOrders` keeps its contract and returns the actions. `readOrder`
+   returns those AND the clauses nobody could do anything with, and the first
+   is written in terms of the second so there is one implementation and no way
+   for them to disagree. */
+function readOrder(text, contactNames) {
   const names = (contactNames || []).slice();
   const all = [];
+  const unheard = [];
+  /* The clauses nothing could be made of, by index. `unheard` is what the ship
+     SAYS and is suppressed when something else landed (below); this is what
+     happened, and is reported whether or not the ship mentions it — a clause
+     the captain got nothing for is a vocabulary gap even when the rest of his
+     sentence worked, and that is precisely the case nobody could see. */
+  const unservedClauses = [];
 
   /* Every rule, over one clause, in the order they matched. Lifted out of the
      loop below so the clause can be read TWICE — once as the recogniser gave
      it, and once with a misheard address repaired. See the call site. */
-  function runClause(clauseTokens, stationInferred) {
+  function runClause(clauseTokens, stationInferred, deferred) {
     const c = makeClaim(clauseTokens);
     /* The clause's own correction, read by the same INFERRED_SLOTS loop below
        that stamps a resolved name and a resolved weapon. It sits on the claim
@@ -6437,7 +7210,10 @@ function parseOrders(text, contactNames) {
       if (asking && !rule.anyMood) continue;   // questions are answered, not obeyed
       const hit = c.findAny(rule.triggers);
       if (!hit) continue;
-      const ctx = { trigger: hit.seq, names, stationScope };
+      /* `at`/`len` ride along so a rule can look at the token AFTER its own
+         trigger — which is where a phrasal verb's particle lives, and the only
+         way to tell "fire the lasers" from "fire up the engines". */
+      const ctx = { trigger: hit.seq, at: hit.at, len: hit.len, names, stationScope };
       /* Claim the trigger, point the slot searches at it, and undo the lot if
          the frame does not fill — whole frame or nothing (rule 3), with the
          focus (rule 5) lasting exactly as long as the attempt. */
@@ -6464,6 +7240,10 @@ function parseOrders(text, contactNames) {
          declares what it picks; this is the one place any rule's pick is
          stamped, exactly as the flags above are. */
       stamped = stampChosen(stamped, rule, ctx);
+      /* WHEN, stamped the same way and in the same one place. The clause said
+         "on my mark"; every action it produced is held rather than carried out,
+         and the sim is what holds it (applyAction, src/sim.mjs). */
+      if (deferred) stamped = { ...stamped, deferred: true };
       found.push({ at: hit.at, act: stamped, station, refusal: !!rule.refusal });
     }
     found.sort((a, b) => a.at - b.at);
@@ -6475,7 +7255,16 @@ function parseOrders(text, contactNames) {
     return refusal ? [refusal] : found;
   }
 
+  /* WHICH CLAUSE EACH ACTION CAME FROM, which this loop knows and used to throw
+     away. Everything downstream then had to guess: the franchise suite called
+     "the ship served the clause it understood and not the one the label named"
+     an action nobody asked for, because it could not tell the two clauses
+     apart, and seven of its nine findings were that guess rather than a defect.
+     It rides on the wrapper beside `station` and `at`, never on the action, so
+     `parseOrders` and every schema are untouched. */
+  let clauseIndex = -1;
   for (const clause of splitClauses(tokenize(text))) {
+    clauseIndex++;
     /* One address per clause, before anything reads it — the commas the
        recogniser drops are what put two of them there. See oneAddress. */
     const spoken = oneAddress(clause);
@@ -6489,12 +7278,35 @@ function parseOrders(text, contactNames) {
          it takes back or repeats. There is no read-back to carry a correction's
          words, and replacing that answer with one would tell the captain less
          than it told him before. */
-      all.push({ at: 0, act: control, station: leadingStation(spoken), refusal: false });
+      all.push({ at: 0, act: control, station: leadingStation(spoken), refusal: false,
+                 clause: clauseIndex });
       continue;
     }
-    if (clauseIsNegative(spoken)) continue;   // a negative clause commands nothing
+    /* A negative clause commands nothing ON PURPOSE, so it is not something
+       the ship failed to catch. Reporting "I did not catch 'do not fire'"
+       would be telling the captain his own instruction went unheard when it
+       was obeyed exactly. */
+    /* A NEGATIVE CLAUSE IS NEVER A GAP, and that is a deliberate line rather
+       than an oversight. "don't fire" is an order the ship obeyed exactly, and
+       reporting it as something the captain got nothing for would tell him his
+       own instruction went missing.
 
-    const found = runClause(spoken, false);
+       It does cost one thing, and the cost is named rather than hidden:
+       "belay the recall" and "cancel the red alert" are control orders the ship
+       MISSED — `belay` and `cancel` are hard negators, so the clause commands
+       nothing — and they are not reported here either. Reporting them was tried
+       and needed a rule for telling `belay <a thing the ship knows>` from the
+       "no" inside "no matter what", which is a second opinion about what a
+       control word is. They surface anyway: the row lands in `wrong` because
+       the order the captain named never happened, which is exactly true.
+       `belay <object>` is a vocabulary item and lives in the backlog as one. */
+    if (clauseIsNegative(spoken)) continue;
+
+    /* WHEN, read once for the clause, ahead of every rule — see
+       DEFERRAL_PHRASES. It travels into the second reading too: a misheard
+       address must not lose the captain's "on my mark". */
+    const defers = clauseDefers(spoken);
+    const found = runClause(spoken, false, defers);
     /* A MISHEARD ADDRESS IS REPAIRED ONLY TO RESCUE A CLAUSE THAT COMMANDED
        NOTHING, never to re-read one that was already understood. That is the
        whole safety argument, and it is stronger than any threshold: the second
@@ -6518,12 +7330,42 @@ function parseOrders(text, contactNames) {
        token, not the rule that reads it. */
     if (!found.length) {
       const repair = repairAddress(spoken);
-      if (repair) for (const f of runClause(repair.tokens, true)) all.push(f);
+      const rescued = repair ? runClause(repair.tokens, true, defers) : [];
+      for (const f of rescued) all.push({ ...f, clause: clauseIndex });
+      /* Nothing could be made of this clause, even after repairing a misheard
+         address. Filler alone is not a clause the captain meant — "and", "now",
+         "please" between two real orders is punctuation he happened to say —
+         so it is not reported as unheard. */
+      /* Reported only if there is a WORD in it. Filler between two orders is
+         punctuation the captain happened to say, and a stray numeral is a
+         fragment of one of them — "I did not catch '5'" tells him nothing he
+         can act on and teaches him to distrust the ones that do. */
+      if (!rescued.length && spoken.some(t => !FILLER.has(t) && !/^[0-9.]+$/.test(t))) {
+        unheard.push(spoken.join(" "));
+        /* A GAP IS A COMMAND THE SHIP MISSED, not a remark it correctly ignored.
+           "get us out of here" opens with a verb the ship knows how to look for
+           and got nothing, which is a gap; "they're one of ours!" and "this is
+           not a drill" are statements, and mood turning them down is the ship
+           working. Reporting both as gaps made a third of the corpus look like
+           unmet vocabulary and would have set the backlog to work on sentences
+           that were never orders. Read from the same mood check every rule is
+           gated on, so the two can never disagree about what an order is. */
+        if (!clauseIsQuestion(spoken) && !clauseIsOnlyAddress(spoken))
+          unservedClauses.push(clauseIndex);
+      }
       continue;
     }
-    for (const f of found) all.push(f);
+    for (const f of found) all.push({ ...f, clause: clauseIndex });
   }
-  return all;
+  /* Only when SOMETHING landed. An utterance nothing could be made of is the
+     say-again case, which the crew already answers and which this must not
+     turn into two answers to one order. */
+  return { actions: all, unheard: all.length ? unheard : [],
+           clauses: clauseIndex + 1, unservedClauses };
+}
+
+function parseOrders(text, contactNames) {
+  return readOrder(text, contactNames).actions;
 }
 
 
@@ -7098,7 +7940,12 @@ const TTS_CACHE_MAX = 200;
    officer, voice name and words produce different audio on a different model,
    and two engines' voice vocabularies do not even overlap. */
 function ttsCacheKey(voice, speed, text, engineId) {
-  return (engineId === undefined ? voiceEngine : engineId) + "|" + voice + "|" + speed + "|" + text;
+  /* Keyed on what will be SAID, not on what was written. Two written lines
+     that sound identical share one clip — which is the right answer for the
+     clip pack too — and, more importantly, a caller cannot key on the written
+     form and then generate the spoken one. `spoken()` is applied here and in
+     generateTts below, so no call site has to remember it. */
+  return (engineId === undefined ? voiceEngine : engineId) + "|" + voice + "|" + speed + "|" + spoken(text);
 }
 function ttsCachePut(key, raw) {
   if (ttsCache.size >= TTS_CACHE_MAX) ttsCache.delete(ttsCache.keys().next().value);
@@ -7669,6 +8516,11 @@ function startTts() {
    load is part of the request, so a cancel arriving during the download is
    honoured too. */
 function generateTts(text, voice, speed) {
+  /* The one place a line is handed to an engine. `spoken()` is applied here
+     rather than at each caller — ttsGenerate, the warm pass and the self-test
+     all arrive through this door — so a fourth caller inherits it. See
+     src/speech-queue.mjs, "written down vs said aloud". */
+  text = spoken(text);
   const req = { id: null, cancelled: false };
   req.cancel = () => { req.cancelled = true; cancelTts(req.id); };
   req.done = startTts().then(w => {
@@ -7834,7 +8686,11 @@ function ttsPlay(audio, handle) {
     if (handle) handle.playing = p;
     return p.done;
   }
-  return speakBrowser(audio.who, audio.text, handle);
+  /* The browser's own voices get the same text the on-device engines do.
+     Most operating-system engines normalise numbers themselves, but "most" is
+     not a property, and one bridge that says a heading two different ways
+     depending on the machine is the drift this repository pays for. */
+  return speakBrowser(audio.who, spoken(audio.text), handle);
 }
 
 /* Cancel a generation in flight. What this actually buys is in the worker's
@@ -9281,10 +10137,10 @@ function stateForModel() {
       + ", port " + Math.round(ship.shields.port) + ", starboard " + Math.round(ship.shields.starboard) + ")",
     "Heading " + fmtHdg(ship.heading) + " at " + ship.speed.toFixed(1) + " km/s (maximum 12)",
     "Laser charge " + Math.round(ship.laser) + "%   Torpedoes " + ship.torpedoes,
-    /* The standing posture, in the sim's own words (ROE_POSTURES): a model
+    /* The standing posture, in the sim's own words (WEAPONS_ALLOWED): a model
        that cannot see it would keep proposing shots the ship is already
        taking, or take a "hold fire" it has already been given as new. */
-    "Rules of engagement: " + (ROE_POSTURES[ship.roe] || ROE_POSTURES.hold).said,
+    "Rules of engagement: " + (WEAPONS_ALLOWED[ship.weaponsAllowed] || WEAPONS_ALLOWED.hold).said,
     "Power: engines " + Math.round(ship.power.engines) + "%, shields " + Math.round(ship.power.shields)
       + "%, weapons " + Math.round(ship.power.weapons) + "%",
     /* A question the crew has already asked and is waiting on. Without this
@@ -9342,7 +10198,7 @@ const NUMWORDS = { zero:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7
 
 function localParse(order) {
   const names = contacts.map(c => c.name).filter(Boolean);
-  const found = parseOrders(order, names);
+  const { actions: found, unheard } = readOrder(order, names);
   if (!found.length) return null;         // genuinely unrecognised; the crew says so
 
   const out = [];
@@ -9362,13 +10218,27 @@ function localParse(order) {
     out.push({ officer: f.station || officerFor(entry, act),
                line: ackFor(act), act });
   }
+  /* PART OF AN ORDER IS NOT AN ORDER. What the ship could not make anything of
+     is said, in the captain's own words, AFTER what it did — so he hears that
+     he was obeyed and exactly where he was not. Before this the helm answered
+     "Coming to zero-four-five, aye" to an order that also asked for a speed,
+     and the captain spent three more orders discovering the speed had gone on
+     the floor. See src/parser.mjs, "part of an order is not an order".
+
+     It reuses SAY_AGAIN deliberately: this IS the ship not understanding, only
+     with something else in the same breath, and the one test for it
+     (`notUnderstood`) should find this too — including in a session's metrics,
+     which count by that test and not by matching words. */
+  for (const words of unheard) {
+    out.push({ officer: "COMM", line: SAY_AGAIN + " I did not catch " + JSON.stringify(words) + ".", act: null });
+  }
   return out.length ? out : null;
 }
 
 
 /* What the crew says when nothing at all can interpret the order. */
 function didNotCatch() {
-  return [{ officer: "COMM", line: "Say again, Captain? The crew did not catch that order.", act: null }];
+  return [{ officer: "COMM", line: SAY_AGAIN + " " + NOT_CAUGHT, act: null }];
 }
 /* ======================= A SMALL MODEL, ON THIS DEVICE ====================
    One runtime for both models on this page now: Transformers.js, the same
@@ -9831,14 +10701,6 @@ const TICK_MS  = 50;             // 20 Hz
    siblings), so a seed lifted out of a recording drives the same world there.
    `crypto.getRandomValues` where it exists, the clock where it does not —
    this only needs to differ between sessions, never to be unguessable. */
-function seededRng(a) {
-  return function () {
-    a |= 0; a = (a + 0x6D2B79F5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 function drawSeed() {
   try {
     if (typeof crypto !== "undefined" && crypto.getRandomValues)
@@ -10589,6 +11451,51 @@ function drawPlot() {
   // Situational overlays, last: drawn over everything else on the plot, and
   // never as DOM — see "situational overlays" above for OVERLAYS and why.
   drawOverlays(W, H, cxp, cyp);
+
+  // …and the same plot in words, written in the same pass so it cannot say
+  // something the picture does not.
+  writePlotText();
+}
+
+/* THE PLOT, IN WORDS.
+   A canvas is a picture, so for anyone not looking at it — a screen reader, or
+   anything reading this page that is not a pair of eyes — the game's most
+   important display did not exist. This writes it out: the ship, then every
+   contact the canvas just drew, in the terms the captain would use to talk
+   about them. Bearing and range are said the way the crew says them, through
+   the sim's own `fmtHdg`, because two ways of writing a bearing is how a
+   reader and a listener end up with different pictures.
+
+   It is written from the SAME state the canvas was drawn from, in the same
+   pass, rather than on a timer of its own: a description that could run behind
+   the picture would eventually contradict it, and contradicting the plot is
+   worse than not having a text form at all. */
+function writePlotText() {
+  const el = document.getElementById("plotText");
+  if (!el) return;
+  const { ship, contacts } = S;
+  const L = [];
+  L.push("Excalibur, heading " + fmtHdg(ship.heading) + ", "
+       + ship.speed.toFixed(1) + " kilometres per second, hull " + Math.round(ship.hull)
+       + " percent, " + (ship.shieldsUp ? "shields up" : "shields down")
+       + ", condition " + ship.alert + ".");
+  if (!contacts.length) L.push("The plot is clear.");
+  else {
+    L.push(contacts.length + (contacts.length === 1 ? " contact." : " contacts."));
+    for (const c of contacts) {
+      /* Both take the STATE, not the ship — the two lines they are are in
+         src/sim.mjs and they read S.ship themselves. */
+      const brg = fmtHdg(bearingTo(S, c));
+      const km = Math.round(rangeTo(S, c));
+      L.push(c.name + ": bearing " + brg + ", range " + km.toLocaleString("en-GB").replace(/,/g, " ")
+        + " kilometres, " + contactState(c)
+        + (c.id === ship.target ? ", targeted" : "") + ".");
+    }
+  }
+  const next = L.join(" ");
+  /* Only write when it changed: this runs every frame, and an aria-live region
+     that is rewritten sixty times a second announces nothing at all. */
+  if (el.textContent !== next) el.textContent = next;
 }
 
 /* Wheel zoom on the plot. Exponential, so a notch feels the same at any
@@ -11062,7 +11969,7 @@ async function buildDiagnostics() {
   add("following", ship.following || "(none)");
   /* The other standing order, and the one that shoots: "why is she firing on
      her own" and "why is she not firing" are both answered here. */
-  add("rules of engagement", ship.roe);
+  add("rules of engagement", ship.weaponsAllowed);
   /* The registry's confirmation gate, from the sim's own one-slot record: an
      order the crew asked about and is still holding. "it did nothing when I
      said fire" is answered here rather than by reading the source. */
@@ -11139,7 +12046,13 @@ function recNote(kind, data) {
   if (!recording) return;
   const r = recording;
   r.events.push({
-    t: Math.round(S.elapsed * 10) / 10,          // sim seconds: the clock a pause stops
+    /* Sim seconds at full precision — the clock a pause stops. It is ROUNDED
+       AT RENDER (`recSimT`), not here: the human's line is unchanged, and the
+       machine rendering keeps the exact tick the order landed on. A tenth of a
+       second is two of the sim's fixed steps, so rounding at capture would
+       have made a replay land orders on a different tick than the session did
+       and quietly produce a different world. */
+    t: S.elapsed,
     w: (Date.now() - r.startedMs) / 1000,        // wall seconds since Start: a pause shows as a gap
     kind, data: data || {}
   });
@@ -11207,17 +12120,28 @@ function worldSnapshot() {
     speed: ship.speed.toFixed(1),
     target: ship.target || null,
     following: ship.following || null,
-    roe: ship.roe,
+    weaponsAllowed: ship.weaponsAllowed,
     awaiting: S.pending ? S.pending.reason : null,
     belayable: S.lastOrder ? S.lastOrder.do : null,
     contacts: contacts.map(c => ({
       name: c.name,
-      state: (c.destroyed ? "destroyed" : c.scanned ? (c.hostile ? "hostile" : "friendly") : "unidentified"),
+      state: contactState(c),
       km: Math.round(rangeTo(S, c)),
       brg: Math.round(bearingTo(S, c)),
       hull: Math.round(c.hull)
     }))
   };
+}
+
+/* What a contact IS, in one word, declared once. The recorder's snapshot and
+   the plot's text form both have to say it, and two vocabularies for the same
+   four states is how a recording and the screen end up disagreeing about
+   whether a ship was ever identified. `scanned` rather than any friendlier
+   word is deliberate: the ship knows what it has looked at. */
+function contactState(c) {
+  return c.destroyed ? "destroyed"
+       : c.scanned ? (c.hostile ? "hostile" : "friendly")
+       : "unidentified";
 }
 
 /* Every order the ship is given goes through here — typed, quick button, or
@@ -11281,7 +12205,7 @@ function recEventLines(e) {
     row("state", "hull " + d.hull + "% · condition " + d.alert + " · shields " + d.shields
       + " · " + d.heading + " @ " + d.speed + " km/s · target " + (d.target || "none")
       + (d.following ? " · following " + d.following : "")
-      + " · roe " + d.roe
+      + " · weapons " + d.weaponsAllowed
       + " · awaiting " + (d.awaiting || "nothing")
       + " · belayable " + (d.belayable || "nothing"));
     out.push(head + recPad("", 6) + " contacts " + (d.contacts && d.contacts.length
@@ -11311,6 +12235,69 @@ function recEventLines(e) {
     row(e.kind, JSON.stringify(d));
   }
   return out;
+}
+
+/* THE SECOND FORMAT, and why it is a second format rather than a change to
+   the first. The entry that designed this recorder said the reader is a person
+   reconstructing a failure, and that if a machine consumer ever wanted the
+   same session the honest answer was "a second `--format` on the hand-over
+   rather than making the human's copy worse". A machine consumer arrived: the
+   simulated playtest replays a session to prove the recording is enough to
+   rebuild the world (`bridge/BACKLOG.md` → "The simulated playtest"), and
+   parsing the human's aligned columns back into data would have been a second,
+   brittle declaration of what an order is.
+
+   So both renderings compose from the SAME session object and the same
+   `recordingFacts()`. Neither is derived from the other, so neither can drift
+   into being more or less true than the other, and the human's copy is
+   untouched. There is no UI for this one — nothing in the drawer offers it,
+   because a person has no use for it; the harness calls it directly. */
+function recordingFacts() {
+  const r = lastRecording;
+  if (!r) return null;
+  return {
+    build: buildStamp(),
+    page: location.href.split("?")[0],
+    seed: PAGE_SEED,
+    /* A seed is worthless if something replaced the generator it made, so the
+       answer travels beside it instead of being assumed by whoever reads it. */
+    seedInForce: seedInForce(),
+    episode: (S.episode && S.episode.id) || chosenEpisode || null,
+    startedIso: r.startedIso,
+    stoppedIso: r.stoppedIso,
+    startedSim: r.startedSim,
+    /* Full precision, for the same reason an event's `t` is: a replay that
+       stops at a rounded sim second stops a tick or two away from where the
+       session did, and the ship is somewhere else. The text rendering rounds
+       this for display; the number does not. */
+    simNow: S.elapsed,
+    clockRunning: clockRunning(),
+    inputTier: activeInputTier(),
+    inputPreference: voiceInputEngine,
+    voiceEngine,
+    gpu: onDeviceVoices() ? ttsUseGpu : null,
+    brain,
+    parserFirst: fastPathOn,
+    userAgent: navigator.userAgent
+  };
+}
+
+function buildRecordingJson() {
+  const r = lastRecording;
+  if (!r) return null;
+  const all = S.ledger.slice(r.ledgerFrom, r.ledgerTo === undefined ? S.ledger.length : r.ledgerTo);
+  const kept = all.slice(-RECORDING_LEDGER_MAX);
+  return {
+    format: "excalibur-session/1",
+    facts: recordingFacts(),
+    /* The timeline exactly as `recNote` recorded it — kind, data, and both
+       clocks — not the rendered line. The renderer above is one reading of
+       these; this is the events themselves. */
+    events: r.events,
+    dropped: r.dropped,
+    ledger: kept,
+    ledgerDropped: all.length - kept.length
+  };
 }
 
 async function buildRecording() {
