@@ -1,7 +1,7 @@
-Pine_1.gltf / Pine_1.bin / Bark_NormalTree.png / Bark_NormalTree_Normal.png / Leaf_Pine_C.png
+Quaternius "Stylized Nature MegaKit" (Standard/free tier)
 
-Source: Quaternius "Stylized Nature MegaKit" (Standard/free tier), downloaded from
-https://quaternius.itch.io/stylized-nature-megakit on 2026-09-16.
+Source: downloaded from https://quaternius.itch.io/stylized-nature-megakit
+(the free/no-cost tier of the pack; downloaded 2026-09-16, re-verified/extended 2026-09-18).
 
 License: CC0 1.0 Universal (Public Domain Dedication)
 https://creativecommons.org/publicdomain/zero/1.0/
@@ -9,5 +9,34 @@ https://creativecommons.org/publicdomain/zero/1.0/
 Free for personal, educational and commercial use, no attribution required.
 Models by Quaternius (https://quaternius.com, https://www.patreon.com/quaternius).
 
-Used here only for a vegetation-pipeline pilot comparison (see
-src/terrain/vegPilot.ts) - not yet part of the shipped app.
+Files and how they're used:
+
+- Pine_1.gltf / Pine_1.bin / Pine_1_lod1.gltf / Pine_1_lod1.bin
+  Bark_NormalTree.png / Bark_NormalTree_Normal.png / Leaf_Pine_C.png
+  The original real-mesh pine, used by Yosemite's hybrid real-tree/procedural-clump distance-tier
+  system (see src/terrain/vegetation.ts's RealTreeAssets/buildRealTreeRig).
+
+- Pine_2..Pine_5.gltf/.bin (+ their own _lod1 tiers)
+  Additional pine variants (share Pine_1's Bark_NormalTree/Leaf_Pine_C textures - no new textures
+  needed) - Yosemite forest shape variety, same hybrid tier system as Pine_1.
+
+- DeadTree_1.gltf/.bin, DeadTree_3.gltf/.bin (+ their own _lod1 tiers)
+  Bark_DeadTree.png / Bark_DeadTree_Normal.png
+  Bare/dead trees (trunk only, no canopy submesh) - a new sparse real-tree presence at Grand
+  Canyon, which previously had no real-mesh trees at all.
+
+- TwistedTree_1.gltf/.bin, TwistedTree_3.gltf/.bin (+ their own _lod1 tiers)
+  Bark_TwistedTree.png / Bark_TwistedTree_Normal.png / Leaves_TwistedTree_C.png
+  Gnarled/wind-bent trees - the other half of Grand Canyon's sparse real-tree presence, alongside
+  DeadTree above.
+
+- Rock_Medium_1.gltf/.bin, Rock_Medium_2.gltf/.bin, Rock_Medium_3.gltf/.bin
+  Rocks_Diffuse.png
+  Real-mesh boulders layered as a near-distance tier on top of the existing procedural talus/scree
+  system at Grand Canyon and Everest (src/terrain/talus.ts) - the far/bulk talus field stays fully
+  procedural; only the closest boulders render as this real geometry.
+
+_lod1 tiers for every model above (except Rock_Medium, which is cheap enough already) were derived
+build-time from the corresponding full-detail model via scripts/generate-tree-lod.ts
+(gltf-transform + meshoptimizer's simplify(), ~30% of the source triangle count) - not separately
+downloaded assets.
