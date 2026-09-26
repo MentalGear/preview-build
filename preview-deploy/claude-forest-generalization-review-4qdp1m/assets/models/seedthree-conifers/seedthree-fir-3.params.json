@@ -1,0 +1,126 @@
+{
+  "params": {
+    "scale": 7.8,
+    "scaleV": 0,
+    "levels": 2,
+    "ratio": 0.013,
+    "ratioPower": 1.4,
+    "baseSize": 0.1,
+    "shape": 0,
+    "flare": 0.3,
+    "attractionUp": 0,
+    "baseSplits": 0,
+    "baseSplitAngle": 0,
+    "length": [
+      1,
+      0.095,
+      0.34,
+      0.28
+    ],
+    "lengthV": [
+      0,
+      0.02,
+      0.1,
+      0.1
+    ],
+    "taper": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "curveRes": [
+      14,
+      2,
+      4,
+      3
+    ],
+    "curve": [
+      2,
+      6,
+      22,
+      0
+    ],
+    "curveBack": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "curveV": [
+      4,
+      12,
+      24,
+      24
+    ],
+    "downAngle": [
+      0,
+      76,
+      82,
+      78
+    ],
+    "downAngleV": [
+      0,
+      5,
+      12,
+      12
+    ],
+    "rotate": [
+      0,
+      137,
+      137,
+      137
+    ],
+    "rotateV": [
+      0,
+      6,
+      22,
+      22
+    ],
+    "branches": [
+      0,
+      56,
+      18,
+      0
+    ],
+    "radialSegments": [
+      6,
+      3,
+      3,
+      3
+    ],
+    "branchStart": [
+      0,
+      0.1,
+      0,
+      0
+    ],
+    "branchEnd": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "whorlSize": [
+      0,
+      4,
+      0,
+      0
+    ]
+  },
+  "foliage": {
+    "fracs": [
+      0.85
+    ],
+    "raysPerNode": 6,
+    "cardLength": 0.5,
+    "cardWidth": 0.4
+  },
+  "bark": {
+    "radialScale": 1,
+    "ringStride": 2,
+    "terminalSides": 4,
+    "terminalRingStride": 2
+  },
+  "scale": 1.141473929163785
+}
