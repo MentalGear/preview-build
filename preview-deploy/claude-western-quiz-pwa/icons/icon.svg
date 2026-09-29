@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#9a3412"/>
+  <circle cx="256" cy="256" r="196" fill="#fffbeb"/>
+  <circle cx="256" cy="256" r="196" fill="none" stroke="#1c1917" stroke-width="12" stroke-dasharray="4 18"/>
+  <path d="M136 250c0-20 20-30 48-30h144c28 0 48 10 48 30 0 18-54 34-120 34s-120-16-120-34z" fill="#1c1917"/>
+  <path d="M188 222c6-58 26-92 68-92s62 34 68 92c-20 8-44 12-68 12s-48-4-68-12z" fill="#1c1917"/>
+  <text x="256" y="388" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="84" fill="#9a3412">Q?</text>
+</svg>

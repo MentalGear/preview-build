@@ -1,0 +1,69 @@
+[
+  {
+    "id": "com-lucky-luke-shadow",
+    "kind": "Trivia",
+    "prompt": "Which cowboy \"shoots faster than his shadow\"?",
+    "choices": ["Lucky Luke", "Tex Willer", "Blueberry", "Red Ryder"],
+    "answerIndex": 0,
+    "about": ["lucky-luke-1946"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "com-jolly-jumper",
+    "kind": "Trivia",
+    "prompt": "What is the name of Lucky Luke's horse?",
+    "choices": ["Silver", "Jolly Jumper", "Rantanplan", "Tornado"],
+    "answerIndex": 1,
+    "fact": "Rantanplan is the dimmest dog in the West.",
+    "about": ["lucky-luke-1946"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "com-lucky-luke-creator",
+    "kind": "Trivia",
+    "prompt": "Which cartoonist created Lucky Luke?",
+    "choices": ["Hergé", "Morris", "Franquin", "Uderzo"],
+    "answerIndex": 1,
+    "fact": "René Goscinny later wrote many of the stories.",
+    "about": ["lucky-luke-1946"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "com-daltons",
+    "kind": "Trivia",
+    "prompt": "Which outlaw brothers are Lucky Luke's recurring foes?",
+    "choices": ["The Jameses", "The Youngers", "The Daltons", "The Clantons"],
+    "answerIndex": 2,
+    "about": ["lucky-luke-1946"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "com-blueberry-artist",
+    "kind": "Trivia",
+    "prompt": "Which artist co-created \"Blueberry\" with Jean-Michel Charlier?",
+    "choices": ["Jean Giraud", "Hermann", "Jijé", "Enki Bilal"],
+    "answerIndex": 0,
+    "fact": "He also signed his work as Mœbius.",
+    "about": ["blueberry-1963"],
+    "difficulty": "Expert"
+  },
+  {
+    "id": "com-jonah-hex",
+    "kind": "Trivia",
+    "prompt": "Which publisher launched Jonah Hex?",
+    "choices": ["Marvel", "DC Comics", "Dark Horse", "Image"],
+    "answerIndex": 1,
+    "about": ["jonah-hex-1972"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "com-tex-willer",
+    "kind": "Trivia",
+    "prompt": "In which country did the Tex Willer comics originate?",
+    "choices": ["France", "Belgium", "Spain", "Italy"],
+    "answerIndex": 3,
+    "fact": "Created in 1948 by Gian Luigi Bonelli and Aurelio Galleppini.",
+    "about": ["tex-willer-1948"],
+    "difficulty": "Buff"
+  }
+]
