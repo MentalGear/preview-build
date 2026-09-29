@@ -8,7 +8,8 @@
       "to": 1956
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q276769"
   },
   {
     "id": "high-noon-1952",
@@ -19,7 +20,8 @@
       "to": 1952
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q245208"
   },
   {
     "id": "a-fistful-of-dollars-1964",
@@ -30,7 +32,8 @@
       "to": 1964
     },
     "countries": ["IT", "ES", "DE"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q76479"
   },
   {
     "id": "for-a-few-dollars-more-1965",
@@ -41,7 +44,8 @@
       "to": 1965
     },
     "countries": ["IT", "ES", "DE"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q153677"
   },
   {
     "id": "the-good-the-bad-and-the-ugly-1966",
@@ -52,7 +56,8 @@
       "to": 1966
     },
     "countries": ["IT", "ES", "DE"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q41483"
   },
   {
     "id": "once-upon-a-time-in-the-west-1968",
@@ -63,7 +68,8 @@
       "to": 1968
     },
     "countries": ["IT", "US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q168154"
   },
   {
     "id": "the-magnificent-seven-1960",
@@ -74,7 +80,8 @@
       "to": 1960
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q19069"
   },
   {
     "id": "true-grit-1969",
@@ -85,7 +92,8 @@
       "to": 1969
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q603263"
   },
   {
     "id": "rio-bravo-1959",
@@ -96,7 +104,8 @@
       "to": 1959
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q1008351"
   },
   {
     "id": "butch-cassidy-and-the-sundance-kid-1969",
@@ -107,7 +116,8 @@
       "to": 1969
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q232000"
   },
   {
     "id": "unforgiven-1992",
@@ -129,7 +139,8 @@
       "to": 1973
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q862187"
   },
   {
     "id": "gunsmoke-1955",
@@ -140,7 +151,8 @@
       "to": 1975
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q29641"
   },
   {
     "id": "rawhide-1959",
@@ -151,7 +163,8 @@
       "to": 1965
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q1247542"
   },
   {
     "id": "have-gun-will-travel-1957",
@@ -162,7 +175,8 @@
       "to": 1963
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q1248082"
   },
   {
     "id": "the-wild-wild-west-1965",
@@ -173,7 +187,8 @@
       "to": 1969
     },
     "countries": ["US"],
-    "genres": ["Western", "Spy"]
+    "genres": ["Western", "Spy"],
+    "wikidataId": "Q1278637"
   },
   {
     "id": "the-lone-ranger-1949",
@@ -195,7 +210,8 @@
       "to": 1971
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q1214471"
   },
   {
     "id": "the-virginian-novel-1902",
@@ -217,7 +233,8 @@
       "to": 1969
     },
     "countries": ["GB"],
-    "genres": ["Spy", "Adventure", "Crime"]
+    "genres": ["Spy", "Adventure", "Crime"],
+    "wikidataId": "Q1248868"
   },
   {
     "id": "meet-the-tiger-1928",
@@ -239,7 +256,8 @@
       "to": 1969
     },
     "countries": ["GB"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q113700"
   },
   {
     "id": "the-persuaders-1971",
@@ -261,7 +279,8 @@
       "to": 1968
     },
     "countries": ["GB"],
-    "genres": ["Spy", "SciFi"]
+    "genres": ["Spy", "SciFi"],
+    "wikidataId": "Q714753"
   },
   {
     "id": "the-man-from-uncle-1964",
@@ -272,7 +291,8 @@
       "to": 1968
     },
     "countries": ["US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q1264983"
   },
   {
     "id": "danger-man-1960",
@@ -294,7 +314,8 @@
       "to": 1973
     },
     "countries": ["US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q369111"
   },
   {
     "id": "hawaii-five-o-1968",
@@ -316,7 +337,8 @@
       "to": 1962
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q102754"
   },
   {
     "id": "goldfinger-1964",
@@ -327,7 +349,8 @@
       "to": 1964
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q106440"
   },
   {
     "id": "you-only-live-twice-1967",
@@ -338,7 +361,8 @@
       "to": 1967
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107761"
   },
   {
     "id": "on-her-majestys-secret-service-1969",
@@ -349,7 +373,8 @@
       "to": 1969
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107894"
   },
   {
     "id": "diamonds-are-forever-1971",
@@ -360,7 +385,8 @@
       "to": 1971
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107914"
   },
   {
     "id": "live-and-let-die-1973",
@@ -371,7 +397,8 @@
       "to": 1973
     },
     "countries": ["GB", "US"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q27204"
   },
   {
     "id": "casino-royale-novel-1953",
@@ -404,7 +431,8 @@
       "to": 2005
     },
     "countries": ["FR", "BE"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "wikidataId": "Q137308"
   },
   {
     "id": "tex-willer-1948",
