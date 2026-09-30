@@ -26,6 +26,7 @@
   {
     "id": "a-fistful-of-dollars-1964",
     "title": "A Fistful of Dollars",
+    "originalTitle": "Per un pugno di dollari",
     "medium": "Film",
     "years": {
       "from": 1964,
@@ -38,6 +39,7 @@
   {
     "id": "for-a-few-dollars-more-1965",
     "title": "For a Few Dollars More",
+    "originalTitle": "Per qualche dollaro in più",
     "medium": "Film",
     "years": {
       "from": 1965,
@@ -50,6 +52,7 @@
   {
     "id": "the-good-the-bad-and-the-ugly-1966",
     "title": "The Good, the Bad and the Ugly",
+    "originalTitle": "Il buono, il brutto, il cattivo",
     "medium": "Film",
     "years": {
       "from": 1966,
@@ -62,6 +65,7 @@
   {
     "id": "once-upon-a-time-in-the-west-1968",
     "title": "Once Upon a Time in the West",
+    "originalTitle": "C'era una volta il West",
     "medium": "Film",
     "years": {
       "from": 1968,

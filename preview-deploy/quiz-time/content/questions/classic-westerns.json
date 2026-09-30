@@ -44,7 +44,7 @@
     "id": "cw-fistful-yojimbo",
     "kind": "Trivia",
     "category": "Trivia",
-    "prompt": "\"A Fistful of Dollars\" (1964) is an unofficial remake of which film?",
+    "prompt": "\"A Fistful of Dollars (Per un pugno di dollari)\" (1964) is an unofficial remake of which film?",
     "choices": ["Seven Samurai", "Rashomon", "Sanjuro", "Yojimbo"],
     "answerIndex": 3,
     "fact": "Kurosawa's studio sued, and won a share of the profits.",
@@ -55,7 +55,7 @@
     "id": "cw-once-upon-director",
     "kind": "Trivia",
     "category": "Directors",
-    "prompt": "Who directed \"Once Upon a Time in the West\" (1968)?",
+    "prompt": "Who directed \"Once Upon a Time in the West (C'era una volta il West)\" (1968)?",
     "choices": [
       "Sergio Corbucci",
       "Sergio Leone",
