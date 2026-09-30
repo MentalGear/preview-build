@@ -419,37 +419,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1034691",
-    "title": "Heaven for Everyone",
+    "id": "wd-Q1040127",
+    "title": "If You Can Believe Your Eyes and Ears",
     "medium": "Music",
     "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1034691",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1036227",
-    "title": "Smooth",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Rock"
+      "Pop",
+      "Rock",
+      "Folk"
     ],
-    "wikidataId": "Q1036227",
+    "wikidataId": "Q1040127",
     "provenance": "wikidata"
   },
   {
@@ -541,23 +526,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1049186",
-    "title": "My All",
-    "medium": "Music",
-    "years": {
-      "from": 1998,
-      "to": 1998
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q1049186",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1049271",
     "title": "Liar",
     "medium": "Music",
@@ -572,25 +540,6 @@
       "Rock"
     ],
     "wikidataId": "Q1049271",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1050495",
-    "title": "Catch Bull at Four",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop",
-      "Folk"
-    ],
-    "wikidataId": "Q1050495",
     "provenance": "wikidata"
   },
   {
@@ -648,6 +597,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q10527165",
+    "title": "Hums of the Lovin' Spoonful",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q10527165",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1056402",
     "title": "California",
     "medium": "Film",
@@ -698,23 +665,6 @@
       "Spy"
     ],
     "wikidataId": "Q1058723",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1059387",
-    "title": "Thank God I Found You",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q1059387",
     "provenance": "wikidata"
   },
   {
@@ -876,23 +826,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1067069",
-    "title": "No Me Ames",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q1067069",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1067880",
     "title": "Waiting for Tonight",
     "medium": "Music",
@@ -981,24 +914,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1072053",
-    "title": "I Was Born to Love You",
-    "medium": "Music",
-    "years": {
-      "from": 1985,
-      "to": 1985
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q1072053",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1072075",
     "title": "That's the Way Love Goes",
     "medium": "Music",
@@ -1013,6 +928,25 @@
       "Pop"
     ],
     "wikidataId": "Q1072075",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1072096",
+    "title": "Jefferson Airplane Takes Off",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock",
+      "Folk"
+    ],
+    "wikidataId": "Q1072096",
     "provenance": "wikidata"
   },
   {
@@ -1400,6 +1334,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1091327",
+    "title": "S.F. Sorrow",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1091327",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q109214",
     "title": "A Momentary Lapse of Reason",
     "medium": "Music",
@@ -1470,20 +1422,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1095077",
-    "title": "Whatzupwitu",
+    "id": "wd-Q1095924",
+    "title": "If Not for You",
     "medium": "Music",
     "years": {
-      "from": 1993,
-      "to": 1993
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
-      "US"
+      "GB",
+      "AU"
     ],
     "genres": [
-      "Pop"
+      "Pop",
+      "Folk"
     ],
-    "wikidataId": "Q1095077",
+    "wikidataId": "Q1095924",
     "provenance": "wikidata"
   },
   {
@@ -1760,25 +1714,6 @@
       "Rock"
     ],
     "wikidataId": "Q1131308",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1131411",
-    "title": "James Taylor",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1131411",
     "provenance": "wikidata"
   },
   {
@@ -4012,24 +3947,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1280027",
-    "title": "Ebony and Ivory",
-    "medium": "Music",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q1280027",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1280732",
     "title": "Human Nature",
     "medium": "Music",
@@ -4342,24 +4259,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1319869",
-    "title": "The United States of America",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1319869",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1322269",
     "title": "Waterhole No. 3",
     "medium": "Film",
@@ -4601,20 +4500,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1347115",
-    "title": "What a Girl Wants",
+    "id": "wd-Q1346351",
+    "title": "Weezer",
     "medium": "Music",
     "years": {
-      "from": 1999,
-      "to": 1999
+      "from": 1994,
+      "to": 1994
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Pop"
+      "Rock"
     ],
-    "wikidataId": "Q1347115",
+    "wikidataId": "Q1346351",
     "provenance": "wikidata"
   },
   {
@@ -4720,24 +4619,6 @@
       "Adventure"
     ],
     "wikidataId": "Q137034",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q137040",
-    "title": "Historic Dead",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q137040",
     "provenance": "wikidata"
   },
   {
@@ -4915,6 +4796,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1401404",
+    "title": "Full House",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q1401404",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1401456",
     "title": "\"Babbacombe\" Lee",
     "medium": "Music",
@@ -4930,24 +4829,6 @@
       "Rock"
     ],
     "wikidataId": "Q1401456",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1401463",
-    "title": "Angel Delight",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1401463",
     "provenance": "wikidata"
   },
   {
@@ -5145,24 +5026,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1420677",
-    "title": "Like a Prayer",
-    "medium": "Music",
-    "years": {
-      "from": 1989,
-      "to": 1989
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q1420677",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1421786",
     "title": "The First Traveling Saleslady",
     "medium": "Film",
@@ -5333,25 +5196,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1454909",
-    "title": "Peggy Sue",
-    "medium": "Music",
-    "years": {
-      "from": 1957,
-      "to": 1957
-    },
-    "countries": [
-      "US",
-      "SE"
-    ],
-    "genres": [
-      "RockAndRoll",
-      "Rock"
-    ],
-    "wikidataId": "Q1454909",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1459027",
     "title": "Live Cream Volume II",
     "medium": "Music",
@@ -5423,6 +5267,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1464637",
+    "title": "White Light",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock",
+      "Folk",
+      "Pop"
+    ],
+    "wikidataId": "Q1464637",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1464948",
     "title": "Pursued",
     "medium": "Film",
@@ -5457,23 +5320,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q14669",
-    "title": "Rust in Peace",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q14669",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1470997",
     "title": "River of No Return",
     "medium": "Film",
@@ -5488,24 +5334,6 @@
       "Western"
     ],
     "wikidataId": "Q1470997",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1472773",
-    "title": "Oh, Pretty Woman",
-    "medium": "Music",
-    "years": {
-      "from": 1964,
-      "to": 1964
-    },
-    "countries": [
-      "US",
-      "SE"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1472773",
     "provenance": "wikidata"
   },
   {
@@ -5611,21 +5439,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1487396",
-    "title": "You've Lost That Lovin' Feelin'",
+    "id": "wd-Q1486725",
+    "title": "The Twain Shall Meet",
     "medium": "Music",
     "years": {
-      "from": 1964,
-      "to": 1964
+      "from": 1968,
+      "to": 1968
     },
     "countries": [
-      "US",
-      "SE"
+      "GB"
     ],
     "genres": [
-      "Pop"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q1487396",
+    "wikidataId": "Q1486725",
     "provenance": "wikidata"
   },
   {
@@ -5663,41 +5491,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q149258",
-    "title": "Amor Prohibido",
-    "medium": "Music",
-    "years": {
-      "from": 1994,
-      "to": 1994
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q149258",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q14926449",
-    "title": "Live",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q14926449",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q149443",
     "title": "Say My Name",
     "medium": "Music",
@@ -5729,23 +5522,6 @@
       "Pop"
     ],
     "wikidataId": "Q149513",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q149585",
-    "title": "I Could Fall in Love",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q149585",
     "provenance": "wikidata"
   },
   {
@@ -6093,24 +5869,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1526759",
-    "title": "Creedence Clearwater Revival",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1526759",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1527383",
     "title": "The Villain",
     "medium": "Film",
@@ -6143,25 +5901,6 @@
       "Pop"
     ],
     "wikidataId": "Q152873",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1529432",
-    "title": "Land of Confusion",
-    "medium": "Music",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q1529432",
     "provenance": "wikidata"
   },
   {
@@ -6906,23 +6645,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1628696",
-    "title": "Uno",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1628696",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q16290",
     "title": "Star Trek: The Next Generation",
     "medium": "TV",
@@ -7168,23 +6890,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1648248",
-    "title": "Sunburn",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1648248",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1648283",
     "title": "David Bowie",
     "medium": "Music",
@@ -7274,24 +6979,6 @@
       "Spy"
     ],
     "wikidataId": "Q1651765",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1653876",
-    "title": "Whatevershebringswesing",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q1653876",
     "provenance": "wikidata"
   },
   {
@@ -7879,23 +7566,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1750699",
-    "title": "Karma Police",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1750699",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q175070",
     "title": "12 X 5",
     "medium": "Music",
@@ -7930,23 +7600,6 @@
       "Pop"
     ],
     "wikidataId": "Q1750952",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1751357",
-    "title": "Paranoid Android",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1751357",
     "provenance": "wikidata"
   },
   {
@@ -8159,6 +7812,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1754505",
+    "title": "Neil Young",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "CA",
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q1754505",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1754647",
     "title": "La Bataille de San Sebastian",
     "medium": "Film",
@@ -8247,6 +7919,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1756476",
+    "title": "Frida",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "SE"
+    ],
+    "genres": [
+      "Folk",
+      "Rock",
+      "Pop"
+    ],
+    "wikidataId": "Q1756476",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1757372",
     "title": "Nazareth",
     "medium": "Music",
@@ -8316,43 +8007,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1762692",
-    "title": "Third Album",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "NL"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1762692",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1762697",
-    "title": "Scorpio's Dance",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "NL"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1762697",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q176284",
     "title": "Ramones",
     "medium": "Music",
@@ -8389,24 +8043,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1765109",
-    "title": "Smash Your Head Against the Wall",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1765109",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1765375",
     "title": "Useless",
     "medium": "Music",
@@ -8438,23 +8074,6 @@
       "Pop"
     ],
     "wikidataId": "Q176544",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1767236",
-    "title": "Unintended",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1767236",
     "provenance": "wikidata"
   },
   {
@@ -8611,6 +8230,23 @@
       "Spy"
     ],
     "wikidataId": "Q1780163",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1780906",
+    "title": "The One I Love",
+    "medium": "Music",
+    "years": {
+      "from": 1987,
+      "to": 1987
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q1780906",
     "provenance": "wikidata"
   },
   {
@@ -9008,24 +8644,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q18244395",
-    "title": "Clube da Esquina",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "BR"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q18244395",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q182518",
     "title": "A Hard Day's Night",
     "medium": "Music",
@@ -9184,6 +8802,25 @@
       "Western"
     ],
     "wikidataId": "Q1851488",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1856566",
+    "title": "Give It Up",
+    "medium": "Music",
+    "years": {
+      "from": 1972,
+      "to": 1972
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock",
+      "Pop"
+    ],
+    "wikidataId": "Q1856566",
     "provenance": "wikidata"
   },
   {
@@ -9468,24 +9105,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1909473",
-    "title": "Matthew & Son",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1909473",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q190989",
     "title": "Ride the Lightning",
     "medium": "Music",
@@ -9554,6 +9173,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1929790",
+    "title": "Thin Lizzy",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "IE"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q1929790",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1930816",
     "title": "UFO 2: Flying",
     "medium": "Music",
@@ -9586,42 +9223,6 @@
       "Western"
     ],
     "wikidataId": "Q1930992",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1931977",
-    "title": "Rainbow Bridge – Original Motion Picture Sound Track",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1931977",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1932060",
-    "title": "Heavy",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1932060",
     "provenance": "wikidata"
   },
   {
@@ -9678,6 +9279,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1934574",
+    "title": "Live",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1934574",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q193477",
     "title": "A Night at the Opera",
     "medium": "Music",
@@ -9710,24 +9329,6 @@
       "Rock"
     ],
     "wikidataId": "Q193490",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1937496",
-    "title": "Love",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1937496",
     "provenance": "wikidata"
   },
   {
@@ -9783,26 +9384,6 @@
       "Rock"
     ],
     "wikidataId": "Q1941420",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1945384",
-    "title": "False Start",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock",
-      "Folk",
-      "Pop"
-    ],
-    "wikidataId": "Q1945384",
     "provenance": "wikidata"
   },
   {
@@ -9926,24 +9507,6 @@
       "Spy"
     ],
     "wikidataId": "Q1952634",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1953408",
-    "title": "Lycka",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "SE"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1953408",
     "provenance": "wikidata"
   },
   {
@@ -10080,23 +9643,6 @@
       "Rock"
     ],
     "wikidataId": "Q1988263",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1990047",
-    "title": "No Surprises",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1990047",
     "provenance": "wikidata"
   },
   {
@@ -10326,23 +9872,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2016065",
-    "title": "Street Spirit (Fade Out)",
-    "medium": "Music",
-    "years": {
-      "from": 1996,
-      "to": 1996
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2016065",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2016076",
     "title": "The Fighting Kentuckian",
     "medium": "Film",
@@ -10411,25 +9940,6 @@
       "Folk"
     ],
     "wikidataId": "Q201816",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q201940",
-    "title": "Led Zeppelin IV",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Folk",
-      "RockAndRoll"
-    ],
-    "wikidataId": "Q201940",
     "provenance": "wikidata"
   },
   {
@@ -10521,24 +10031,6 @@
       "Rock"
     ],
     "wikidataId": "Q202915",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q202996",
-    "title": "OK Computer",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q202996",
     "provenance": "wikidata"
   },
   {
@@ -10785,24 +10277,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q206097",
-    "title": "Yellow Submarine",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q206097",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q206216",
     "title": "Animals (Pink Floyd album)",
     "medium": "Music",
@@ -11031,20 +10505,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2075547",
-    "title": "Anyone Can Play Guitar",
+    "id": "wd-Q20745136",
+    "title": "Dødens Triumf",
     "medium": "Music",
     "years": {
-      "from": 1993,
-      "to": 1993
+      "from": 1972,
+      "to": 1972
     },
     "countries": [
-      "GB"
+      "DK"
     ],
     "genres": [
+      "Psychedelic",
       "Rock"
     ],
-    "wikidataId": "Q2075547",
+    "wikidataId": "Q20745136",
     "provenance": "wikidata"
   },
   {
@@ -11134,23 +10609,6 @@
       "Western"
     ],
     "wikidataId": "Q2079162",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q207974",
-    "title": "Showbiz",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q207974",
     "provenance": "wikidata"
   },
   {
@@ -11395,23 +10853,6 @@
       "Pop"
     ],
     "wikidataId": "Q2085975",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2086905",
-    "title": "Fake Plastic Trees",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2086905",
     "provenance": "wikidata"
   },
   {
@@ -12479,24 +11920,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2183208",
-    "title": "Spare Parts",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q2183208",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2184700",
     "title": "Thunderbird 6",
     "medium": "Film",
@@ -12739,23 +12162,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q220726",
-    "title": "Kid A",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q220726",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q220756",
     "title": "A Day at the Races",
     "medium": "Music",
@@ -12787,40 +12193,6 @@
       "Spy"
     ],
     "wikidataId": "Q2211357",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q221241",
-    "title": "Pablo Honey",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q221241",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q221246",
-    "title": "The Bends",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q221246",
     "provenance": "wikidata"
   },
   {
@@ -13165,20 +12537,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2277543",
-    "title": "Symphony of Destruction",
+    "id": "wd-Q2278804",
+    "title": "Songs for Beginners",
     "medium": "Music",
     "years": {
-      "from": 1992,
-      "to": 1992
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
-      "US"
+      "US",
+      "GB"
     ],
     "genres": [
-      "Rock"
+      "Rock",
+      "Folk"
     ],
-    "wikidataId": "Q2277543",
+    "wikidataId": "Q2278804",
     "provenance": "wikidata"
   },
   {
@@ -13196,6 +12570,24 @@
       "Western"
     ],
     "wikidataId": "Q2280163",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2280644",
+    "title": "All I Really Want to Do",
+    "medium": "Music",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q2280644",
     "provenance": "wikidata"
   },
   {
@@ -13757,6 +13149,41 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2327601",
+    "title": "Camembert Electrique",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "FR"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q2327601",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2328358",
+    "title": "Out of the Silent Planet",
+    "medium": "Music",
+    "years": {
+      "from": 2000,
+      "to": 2000
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2328358",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2329256",
     "title": "Wasting Love",
     "medium": "Music",
@@ -13842,12 +13269,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2337263",
-    "title": "Knock Me Down",
+    "id": "wd-Q2336466",
+    "title": "Soul to Squeeze",
     "medium": "Music",
     "years": {
-      "from": 1989,
-      "to": 1989
+      "from": 1993,
+      "to": 1993
     },
     "countries": [
       "US"
@@ -13855,7 +13282,7 @@
     "genres": [
       "Rock"
     ],
-    "wikidataId": "Q2337263",
+    "wikidataId": "Q2336466",
     "provenance": "wikidata"
   },
   {
@@ -13876,6 +13303,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2337653",
+    "title": "Die, Die My Darling",
+    "medium": "Music",
+    "years": {
+      "from": 1984,
+      "to": 1984
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock",
+      "Punk"
+    ],
+    "wikidataId": "Q2337653",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2337979",
     "title": "Maybe I'm Amazed",
     "medium": "Music",
@@ -13893,21 +13338,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2338377",
-    "title": "Words",
+    "id": "wd-Q2338119",
+    "title": "Sacrifice",
     "medium": "Music",
     "years": {
-      "from": 1982,
-      "to": 1982
+      "from": 1989,
+      "to": 1989
     },
     "countries": [
-      "FR"
+      "GB"
     ],
     "genres": [
-      "Pop",
-      "Rock"
+      "Pop"
     ],
-    "wikidataId": "Q2338377",
+    "wikidataId": "Q2338119",
     "provenance": "wikidata"
   },
   {
@@ -13925,6 +13369,24 @@
       "Rock"
     ],
     "wikidataId": "Q2340420",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2343395",
+    "title": "The Crazy World of Arthur Brown",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q2343395",
     "provenance": "wikidata"
   },
   {
@@ -13959,6 +13421,23 @@
       "Adventure"
     ],
     "wikidataId": "Q2353327",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2354146",
+    "title": "I'm Still Standing",
+    "medium": "Music",
+    "years": {
+      "from": 1983,
+      "to": 1983
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2354146",
     "provenance": "wikidata"
   },
   {
@@ -14450,23 +13929,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q243789",
-    "title": "Christina Aguilera",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q243789",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2438645",
     "title": "Dallas",
     "medium": "Film",
@@ -14607,23 +14069,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2463169",
-    "title": "No Leaf Clover",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2463169",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2466691",
     "title": "Back in Black",
     "medium": "Music",
@@ -14658,23 +14103,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2469059",
-    "title": "Just",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2469059",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2469156",
     "title": "Message in a Bottle",
     "medium": "Music",
@@ -14689,23 +14117,6 @@
       "Rock"
     ],
     "wikidataId": "Q2469156",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2469634",
-    "title": "High and Dry",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2469634",
     "provenance": "wikidata"
   },
   {
@@ -14984,6 +14395,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q250543",
+    "title": "Grateful Dead",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock",
+      "Psychedelic",
+      "Folk"
+    ],
+    "wikidataId": "Q250543",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2511540",
     "title": "Plot",
     "medium": "Film",
@@ -15088,6 +14518,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2524459",
+    "title": "Take It Easy",
+    "medium": "Music",
+    "years": {
+      "from": 1972,
+      "to": 1972
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2524459",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q252447",
     "title": "Like a Prayer",
     "medium": "Music",
@@ -15137,6 +14584,24 @@
       "Psychedelic"
     ],
     "wikidataId": "Q252751",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2528150",
+    "title": "A Question of Balance",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q2528150",
     "provenance": "wikidata"
   },
   {
@@ -15244,6 +14709,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2540465",
+    "title": "Whatever Gets You thru the Night",
+    "medium": "Music",
+    "years": {
+      "from": 1974,
+      "to": 1974
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2540465",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2542196",
     "title": "I'll Be There for You",
     "medium": "Music",
@@ -15312,24 +14794,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q254852",
-    "title": "Manassas",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q254852",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2551936",
     "title": "Simon and Garfunkel's Greatest Hits",
     "medium": "Music",
@@ -15367,23 +14831,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2552632",
-    "title": "A Question of Time",
-    "medium": "Music",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2552632",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q255471",
     "title": "Déjà Vu",
     "medium": "Music",
@@ -15399,23 +14846,6 @@
       "Rock"
     ],
     "wikidataId": "Q255471",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q255496",
-    "title": "Butterfly",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q255496",
     "provenance": "wikidata"
   },
   {
@@ -15519,23 +14949,6 @@
       "Rock"
     ],
     "wikidataId": "Q256447",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2564517",
-    "title": "I'm Too Sexy",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2564517",
     "provenance": "wikidata"
   },
   {
@@ -15677,6 +15090,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2602678",
+    "title": "I Feel You",
+    "medium": "Music",
+    "years": {
+      "from": 1993,
+      "to": 1993
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2602678",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q260548",
     "title": "Silverado",
     "medium": "Film",
@@ -15691,23 +15121,6 @@
       "Western"
     ],
     "wikidataId": "Q260548",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2608169",
-    "title": "Power to the People",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2608169",
     "provenance": "wikidata"
   },
   {
@@ -16023,6 +15436,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2631380",
+    "title": "Russians",
+    "medium": "Music",
+    "years": {
+      "from": 1985,
+      "to": 1985
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock",
+      "Pop"
+    ],
+    "wikidataId": "Q2631380",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q263257",
     "title": "Construction Time Again",
     "medium": "Music",
@@ -16144,40 +15575,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2663415",
-    "title": "Give Me Love (Give Me Peace on Earth)",
-    "medium": "Music",
-    "years": {
-      "from": 1973,
-      "to": 1973
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2663415",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2667206",
-    "title": "Sweating Bullets",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2667206",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2667755",
     "title": "(Don't Fear) The Reaper",
     "medium": "Music",
@@ -16192,24 +15589,6 @@
       "Rock"
     ],
     "wikidataId": "Q2667755",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q267982",
-    "title": "Music Inspired by Lord of the Rings",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "SE"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q267982",
     "provenance": "wikidata"
   },
   {
@@ -16507,6 +15886,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2711771",
+    "title": "Historic Performances Recorded at the Monterey International Pop Festival",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock",
+      "Soul"
+    ],
+    "wikidataId": "Q2711771",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2715021",
     "title": "Get the Balance Right!",
     "medium": "Music",
@@ -16556,6 +15954,23 @@
       "Rock"
     ],
     "wikidataId": "Q2716264",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2717247",
+    "title": "Turn the Page",
+    "medium": "Music",
+    "years": {
+      "from": 1973,
+      "to": 1973
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2717247",
     "provenance": "wikidata"
   },
   {
@@ -16642,6 +16057,24 @@
       "Rock"
     ],
     "wikidataId": "Q2722094",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2725277",
+    "title": "A Gift from a Flower to a Garden",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q2725277",
     "provenance": "wikidata"
   },
   {
@@ -16761,23 +16194,6 @@
       "Rock"
     ],
     "wikidataId": "Q274417",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q275259",
-    "title": "Music Box",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q275259",
     "provenance": "wikidata"
   },
   {
@@ -17072,23 +16488,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q279384",
-    "title": "A Tout le Monde",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q279384",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2804739",
     "title": "A Distant Trumpet",
     "medium": "Film",
@@ -17156,24 +16555,6 @@
       "Spy"
     ],
     "wikidataId": "Q2826778",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2837550",
-    "title": "All Together Now",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q2837550",
     "provenance": "wikidata"
   },
   {
@@ -17439,21 +16820,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2905235",
-    "title": "Starsailor",
+    "id": "wd-Q2904640",
+    "title": "Tim Buckley",
     "medium": "Music",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Rock",
-      "Folk"
+      "Folk",
+      "Rock"
     ],
-    "wikidataId": "Q2905235",
+    "wikidataId": "Q2904640",
     "provenance": "wikidata"
   },
   {
@@ -17669,23 +17050,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q300344",
-    "title": "A Broken Frame",
-    "medium": "Music",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q300344",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q300447",
     "title": "A Kind of Magic",
     "medium": "Music",
@@ -17753,23 +17117,6 @@
       "Rock"
     ],
     "wikidataId": "Q3009487",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q300968",
-    "title": "Scream / Childhood",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q300968",
     "provenance": "wikidata"
   },
   {
@@ -17998,23 +17345,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q30874",
-    "title": "Holy Wars... The Punishment Due",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q30874",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q308801",
     "title": "Achtung Baby",
     "medium": "Music",
@@ -18141,24 +17471,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3096882",
-    "title": "Miracle Mirror",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "NL"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3096882",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3105305",
     "title": "The Moon Stallion",
     "medium": "TV",
@@ -18173,25 +17485,6 @@
       "Adventure"
     ],
     "wikidataId": "Q3105305",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3109221",
-    "title": "Move",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q3109221",
     "provenance": "wikidata"
   },
   {
@@ -18370,24 +17663,6 @@
       "Western"
     ],
     "wikidataId": "Q3187",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3190304",
-    "title": "Just for Love",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3190304",
     "provenance": "wikidata"
   },
   {
@@ -18736,24 +18011,6 @@
       "Adventure"
     ],
     "wikidataId": "Q3216148",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3217671",
-    "title": "Made in Heaven",
-    "medium": "Music",
-    "years": {
-      "from": 1985,
-      "to": 1985
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q3217671",
     "provenance": "wikidata"
   },
   {
@@ -19193,6 +18450,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3264259",
+    "title": "Love in a Mist",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q3264259",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q327427",
     "title": "Whity",
     "medium": "Film",
@@ -19244,25 +18519,6 @@
       "Rock"
     ],
     "wikidataId": "Q3279731",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3281141",
-    "title": "Shazam",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q3281141",
     "provenance": "wikidata"
   },
   {
@@ -19508,25 +18764,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3291936",
-    "title": "The First Cut Is the Deepest",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US",
-      "SE",
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q3291936",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q329396",
     "title": "Blood Sugar Sex Magik",
     "medium": "Music",
@@ -19629,23 +18866,6 @@
       "Western"
     ],
     "wikidataId": "Q331738",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q331811",
-    "title": "War",
-    "medium": "Music",
-    "years": {
-      "from": 1983,
-      "to": 1983
-    },
-    "countries": [
-      "IE"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q331811",
     "provenance": "wikidata"
   },
   {
@@ -19812,6 +19032,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3353184",
+    "title": "Open Road",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock",
+      "Psychedelic"
+    ],
+    "wikidataId": "Q3353184",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q3362470",
     "title": "Panther Squad",
     "medium": "Film",
@@ -19970,24 +19209,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3435801",
-    "title": "Love Is",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3435801",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3442825",
     "title": "Hello, I'm Johnny Cash",
     "medium": "Music",
@@ -20007,6 +19228,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3442835",
+    "title": "The Johnny Cash Show",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q3442835",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q3454266",
     "title": "Abilene Town",
     "medium": "Film",
@@ -20021,6 +19259,24 @@
       "Western"
     ],
     "wikidataId": "Q3454266",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3481188",
+    "title": "Shady Grove",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q3481188",
     "provenance": "wikidata"
   },
   {
@@ -20058,40 +19314,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3497668",
-    "title": "Stumblin' In",
+    "id": "wd-Q3498354",
+    "title": "New! Improved!",
     "medium": "Music",
     "years": {
-      "from": 1978,
-      "to": 1978
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q3497668",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3497871",
-    "title": "Psychedelic Lollipop",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1969,
+      "to": 1969
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Rock",
-      "Psychedelic"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q3497871",
+    "wikidataId": "Q3498354",
     "provenance": "wikidata"
   },
   {
@@ -20126,6 +19363,24 @@
       "Rock"
     ],
     "wikidataId": "Q3505390",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3522165",
+    "title": "The Papas & The Mamas",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q3522165",
     "provenance": "wikidata"
   },
   {
@@ -20824,23 +20079,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q388007",
-    "title": "Emotions",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q388007",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3880070",
     "title": "O.S.S.",
     "medium": "TV",
@@ -21310,6 +20548,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q4120985",
+    "title": "First Utterance",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q4120985",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q422997",
     "title": "The Girl from Rio",
     "medium": "Film",
@@ -21621,6 +20876,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q4354809",
+    "title": "The Second",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q4354809",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q4355362",
     "title": "Cowboy from Brooklyn",
     "medium": "Film",
@@ -21635,24 +20908,6 @@
       "Western"
     ],
     "wikidataId": "Q4355362",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4357761",
-    "title": "Flowers of Evil",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q4357761",
     "provenance": "wikidata"
   },
   {
@@ -21905,20 +21160,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q449698",
-    "title": "Always Be My Baby",
+    "id": "wd-Q4492734",
+    "title": "Coming from Reality",
     "medium": "Music",
     "years": {
-      "from": 1996,
-      "to": 1996
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Pop"
+      "Psychedelic",
+      "Rock",
+      "Folk"
     ],
-    "wikidataId": "Q449698",
+    "wikidataId": "Q4492734",
     "provenance": "wikidata"
   },
   {
@@ -22028,6 +21285,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q463081",
+    "title": "America",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q463081",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q464123",
     "title": "The A-Team",
     "medium": "TV",
@@ -22133,23 +21408,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4712773",
-    "title": "Album II",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk"
-    ],
-    "wikidataId": "Q4712773",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q473274",
     "title": "Wishmaster",
     "medium": "Music",
@@ -22183,6 +21441,24 @@
       "Western"
     ],
     "wikidataId": "Q474057",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q4745386",
+    "title": "American Woman",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "CA"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q4745386",
     "provenance": "wikidata"
   },
   {
@@ -22529,6 +21805,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q4875625",
+    "title": "Be a Brother",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q4875625",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q489042",
     "title": "Hannie Caulder",
     "medium": "Film",
@@ -22702,24 +21996,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4996649",
-    "title": "Bull of the Woods",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q4996649",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q500044",
     "title": "The Lady Vanishes",
     "medium": "Film",
@@ -22734,6 +22010,24 @@
       "Spy"
     ],
     "wikidataId": "Q500044",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q501135",
+    "title": "A Tab in the Ocean",
+    "medium": "Music",
+    "years": {
+      "from": 1972,
+      "to": 1972
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q501135",
     "provenance": "wikidata"
   },
   {
@@ -22752,23 +22046,6 @@
       "Spy"
     ],
     "wikidataId": "Q5011552",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q502167",
-    "title": "S&M",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q502167",
     "provenance": "wikidata"
   },
   {
@@ -23240,24 +22517,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q518974",
-    "title": "Butterfly",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q518974",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q5189893",
     "title": "Cruel Sister",
     "medium": "Music",
@@ -23290,23 +22549,6 @@
       "Spy"
     ],
     "wikidataId": "Q5198753",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q520040",
-    "title": "Cryptic Writings",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q520040",
     "provenance": "wikidata"
   },
   {
@@ -23485,24 +22727,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5243114",
-    "title": "Daydream",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q5243114",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q524415",
     "title": "Electric Ladyland",
     "medium": "Music",
@@ -23518,24 +22742,6 @@
       "Rock"
     ],
     "wikidataId": "Q524415",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q524692",
-    "title": "Ogdens' Nut Gone Flake",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q524692",
     "provenance": "wikidata"
   },
   {
@@ -23694,25 +22900,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q530144",
-    "title": "Easy Lover",
-    "medium": "Music",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q530144",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q530507",
     "title": "McLintock!",
     "medium": "Film",
@@ -23832,6 +23019,24 @@
       "Rock"
     ],
     "wikidataId": "Q533528",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q533850",
+    "title": "Love Her Madly",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q533850",
     "provenance": "wikidata"
   },
   {
@@ -23955,24 +23160,6 @@
       "Rock"
     ],
     "wikidataId": "Q540943",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q540955",
-    "title": "Yes",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q540955",
     "provenance": "wikidata"
   },
   {
@@ -24203,24 +23390,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q549370",
-    "title": "Hey Hey, My My (Into the Black)",
-    "medium": "Music",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "CA",
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q549370",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q550158",
     "title": "What Is Love",
     "medium": "Music",
@@ -24286,6 +23455,24 @@
       "Western"
     ],
     "wikidataId": "Q555722",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q557654",
+    "title": "Live/Dead",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q557654",
     "provenance": "wikidata"
   },
   {
@@ -24520,23 +23707,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q570912",
-    "title": "Rainbow",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q570912",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q571583",
     "title": "Laser Mission",
     "medium": "Film",
@@ -24744,6 +23914,24 @@
       "Western"
     ],
     "wikidataId": "Q577380",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q577604",
+    "title": "Bark",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q577604",
     "provenance": "wikidata"
   },
   {
@@ -25183,24 +24371,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q598116",
-    "title": "Blonde on Blonde",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q598116",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q5981314",
     "title": "The Last Hard Men",
     "medium": "Film",
@@ -25357,23 +24527,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q600584",
-    "title": "Youthanasia",
-    "medium": "Music",
-    "years": {
-      "from": 1994,
-      "to": 1994
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q600584",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q602488",
     "title": "Yeti",
     "medium": "Music",
@@ -25446,24 +24599,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q606302",
-    "title": "Could I Have This Kiss Forever",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US",
-      "ES"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q606302",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q60676411",
     "title": "Magical Mystery Tour",
     "medium": "Music",
@@ -25532,43 +24667,6 @@
       "Adventure"
     ],
     "wikidataId": "Q607885",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q608127",
-    "title": "Tape from California",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk"
-    ],
-    "wikidataId": "Q608127",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q608241",
-    "title": "Tupelo Honey",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Soul",
-      "Pop",
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q608241",
     "provenance": "wikidata"
   },
   {
@@ -25725,6 +24823,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q616346",
+    "title": "Aoxomoxoa",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q616346",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q616569",
     "title": "Smash Hits",
     "medium": "Music",
@@ -25848,24 +24964,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q629234",
-    "title": "Turn! Turn! Turn!",
-    "medium": "Music",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q629234",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q631153",
     "title": "Transformer",
     "medium": "Music",
@@ -25898,6 +24996,24 @@
       "Soul"
     ],
     "wikidataId": "Q6316602",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q6320847",
+    "title": "Mr. Fantasy",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q6320847",
     "provenance": "wikidata"
   },
   {
@@ -26282,23 +25398,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q646521",
-    "title": "Mi Reflejo",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q646521",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q646645",
     "title": "Korn",
     "medium": "Music",
@@ -26634,23 +25733,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q6697831",
-    "title": "Lucky",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q6697831",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q670579",
     "title": "The Incredible Hulk",
     "medium": "TV",
@@ -26823,24 +25905,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q679769",
-    "title": "Desert Rose",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q679769",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q6798063",
     "title": "Mayumi",
     "medium": "Film",
@@ -26890,23 +25954,6 @@
       "Folk"
     ],
     "wikidataId": "Q682635",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q682846",
-    "title": "The Rise and Fall of Ziggy Stardust and the Spiders from Mars",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q682846",
     "provenance": "wikidata"
   },
   {
@@ -27016,25 +26063,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q687769",
-    "title": "If You Were with Me Now",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "US",
-      "GB",
-      "AU"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q687769",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q6878476",
     "title": "Mission: Impossible vs. the Mob",
     "medium": "Film",
@@ -27049,24 +26077,6 @@
       "Spy"
     ],
     "wikidataId": "Q6878476",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q689947",
-    "title": "American Pie",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q689947",
     "provenance": "wikidata"
   },
   {
@@ -27141,23 +26151,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q695436",
-    "title": "My Kind of Christmas",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q695436",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q695649",
     "title": "Delicate Sound of Thunder",
     "medium": "Music",
@@ -27224,24 +26217,6 @@
       "Spy"
     ],
     "wikidataId": "Q7026873",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q703971",
-    "title": "Ars Longa Vita Brevis",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q703971",
     "provenance": "wikidata"
   },
   {
@@ -27470,40 +26445,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q725754",
-    "title": "Countdown to Extinction",
-    "medium": "Music",
-    "years": {
-      "from": 1992,
-      "to": 1992
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q725754",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q725767",
-    "title": "So Far, So Good… So What!",
-    "medium": "Music",
-    "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q725767",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q726263",
     "title": "Painkiller",
     "medium": "Music",
@@ -27678,24 +26619,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7312389",
-    "title": "Renaissance",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q7312389",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q731305",
     "title": "Live at Wembley '86",
     "medium": "Music",
@@ -27812,23 +26735,6 @@
       "Rock"
     ],
     "wikidataId": "Q731908",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q732845",
-    "title": "Mariah Carey",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q732845",
     "provenance": "wikidata"
   },
   {
@@ -27953,23 +26859,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q736010",
-    "title": "Cave",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q736010",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q736144",
     "title": "Man of the East",
     "medium": "Film",
@@ -28003,25 +26892,6 @@
       "Rock"
     ],
     "wikidataId": "Q737257",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q737584",
-    "title": "Odessa",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "AU",
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q737584",
     "provenance": "wikidata"
   },
   {
@@ -28128,23 +26998,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q741493",
-    "title": "Peace Sells… but Who's Buying?",
-    "medium": "Music",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q741493",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q7427702",
     "title": "Savage Beach",
     "medium": "Film",
@@ -28229,6 +27082,26 @@
       "Rock"
     ],
     "wikidataId": "Q745000",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q745580",
+    "title": "Sweet Baby James",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US",
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock",
+      "Pop"
+    ],
+    "wikidataId": "Q745580",
     "provenance": "wikidata"
   },
   {
@@ -28333,23 +27206,6 @@
       "Pop"
     ],
     "wikidataId": "Q746450",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7464881",
-    "title": "Killing Is My Business... and Business Is Good!",
-    "medium": "Music",
-    "years": {
-      "from": 1985,
-      "to": 1985
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q7464881",
     "provenance": "wikidata"
   },
   {
@@ -28906,24 +27762,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7611078",
-    "title": "Steppenwolf 7",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q7611078",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q762235",
     "title": "Ma Baker",
     "medium": "Music",
@@ -28955,25 +27793,6 @@
       "Disco"
     ],
     "wikidataId": "Q764769",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q764998",
-    "title": "Kids",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB",
-      "AU"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q764998",
     "provenance": "wikidata"
   },
   {
@@ -29184,40 +28003,6 @@
       "Western"
     ],
     "wikidataId": "Q771620",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q772457",
-    "title": "Come On Over Baby (All I Want Is You)",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q772457",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q773034",
-    "title": "Anytime You Need a Friend",
-    "medium": "Music",
-    "years": {
-      "from": 1994,
-      "to": 1994
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q773034",
     "provenance": "wikidata"
   },
   {
@@ -29569,24 +28354,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q781732",
-    "title": "Clouds",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "CA",
-      "US"
-    ],
-    "genres": [
-      "Folk"
-    ],
-    "wikidataId": "Q781732",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q782550",
     "title": "Automatic for the People",
     "medium": "Music",
@@ -29640,23 +28407,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q786253",
-    "title": "Muscle Museum",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q786253",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q786569",
     "title": "Never Too Late",
     "medium": "Music",
@@ -29707,24 +28457,6 @@
       "Disco"
     ],
     "wikidataId": "Q794270",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q796543",
-    "title": "The Graduate",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q796543",
     "provenance": "wikidata"
   },
   {
@@ -30150,24 +28882,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q829329",
-    "title": "Magia",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "ES",
-      "CO"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q829329",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q829365",
     "title": "Don't Touch the White Woman!",
     "medium": "Film",
@@ -30183,24 +28897,6 @@
       "Western"
     ],
     "wikidataId": "Q829365",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q829814",
-    "title": "Mona Bone Jakon",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q829814",
     "provenance": "wikidata"
   },
   {
@@ -30724,23 +29420,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q835788",
-    "title": "Daydream",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q835788",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q8360",
     "title": "(What's the Story) Morning Glory?",
     "medium": "Music",
@@ -30910,24 +29589,6 @@
       "Rock"
     ],
     "wikidataId": "Q838304",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q838317",
-    "title": "Have a Cigar",
-    "medium": "Music",
-    "years": {
-      "from": 1973,
-      "to": 1973
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q838317",
     "provenance": "wikidata"
   },
   {
@@ -31119,24 +29780,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q841162",
-    "title": "Peligro",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "ES",
-      "CO"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q841162",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q84171",
     "title": "Seemann",
     "medium": "Music",
@@ -31259,21 +29902,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q846065",
-    "title": "Motörhead",
+    "id": "wd-Q846125",
+    "title": "Moby Grape",
     "medium": "Music",
     "years": {
-      "from": 1977,
-      "to": 1977
+      "from": 1967,
+      "to": 1967
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
-      "Rock",
-      "Punk"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q846065",
+    "wikidataId": "Q846125",
     "provenance": "wikidata"
   },
   {
@@ -31454,6 +30097,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q856955",
+    "title": "Caetano Veloso",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "BR"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q856955",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q857908",
     "title": "Can't Buy a Thrill",
     "medium": "Music",
@@ -31595,21 +30256,38 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q868235",
-    "title": "Cold Fact",
+    "id": "wd-Q868240",
+    "title": "Cold Turkey",
     "medium": "Music",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1969,
+      "to": 1969
     },
     "countries": [
-      "US"
+      "US",
+      "GB"
     ],
     "genres": [
-      "Folk",
       "Rock"
     ],
-    "wikidataId": "Q868235",
+    "wikidataId": "Q868240",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q868744",
+    "title": "Congratulations",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Pop"
+    ],
+    "wikidataId": "Q868744",
     "provenance": "wikidata"
   },
   {
@@ -31627,24 +30305,6 @@
       "Rock"
     ],
     "wikidataId": "Q869706",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q869979",
-    "title": "Crown of Creation",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q869979",
     "provenance": "wikidata"
   },
   {
@@ -31809,38 +30469,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q898499",
-    "title": "I Can't Quit You Baby",
+    "id": "wd-Q899498",
+    "title": "Cucumber Castle",
     "medium": "Music",
     "years": {
-      "from": 1956,
-      "to": 1956
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
-      "US"
+      "GB",
+      "AU"
     ],
     "genres": [
+      "Folk",
       "Rock"
     ],
-    "wikidataId": "Q898499",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q900790",
-    "title": "Where the Wild Roses Grow",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "AU",
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q900790",
+    "wikidataId": "Q899498",
     "provenance": "wikidata"
   },
   {
@@ -32053,23 +30697,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q909801",
-    "title": "Dreamlover",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q909801",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q909826",
     "title": "...Very 'Eavy ...Very 'Umble",
     "medium": "Music",
@@ -32118,60 +30745,6 @@
       "Rock"
     ],
     "wikidataId": "Q910214",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q910487",
-    "title": "Come as You Are",
-    "medium": "Music",
-    "years": {
-      "from": 1992,
-      "to": 1992
-    },
-    "countries": [
-      "US",
-      "CA"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q910487",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q912276",
-    "title": "Electric Music for the Mind and Body",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q912276",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q913069",
-    "title": "Liege & Lief",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q913069",
     "provenance": "wikidata"
   },
   {
@@ -32453,23 +31026,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q927055",
-    "title": "Holy Smoke",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q927055",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q928379",
     "title": "Starless and Bible Black",
     "medium": "Music",
@@ -32557,23 +31113,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q930736",
-    "title": "The Carpenter",
-    "medium": "Music",
-    "years": {
-      "from": 1997,
-      "to": 1997
-    },
-    "countries": [
-      "FI"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q930736",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q930757",
     "title": "The Rolling Stones No. 2",
     "medium": "Music",
@@ -32624,25 +31163,6 @@
       "Pop"
     ],
     "wikidataId": "Q931695",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q933944",
-    "title": "Turn It into Love",
-    "medium": "Music",
-    "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "JP",
-      "GB",
-      "AU"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q933944",
     "provenance": "wikidata"
   },
   {
@@ -33045,24 +31565,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q950519",
-    "title": "Teaser and the Firecat",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q950519",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q950608",
     "title": "The Life and Times of Grizzly Adams",
     "medium": "TV",
@@ -33166,24 +31668,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q959637",
-    "title": "Mr. Tambourine Man",
-    "medium": "Music",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q959637",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q960731",
     "title": "Self Esteem",
     "medium": "Music",
@@ -33250,41 +31734,6 @@
       "Rock"
     ],
     "wikidataId": "Q961842",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q962754",
-    "title": "The Best of The Pink Floyd",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q962754",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q963343",
-    "title": "Love Takes Time",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q963343",
     "provenance": "wikidata"
   },
   {
@@ -33375,23 +31824,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q970764",
-    "title": "There's Got to Be a Way",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q970764",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q971583",
     "title": "The Indian Fighter",
     "medium": "Film",
@@ -33426,23 +31858,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q976184",
-    "title": "My Iron Lung",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q976184",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q977899",
     "title": "Wagon Master",
     "medium": "Film",
@@ -33457,6 +31872,25 @@
       "Western"
     ],
     "wikidataId": "Q977899",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q978961",
+    "title": "Hawkwind",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock",
+      "Folk"
+    ],
+    "wikidataId": "Q978961",
     "provenance": "wikidata"
   },
   {
@@ -33581,41 +32015,6 @@
       "RockAndRoll"
     ],
     "wikidataId": "Q987438",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q988812",
-    "title": "Elephant Mountain",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q988812",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q989466",
-    "title": "Emotions",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Disco"
-    ],
-    "wikidataId": "Q989466",
     "provenance": "wikidata"
   },
   {
