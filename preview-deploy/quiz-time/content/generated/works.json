@@ -140,27 +140,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1008437",
-    "title": "Gasoline Alley",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Soul",
-      "Pop",
-      "Folk",
-      "RockAndRoll"
-    ],
-    "wikidataId": "Q1008437",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1016721",
     "title": "Burn",
     "medium": "Music",
@@ -195,24 +174,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q102036328",
-    "title": "Somebody's Stolen Our Russian Spy",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "ES",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q102036328",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1023688",
     "title": "CHiPs",
     "medium": "TV",
@@ -227,41 +188,6 @@
       "Adventure"
     ],
     "wikidataId": "Q1023688",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1025786",
-    "title": "Cahoots",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "CA"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1025786",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1026615",
-    "title": "The Battle at Apache Pass",
-    "medium": "Film",
-    "years": {
-      "from": 1952,
-      "to": 1952
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1026615",
     "provenance": "wikidata"
   },
   {
@@ -296,6 +222,24 @@
       "Western"
     ],
     "wikidataId": "Q1026724",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q10269000",
+    "title": "Ring Around the World",
+    "medium": "Film",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "IT",
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q10269000",
     "provenance": "wikidata"
   },
   {
@@ -401,21 +345,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q10337179",
-    "title": "Nobody Runs Forever",
-    "medium": "Film",
+    "id": "wd-Q1035150",
+    "title": "Captain Scarlet and the Mysterons",
+    "medium": "TV",
     "years": {
-      "from": 1968,
+      "from": 1967,
       "to": 1968
     },
     "countries": [
-      "US",
       "GB"
     ],
     "genres": [
-      "Spy"
+      "Adventure"
     ],
-    "wikidataId": "Q10337179",
+    "wikidataId": "Q1035150",
     "provenance": "wikidata"
   },
   {
@@ -435,6 +378,44 @@
       "Folk"
     ],
     "wikidataId": "Q1040127",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1040417",
+    "title": "Kick Out the Jams",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock",
+      "Psychedelic"
+    ],
+    "wikidataId": "Q1040417",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1041103",
+    "title": "Sunshine Superman",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock",
+      "Pop",
+      "Folk"
+    ],
+    "wikidataId": "Q1041103",
     "provenance": "wikidata"
   },
   {
@@ -471,6 +452,23 @@
       "Rock"
     ],
     "wikidataId": "Q104208885",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1044883",
+    "title": "The Outrage",
+    "medium": "Film",
+    "years": {
+      "from": 1964,
+      "to": 1964
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1044883",
     "provenance": "wikidata"
   },
   {
@@ -615,6 +613,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1056257",
+    "title": "Black Bart",
+    "medium": "Film",
+    "years": {
+      "from": 1948,
+      "to": 1948
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1056257",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1056402",
     "title": "California",
     "medium": "Film",
@@ -737,24 +752,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q106322983",
-    "title": "Dobrodruzství sesti trampu",
-    "medium": "TV",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "CZ"
-    ],
-    "genres": [
-      "Western",
-      "Adventure"
-    ],
-    "wikidataId": "Q106322983",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1063385",
     "title": "Music from Big Pink",
     "medium": "Music",
@@ -806,6 +803,23 @@
       "Rock"
     ],
     "wikidataId": "Q1066827",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q106686814",
+    "title": "Cab Halloloco",
+    "medium": "Comic",
+    "years": {
+      "from": 1982,
+      "to": 1987
+    },
+    "countries": [
+      "ES"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q106686814",
     "provenance": "wikidata"
   },
   {
@@ -1032,6 +1046,23 @@
       "Rock"
     ],
     "wikidataId": "Q1075363",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q107571556",
+    "title": "Code Name: Foxfire",
+    "medium": "TV",
+    "years": {
+      "from": 1985,
+      "to": 1985
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q107571556",
     "provenance": "wikidata"
   },
   {
@@ -1404,24 +1435,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q10946583",
-    "title": "Our Men in Bagdad",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q10946583",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1095924",
     "title": "If Not for You",
     "medium": "Music",
@@ -1441,37 +1454,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q10980046",
-    "title": "Keemat",
+    "id": "wd-Q1106157",
+    "title": "The Secret People",
     "medium": "Film",
     "years": {
-      "from": 1973,
-      "to": 1973
+      "from": 1952,
+      "to": 1952
     },
     "countries": [
-      "IN"
+      "GB"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q10980046",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q11012680",
-    "title": "Raksha",
-    "medium": "Film",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q11012680",
+    "wikidataId": "Q1106157",
     "provenance": "wikidata"
   },
   {
@@ -1769,6 +1765,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1131894",
+    "title": "Department S",
+    "medium": "TV",
+    "years": {
+      "from": 1969,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Adventure"
+    ],
+    "wikidataId": "Q1131894",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1132036",
     "title": "It's Only Rock 'n Roll",
     "medium": "Music",
@@ -1855,23 +1868,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1138115",
-    "title": "Covert Action",
-    "medium": "Film",
-    "years": {
-      "from": 1978,
-      "to": 1978
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1138115",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1138393",
     "title": "Rio Grande",
     "medium": "Film",
@@ -1886,24 +1882,6 @@
       "Western"
     ],
     "wikidataId": "Q1138393",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1138432",
-    "title": "Elton John",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q1138432",
     "provenance": "wikidata"
   },
   {
@@ -2078,23 +2056,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q11582998",
-    "title": "Mayonaka no Door〜Stay With Me",
-    "medium": "Music",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "JP"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q11582998",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1160120",
     "title": "Daniel Boone",
     "medium": "TV",
@@ -2195,25 +2156,6 @@
       "Rock"
     ],
     "wikidataId": "Q1165404",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1168024",
-    "title": "Secret of the Chinese Carnation",
-    "medium": "Film",
-    "years": {
-      "from": 1964,
-      "to": 1964
-    },
-    "countries": [
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1168024",
     "provenance": "wikidata"
   },
   {
@@ -2409,23 +2351,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1179882",
-    "title": "Oceans",
-    "medium": "Music",
-    "years": {
-      "from": 1992,
-      "to": 1992
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1179882",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1181198",
     "title": "Dear Jessie",
     "medium": "Music",
@@ -2440,40 +2365,6 @@
       "Pop"
     ],
     "wikidataId": "Q1181198",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q11820652",
-    "title": "Journey for One Smile",
-    "medium": "TV",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "PL"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q11820652",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q11829994",
-    "title": "Przygody psa Cywila",
-    "medium": "TV",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "PL"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q11829994",
     "provenance": "wikidata"
   },
   {
@@ -2772,23 +2663,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1195513",
-    "title": "Who?",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1195513",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1195538",
     "title": "Man of the West",
     "medium": "Film",
@@ -2909,24 +2783,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1197362",
-    "title": "The Devil Came from Akasava",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "ES",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1197362",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1197775",
     "title": "Along Came Jones",
     "medium": "Film",
@@ -2987,8 +2843,7 @@
     },
     "countries": [
       "AT",
-      "DE",
-      "CZ"
+      "DE"
     ],
     "genres": [
       "Adventure"
@@ -3011,6 +2866,23 @@
       "Western"
     ],
     "wikidataId": "Q1198850",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1199326",
+    "title": "The Chisholms",
+    "medium": "TV",
+    "years": {
+      "from": 1979,
+      "to": 1980
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1199326",
     "provenance": "wikidata"
   },
   {
@@ -3066,23 +2938,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1200034",
-    "title": "In Like Flint",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1200034",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1208556",
     "title": "Diamantendetektiv Dick Donald",
     "medium": "TV",
@@ -3115,23 +2970,6 @@
       "Spy"
     ],
     "wikidataId": "Q1210739",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q12110972",
-    "title": "The Culpepper Cattle Co.",
-    "medium": "Film",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q12110972",
     "provenance": "wikidata"
   },
   {
@@ -3169,6 +3007,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q12124679",
+    "title": "Gunfighters",
+    "medium": "Film",
+    "years": {
+      "from": 1947,
+      "to": 1947
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q12124679",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q12124859",
     "title": "Hot Enough for June",
     "medium": "Film",
@@ -3183,6 +3038,23 @@
       "Spy"
     ],
     "wikidataId": "Q12124859",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q12125107",
+    "title": "The Intelligence Men",
+    "medium": "Film",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q12125107",
     "provenance": "wikidata"
   },
   {
@@ -3275,23 +3147,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1213740",
-    "title": "The Karate Killers",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1213740",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1213823",
     "title": "The Killer Elite",
     "medium": "Film",
@@ -3341,23 +3196,6 @@
       "Spy"
     ],
     "wikidataId": "Q1214988",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1214992",
-    "title": "Arabela",
-    "medium": "TV",
-    "years": {
-      "from": 1980,
-      "to": 1981
-    },
-    "countries": [
-      "CZ"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q1214992",
     "provenance": "wikidata"
   },
   {
@@ -3447,23 +3285,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1218285",
-    "title": "Frozen Flashes",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1218285",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1218309",
     "title": "The Mercenary",
     "medium": "Film",
@@ -3547,6 +3368,25 @@
       "Western"
     ],
     "wikidataId": "Q1218856",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1219185",
+    "title": "Die rote Kapelle",
+    "medium": "TV",
+    "years": {
+      "from": 1972,
+      "to": 1972
+    },
+    "countries": [
+      "IT",
+      "FR",
+      "DE"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q1219185",
     "provenance": "wikidata"
   },
   {
@@ -3757,24 +3597,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1252417",
-    "title": "Workingman's Dead",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1252417",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1260366",
     "title": "Westward the Women",
     "medium": "Film",
@@ -3825,23 +3647,6 @@
       "Western"
     ],
     "wikidataId": "Q1263650",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1263867",
-    "title": "The Last Challenge",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1263867",
     "provenance": "wikidata"
   },
   {
@@ -3978,23 +3783,6 @@
       "Rock"
     ],
     "wikidataId": "Q128596",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q128975",
-    "title": "The Last Frontier",
-    "medium": "Film",
-    "years": {
-      "from": 1955,
-      "to": 1955
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q128975",
     "provenance": "wikidata"
   },
   {
@@ -4276,6 +4064,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1323917",
+    "title": "Triangle",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q1323917",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1324007",
     "title": "El Condor",
     "medium": "Film",
@@ -4430,24 +4236,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1343120",
-    "title": "Enigma",
-    "medium": "Film",
-    "years": {
-      "from": 1983,
-      "to": 1983
-    },
-    "countries": [
-      "FR",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1343120",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q13435422",
     "title": "Stagecoach West",
     "medium": "TV",
@@ -4571,23 +4359,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1359344",
-    "title": "Sam Whiskey",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1359344",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1359640",
     "title": "Lancer",
     "medium": "TV",
@@ -4708,24 +4479,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1392230",
-    "title": "Land Raiders",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "ES",
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1392230",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1392420",
     "title": "Decision at Sundown",
     "medium": "Film",
@@ -4760,62 +4513,8 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1400930",
-    "title": "What We Did on Our Holidays",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1400930",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1401039",
-    "title": "Sandy",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1401039",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1401404",
-    "title": "Full House",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1401404",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1401456",
-    "title": "\"Babbacombe\" Lee",
+    "id": "wd-Q1401463",
+    "title": "Angel Delight",
     "medium": "Music",
     "years": {
       "from": 1971,
@@ -4828,7 +4527,24 @@
       "Folk",
       "Rock"
     ],
-    "wikidataId": "Q1401456",
+    "wikidataId": "Q1401463",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1401845",
+    "title": "The Painted Desert",
+    "medium": "Film",
+    "years": {
+      "from": 1931,
+      "to": 1931
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1401845",
     "provenance": "wikidata"
   },
   {
@@ -4869,6 +4585,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1405950",
+    "title": "Our Agent Tiger",
+    "medium": "Film",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "ES",
+      "IT",
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q1405950",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1408667",
     "title": "The Cheyenne Social Club",
     "medium": "Film",
@@ -4883,60 +4618,6 @@
       "Western"
     ],
     "wikidataId": "Q1408667",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1409473",
-    "title": "Feuer frei auf Frankie",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1409473",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1409528",
-    "title": "Feuerdrachen",
-    "medium": "Film",
-    "years": {
-      "from": 1981,
-      "to": 1981
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1409528",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1412538",
-    "title": "Will the Circle Be Unbroken",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1412538",
     "provenance": "wikidata"
   },
   {
@@ -5026,20 +4707,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1421786",
-    "title": "The First Traveling Saleslady",
-    "medium": "Film",
+    "id": "wd-Q14225985",
+    "title": "For Your Love",
+    "medium": "Music",
     "years": {
-      "from": 1956,
-      "to": 1956
+      "from": 1965,
+      "to": 1965
     },
     "countries": [
-      "US"
+      "GB"
     ],
     "genres": [
-      "Western"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q1421786",
+    "wikidataId": "Q14225985",
     "provenance": "wikidata"
   },
   {
@@ -5074,6 +4756,23 @@
       "Soul"
     ],
     "wikidataId": "Q1423445",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1424447",
+    "title": "The Girl of the Golden West",
+    "medium": "Film",
+    "years": {
+      "from": 1938,
+      "to": 1938
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1424447",
     "provenance": "wikidata"
   },
   {
@@ -5145,12 +4844,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1438760",
-    "title": "Along the Great Divide",
+    "id": "wd-Q1442563",
+    "title": "Rainbow Valley",
     "medium": "Film",
     "years": {
-      "from": 1951,
-      "to": 1951
+      "from": 1935,
+      "to": 1935
     },
     "countries": [
       "US"
@@ -5158,7 +4857,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q1438760",
+    "wikidataId": "Q1442563",
     "provenance": "wikidata"
   },
   {
@@ -5193,24 +4892,6 @@
       "Rock"
     ],
     "wikidataId": "Q1448949",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1459027",
-    "title": "Live Cream Volume II",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1459027",
     "provenance": "wikidata"
   },
   {
@@ -5371,6 +5052,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q14752720",
+    "title": "Concrete Cowboys",
+    "medium": "TV",
+    "years": {
+      "from": 1981,
+      "to": 1981
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q14752720",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1481583",
     "title": "The Famous Five",
     "medium": "TV",
@@ -5439,24 +5137,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1486725",
-    "title": "The Twain Shall Meet",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1486725",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1490198",
     "title": "Sabata",
     "medium": "Film",
@@ -5488,6 +5168,24 @@
       "Pop"
     ],
     "wikidataId": "Q149244",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q14926449",
+    "title": "Live",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q14926449",
     "provenance": "wikidata"
   },
   {
@@ -5525,23 +5223,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1498399",
-    "title": "Geheimarchiv an der Elbe",
-    "medium": "Film",
-    "years": {
-      "from": 1963,
-      "to": 1963
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1498399",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1498695",
     "title": "Cahill U.S. Marshal",
     "medium": "Film",
@@ -5573,41 +5254,6 @@
       "Western"
     ],
     "wikidataId": "Q1500885",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1506746",
-    "title": "Avalanche Express",
-    "medium": "Film",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1506746",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1506823",
-    "title": "Jason King",
-    "medium": "TV",
-    "years": {
-      "from": 1971,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q1506823",
     "provenance": "wikidata"
   },
   {
@@ -5816,24 +5462,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1523210",
-    "title": "The Exterminators",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1523210",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1523236",
     "title": "Man Without a Star",
     "medium": "Film",
@@ -5866,6 +5494,24 @@
       "Rock"
     ],
     "wikidataId": "Q1523310",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1526759",
+    "title": "Creedence Clearwater Revival",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1526759",
     "provenance": "wikidata"
   },
   {
@@ -5938,6 +5584,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1534639",
+    "title": "The Alaskans",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1960
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1534639",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1534778",
     "title": "They Died with Their Boots On",
     "medium": "Film",
@@ -5969,23 +5632,6 @@
       "Western"
     ],
     "wikidataId": "Q1539069",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q15410076",
-    "title": "13 Frightened Girls",
-    "medium": "Film",
-    "years": {
-      "from": 1963,
-      "to": 1963
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q15410076",
     "provenance": "wikidata"
   },
   {
@@ -6038,24 +5684,6 @@
       "Pop"
     ],
     "wikidataId": "Q154467",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1548150",
-    "title": "Together",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1548150",
     "provenance": "wikidata"
   },
   {
@@ -6161,24 +5789,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1566338",
-    "title": "Neu!",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q1566338",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1569275",
     "title": "The Legend of Frenchie King",
     "medium": "Film",
@@ -6213,25 +5823,6 @@
       "Spy"
     ],
     "wikidataId": "Q1570560",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1571469",
-    "title": "It Can Be Done Amigo",
-    "medium": "Film",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1571469",
     "provenance": "wikidata"
   },
   {
@@ -6388,6 +5979,25 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q15856563",
+    "title": "Agent 505 - Todesfalle Beirut",
+    "medium": "Film",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "IT",
+      "FR",
+      "DE"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q15856563",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q158585",
     "title": "(You Drive Me) Crazy",
     "medium": "Music",
@@ -6454,23 +6064,6 @@
       "Western"
     ],
     "wikidataId": "Q1598010",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q16058199",
-    "title": "Agent 009",
-    "medium": "Film",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q16058199",
     "provenance": "wikidata"
   },
   {
@@ -6696,23 +6289,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q16308794",
-    "title": "Thunive Thunai",
-    "medium": "Film",
-    "years": {
-      "from": 1976,
-      "to": 1976
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q16308794",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q163226",
     "title": "Everlong",
     "medium": "Music",
@@ -6747,56 +6323,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1635518",
-    "title": "Boomer's Story",
+    "id": "wd-Q1637303",
+    "title": "I-Feel-Like-I'm-Fixin'-to-Die",
     "medium": "Music",
     "years": {
-      "from": 1972,
-      "to": 1972
+      "from": 1967,
+      "to": 1967
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Rock",
-      "Folk"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q1635518",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1635525",
-    "title": "Into the Purple Valley",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1635525",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q163898",
-    "title": "Ten Thousand Dollars for a Massacre",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q163898",
+    "wikidataId": "Q1637303",
     "provenance": "wikidata"
   },
   {
@@ -6814,24 +6355,6 @@
       "Rock"
     ],
     "wikidataId": "Q163950",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1639554",
-    "title": "Burgers",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1639554",
     "provenance": "wikidata"
   },
   {
@@ -6867,26 +6390,6 @@
       "Psychedelic"
     ],
     "wikidataId": "Q164515",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1646557",
-    "title": "Pan Tau",
-    "medium": "TV",
-    "years": {
-      "from": 1970,
-      "to": 1979
-    },
-    "countries": [
-      "IT",
-      "AT",
-      "DE",
-      "CZ"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q1646557",
     "provenance": "wikidata"
   },
   {
@@ -6936,8 +6439,7 @@
     },
     "countries": [
       "FR",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -6963,22 +6465,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1651765",
-    "title": "To Catch a Spy",
+    "id": "wd-Q16535913",
+    "title": "Captain Ardant",
     "medium": "Film",
     "years": {
-      "from": 1971,
-      "to": 1971
+      "from": 1951,
+      "to": 1951
     },
     "countries": [
-      "US",
-      "FR",
-      "GB"
+      "FR"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q1651765",
+    "wikidataId": "Q16535913",
     "provenance": "wikidata"
   },
   {
@@ -7171,24 +6671,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1675423",
-    "title": "It's a Beautiful Day",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1675423",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1675438",
     "title": "It's the End of the World as We Know It (And I Feel Fine)",
     "medium": "Music",
@@ -7328,6 +6810,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1700725",
+    "title": "John Kling",
+    "medium": "TV",
+    "years": {
+      "from": 1965,
+      "to": 1970
+    },
+    "countries": [
+      "DE"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q1700725",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q170262",
     "title": "Nightfall in Middle-Earth",
     "medium": "Music",
@@ -7345,37 +6844,22 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1702708",
-    "title": "A Gunfight",
-    "medium": "Film",
+    "id": "wd-Q1709490",
+    "title": "Buffalo Springfield",
+    "medium": "Music",
     "years": {
-      "from": 1971,
-      "to": 1971
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
+      "CA",
       "US"
     ],
     "genres": [
-      "Western"
+      "Folk",
+      "Rock"
     ],
-    "wikidataId": "Q1702708",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q17053696",
-    "title": "Red King, White Knight",
-    "medium": "Film",
-    "years": {
-      "from": 1989,
-      "to": 1989
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q17053696",
+    "wikidataId": "Q1709490",
     "provenance": "wikidata"
   },
   {
@@ -7410,23 +6894,6 @@
       "Western"
     ],
     "wikidataId": "Q1713546",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q17150607",
-    "title": "Bond 303",
-    "medium": "Film",
-    "years": {
-      "from": 1985,
-      "to": 1985
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q17150607",
     "provenance": "wikidata"
   },
   {
@@ -7512,23 +6979,6 @@
       "Western"
     ],
     "wikidataId": "Q174513",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1747271",
-    "title": "The Spikes Gang",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1747271",
     "provenance": "wikidata"
   },
   {
@@ -7777,24 +7227,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1753925",
-    "title": "Weird Scenes Inside the Gold Mine",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1753925",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1754488",
     "title": "Comanche Station",
     "medium": "Film",
@@ -7809,25 +7241,6 @@
       "Western"
     ],
     "wikidataId": "Q1754488",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1754505",
-    "title": "Neil Young",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "CA",
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1754505",
     "provenance": "wikidata"
   },
   {
@@ -7938,24 +7351,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1757372",
-    "title": "Nazareth",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1757372",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1758405",
     "title": "Carve Her Name with Pride",
     "medium": "Film",
@@ -7970,23 +7365,6 @@
       "Spy"
     ],
     "wikidataId": "Q1758405",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q175882",
-    "title": "The Duchess and the Dirtwater Fox",
-    "medium": "Film",
-    "years": {
-      "from": 1976,
-      "to": 1976
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q175882",
     "provenance": "wikidata"
   },
   {
@@ -8007,22 +7385,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q176284",
-    "title": "Ramones",
+    "id": "wd-Q1762697",
+    "title": "Scorpio's Dance",
     "medium": "Music",
     "years": {
-      "from": 1976,
-      "to": 1976
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
-      "US"
+      "NL"
     ],
     "genres": [
-      "Rock",
-      "Punk",
-      "Pop"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q176284",
+    "wikidataId": "Q1762697",
     "provenance": "wikidata"
   },
   {
@@ -8040,6 +7417,24 @@
       "Rock"
     ],
     "wikidataId": "Q1764046",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1765109",
+    "title": "Smash Your Head Against the Wall",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1765109",
     "provenance": "wikidata"
   },
   {
@@ -8077,23 +7472,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1767278",
-    "title": "Star in the Dust",
-    "medium": "Film",
-    "years": {
-      "from": 1956,
-      "to": 1956
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1767278",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1767400",
     "title": "Bons Baisers de Hong Kong",
     "medium": "Film",
@@ -8125,24 +7503,6 @@
       "Disco"
     ],
     "wikidataId": "Q1768263",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1768313",
-    "title": "Heavy Cream",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1768313",
     "provenance": "wikidata"
   },
   {
@@ -8197,56 +7557,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1780159",
-    "title": "Kommissar X - Drei blaue Panther",
+    "id": "wd-Q1780165",
+    "title": "Kommissar X – In den Klauen des goldenen Drachen",
     "medium": "Film",
     "years": {
-      "from": 1968,
-      "to": 1968
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "IT",
-      "DE"
+      "AT"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q1780159",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1780163",
-    "title": "Kommissar X – Drei goldene Schlangen",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "IT",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1780163",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1780906",
-    "title": "The One I Love",
-    "medium": "Music",
-    "years": {
-      "from": 1987,
-      "to": 1987
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q1780906",
+    "wikidataId": "Q1780165",
     "provenance": "wikidata"
   },
   {
@@ -8334,24 +7659,6 @@
       "Rock"
     ],
     "wikidataId": "Q1786633",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1787402",
-    "title": "The Bounty Killer",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "ES",
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q1787402",
     "provenance": "wikidata"
   },
   {
@@ -8445,23 +7752,6 @@
       "Pop"
     ],
     "wikidataId": "Q180418",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q18042644",
-    "title": "Pratele Zeleneho udoli",
-    "medium": "TV",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "CZ"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q18042644",
     "provenance": "wikidata"
   },
   {
@@ -8697,24 +7987,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q183050",
-    "title": "Captain Apache",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "ES",
-      "GB"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q183050",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1847429",
     "title": "MMMBop",
     "medium": "Music",
@@ -8805,25 +8077,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1856566",
-    "title": "Give It Up",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q1856566",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1856846",
     "title": "The Ballad of Cable Hogue",
     "medium": "Film",
@@ -8838,24 +8091,6 @@
       "Western"
     ],
     "wikidataId": "Q1856846",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1857930",
-    "title": "Rory Gallagher",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "IE"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q1857930",
     "provenance": "wikidata"
   },
   {
@@ -8876,6 +8111,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1865743",
+    "title": "Human Behaviour",
+    "medium": "Music",
+    "years": {
+      "from": 1993,
+      "to": 1993
+    },
+    "countries": [
+      "IS"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q1865743",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q18679847",
     "title": "Rölli",
     "medium": "TV",
@@ -8890,6 +8142,23 @@
       "Adventure"
     ],
     "wikidataId": "Q18679847",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q187441",
+    "title": "Bronco",
+    "medium": "TV",
+    "years": {
+      "from": 1958,
+      "to": 1962
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q187441",
     "provenance": "wikidata"
   },
   {
@@ -9191,24 +8460,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1930816",
-    "title": "UFO 2: Flying",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1930816",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1930992",
     "title": "Union Pacific",
     "medium": "Film",
@@ -9223,6 +8474,24 @@
       "Western"
     ],
     "wikidataId": "Q1930992",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1932060",
+    "title": "Heavy",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1932060",
     "provenance": "wikidata"
   },
   {
@@ -9261,6 +8530,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q1933134",
+    "title": "X In Search of Space",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q1933134",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q1934565",
     "title": "Metamorphosis",
     "medium": "Music",
@@ -9276,24 +8563,6 @@
       "Rock"
     ],
     "wikidataId": "Q1934565",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1934574",
-    "title": "Live",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1934574",
     "provenance": "wikidata"
   },
   {
@@ -9332,25 +8601,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1939262",
-    "title": "Spy Today, Die Tomorrow",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT",
-      "AT",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q1939262",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q1939374",
     "title": "Streets of Philadelphia",
     "medium": "Music",
@@ -9369,42 +8619,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1941420",
-    "title": "Never Never Land",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q1941420",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q1946318",
-    "title": "Ry Cooder",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q1946318",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q194790",
     "title": "Trout Mask Replica",
     "medium": "Music",
@@ -9420,6 +8634,23 @@
       "Psychedelic"
     ],
     "wikidataId": "Q194790",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1948365",
+    "title": "The Incredible String Band",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q1948365",
     "provenance": "wikidata"
   },
   {
@@ -9493,20 +8724,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q1952634",
-    "title": "Hard Ticket to Hawaii",
-    "medium": "Film",
+    "id": "wd-Q1953408",
+    "title": "Lycka",
+    "medium": "Music",
     "years": {
-      "from": 1987,
-      "to": 1987
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
-      "US"
+      "SE"
     ],
     "genres": [
-      "Spy"
+      "Folk",
+      "Rock"
     ],
-    "wikidataId": "Q1952634",
+    "wikidataId": "Q1953408",
     "provenance": "wikidata"
   },
   {
@@ -9524,23 +8756,6 @@
       "Rock"
     ],
     "wikidataId": "Q1953792",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q19570822",
-    "title": "Andadu Aagadu",
-    "medium": "Film",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q19570822",
     "provenance": "wikidata"
   },
   {
@@ -9575,6 +8790,23 @@
       "Rock"
     ],
     "wikidataId": "Q1963807",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q1977080",
+    "title": "The Roy Rogers Show",
+    "medium": "TV",
+    "years": {
+      "from": 1951,
+      "to": 1957
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q1977080",
     "provenance": "wikidata"
   },
   {
@@ -9660,25 +8892,6 @@
       "Rock"
     ],
     "wikidataId": "Q1990567",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q19947761",
-    "title": "The Killer Likes Candy",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q19947761",
     "provenance": "wikidata"
   },
   {
@@ -9889,24 +9102,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q20164629",
-    "title": "The Spy with Ten Faces",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q20164629",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2016609",
     "title": "Bearcats!",
     "medium": "TV",
@@ -9961,26 +9156,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2026422",
-    "title": "Electra One",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2026422",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q202714",
     "title": "The Piper at the Gates of Dawn",
     "medium": "Music",
@@ -9997,23 +9172,6 @@
       "Pop"
     ],
     "wikidataId": "Q202714",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2027905",
-    "title": "Billy Jack",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2027905",
     "provenance": "wikidata"
   },
   {
@@ -10048,24 +9206,6 @@
       "Soul"
     ],
     "wikidataId": "Q2030651",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2031398",
-    "title": "666",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "FR"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q2031398",
     "provenance": "wikidata"
   },
   {
@@ -10175,23 +9315,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2045673",
-    "title": "Saskatchewan",
-    "medium": "Film",
-    "years": {
-      "from": 1954,
-      "to": 1954
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2045673",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q204958",
     "title": "Funeral in Berlin",
     "medium": "Film",
@@ -10240,23 +9363,6 @@
       "Adventure"
     ],
     "wikidataId": "Q2056751",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2056924",
-    "title": "A Dandy in Aspic",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2056924",
     "provenance": "wikidata"
   },
   {
@@ -10505,21 +9611,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q20745136",
-    "title": "Dødens Triumf",
+    "id": "wd-Q2075023",
+    "title": "13",
     "medium": "Music",
     "years": {
-      "from": 1972,
-      "to": 1972
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
-      "DK"
+      "US"
     ],
     "genres": [
       "Psychedelic",
       "Rock"
     ],
-    "wikidataId": "Q20745136",
+    "wikidataId": "Q2075023",
     "provenance": "wikidata"
   },
   {
@@ -10646,24 +9752,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2080630",
-    "title": "Bob Dylan's Greatest Hits Vol. II",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q2080630",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2081291",
     "title": "The Apple Dumpling Gang",
     "medium": "Film",
@@ -10678,24 +9766,6 @@
       "Western"
     ],
     "wikidataId": "Q2081291",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q20814679",
-    "title": "Operation Counterspy",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q20814679",
     "provenance": "wikidata"
   },
   {
@@ -10715,24 +9785,6 @@
       "Spy"
     ],
     "wikidataId": "Q20814767",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q20814860",
-    "title": "Tom Dollar",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q20814860",
     "provenance": "wikidata"
   },
   {
@@ -10839,6 +9891,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2085712",
+    "title": "Duel in de diepte",
+    "medium": "TV",
+    "years": {
+      "from": 1979,
+      "to": 1979
+    },
+    "countries": [
+      "NL"
+    ],
+    "genres": [
+      "Adventure"
+    ],
+    "wikidataId": "Q2085712",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2085975",
     "title": "Keep It Together",
     "medium": "Music",
@@ -10904,23 +9973,6 @@
       "Pop"
     ],
     "wikidataId": "Q2093639",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q20949961",
-    "title": "S*H*E",
-    "medium": "Film",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q20949961",
     "provenance": "wikidata"
   },
   {
@@ -11708,21 +10760,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q21646045",
-    "title": "Agent X-77 Orders to Kill",
+    "id": "wd-Q21646080",
+    "title": "The Ambassador's Wife",
     "medium": "Film",
     "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1955,
+      "to": 1955
     },
     "countries": [
-      "IT",
-      "FR"
+      "DE"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q21646045",
+    "wikidataId": "Q21646080",
     "provenance": "wikidata"
   },
   {
@@ -11742,24 +10793,6 @@
       "Spy"
     ],
     "wikidataId": "Q21646257",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q21647053",
-    "title": "A Stroke of 1000 Millions",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q21647053",
     "provenance": "wikidata"
   },
   {
@@ -11903,40 +10936,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q21831170",
-    "title": "Dick Smart 2.007",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q21831170",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2184700",
-    "title": "Thunderbird 6",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2184700",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q218513",
     "title": "Bleach",
     "medium": "Music",
@@ -11951,58 +10950,6 @@
       "Rock"
     ],
     "wikidataId": "Q218513",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q21869704",
-    "title": "Our Man in Casablanca",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q21869704",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q21869714",
-    "title": "Password: Kill Agent Gordon",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q21869714",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q21869928",
-    "title": "Top Secret",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "ES",
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q21869928",
     "provenance": "wikidata"
   },
   {
@@ -12037,23 +10984,6 @@
       "Rock"
     ],
     "wikidataId": "Q219425",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2194425",
-    "title": "Silver River",
-    "medium": "Film",
-    "years": {
-      "from": 1948,
-      "to": 1948
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2194425",
     "provenance": "wikidata"
   },
   {
@@ -12349,6 +11279,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2249223",
+    "title": "Zorro Rides Again",
+    "medium": "Film",
+    "years": {
+      "from": 1937,
+      "to": 1937
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2249223",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2250146",
     "title": "The Furies",
     "medium": "Film",
@@ -12366,40 +11313,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2252587",
-    "title": "Kansas Raiders",
-    "medium": "Film",
-    "years": {
-      "from": 1950,
-      "to": 1950
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2252587",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q225635",
-    "title": "The Omega Connection",
-    "medium": "Film",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q225635",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2259533",
     "title": "The Man from Snowy River",
     "medium": "Film",
@@ -12414,23 +11327,6 @@
       "Western"
     ],
     "wikidataId": "Q2259533",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q225962",
-    "title": "Yellowstone Kelly",
-    "medium": "Film",
-    "years": {
-      "from": 1959,
-      "to": 1959
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q225962",
     "provenance": "wikidata"
   },
   {
@@ -12537,22 +11433,38 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2278804",
-    "title": "Songs for Beginners",
+    "id": "wd-Q2276073",
+    "title": "In Search of the Lost Chord",
     "medium": "Music",
     "years": {
-      "from": 1971,
-      "to": 1971
+      "from": 1968,
+      "to": 1968
     },
     "countries": [
-      "US",
       "GB"
     ],
     "genres": [
-      "Rock",
-      "Folk"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q2278804",
+    "wikidataId": "Q2276073",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2280138",
+    "title": "The Secret of Convict Lake",
+    "medium": "Film",
+    "years": {
+      "from": 1951,
+      "to": 1951
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2280138",
     "provenance": "wikidata"
   },
   {
@@ -12570,24 +11482,6 @@
       "Western"
     ],
     "wikidataId": "Q2280163",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2280644",
-    "title": "All I Really Want to Do",
-    "medium": "Music",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q2280644",
     "provenance": "wikidata"
   },
   {
@@ -12780,23 +11674,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2293735",
-    "title": "Relax Freddie",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "DK"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2293735",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q229552",
     "title": "The Wrath of God",
     "medium": "Film",
@@ -12811,24 +11688,6 @@
       "Western"
     ],
     "wikidataId": "Q229552",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2296309",
-    "title": "Electronic Meditation",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q2296309",
     "provenance": "wikidata"
   },
   {
@@ -12847,25 +11706,6 @@
       "Pop"
     ],
     "wikidataId": "Q2298336",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2301215",
-    "title": "The Road to Corinthe",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2301215",
     "provenance": "wikidata"
   },
   {
@@ -12938,23 +11778,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2312568",
-    "title": "Thunderbirds Are Go",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2312568",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2314748",
     "title": "Sunshine of Your Love",
     "medium": "Music",
@@ -12988,24 +11811,6 @@
       "Pop"
     ],
     "wikidataId": "Q2319497",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2319825",
-    "title": "Santana",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q2319825",
     "provenance": "wikidata"
   },
   {
@@ -13167,23 +11972,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2328358",
-    "title": "Out of the Silent Planet",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2328358",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2329256",
     "title": "Wasting Love",
     "medium": "Music",
@@ -13215,6 +12003,24 @@
       "Rock"
     ],
     "wikidataId": "Q2331674",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2332279",
+    "title": "Big Brother and the Holding Company",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q2332279",
     "provenance": "wikidata"
   },
   {
@@ -13252,40 +12058,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2336448",
-    "title": "Parallel Universe",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2336448",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2336466",
-    "title": "Soul to Squeeze",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2336466",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2337639",
     "title": "King Nothing",
     "medium": "Music",
@@ -13300,24 +12072,6 @@
       "Rock"
     ],
     "wikidataId": "Q2337639",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2337653",
-    "title": "Die, Die My Darling",
-    "medium": "Music",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Punk"
-    ],
-    "wikidataId": "Q2337653",
     "provenance": "wikidata"
   },
   {
@@ -13338,23 +12092,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2338119",
-    "title": "Sacrifice",
-    "medium": "Music",
-    "years": {
-      "from": 1989,
-      "to": 1989
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2338119",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2340420",
     "title": "Raining Blood",
     "medium": "Music",
@@ -13369,24 +12106,6 @@
       "Rock"
     ],
     "wikidataId": "Q2340420",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2343395",
-    "title": "The Crazy World of Arthur Brown",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q2343395",
     "provenance": "wikidata"
   },
   {
@@ -13407,40 +12126,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2353327",
-    "title": "Journey to the West",
-    "medium": "TV",
-    "years": {
-      "from": 1986,
-      "to": 1999
-    },
-    "countries": [
-      "CN"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q2353327",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2354146",
-    "title": "I'm Still Standing",
-    "medium": "Music",
-    "years": {
-      "from": 1983,
-      "to": 1983
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2354146",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2354169",
     "title": "L.A. Woman",
     "medium": "Music",
@@ -13455,23 +12140,6 @@
       "Rock"
     ],
     "wikidataId": "Q2354169",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2354447",
-    "title": "Only When I Lose Myself",
-    "medium": "Music",
-    "years": {
-      "from": 1998,
-      "to": 1998
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2354447",
     "provenance": "wikidata"
   },
   {
@@ -13492,23 +12160,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2361590",
-    "title": "Matchless",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2361590",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2363966",
     "title": "Loser",
     "medium": "Music",
@@ -13526,8 +12177,8 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2364343",
-    "title": "Destry",
+    "id": "wd-Q2364329",
+    "title": "Ride Clear of Diablo",
     "medium": "Film",
     "years": {
       "from": 1954,
@@ -13539,7 +12190,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q2364343",
+    "wikidataId": "Q2364329",
     "provenance": "wikidata"
   },
   {
@@ -13558,6 +12209,23 @@
       "Spy"
     ],
     "wikidataId": "Q2364767",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2366983",
+    "title": "The Adventures of Kit Carson",
+    "medium": "TV",
+    "years": {
+      "from": 1951,
+      "to": 1955
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2366983",
     "provenance": "wikidata"
   },
   {
@@ -13613,6 +12281,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2392789",
+    "title": "Texas Terror",
+    "medium": "Film",
+    "years": {
+      "from": 1935,
+      "to": 1935
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2392789",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q240021",
     "title": "Their Satanic Majesties Request",
     "medium": "Music",
@@ -13628,6 +12313,23 @@
       "Pop"
     ],
     "wikidataId": "Q240021",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2402964",
+    "title": "Temple Houston",
+    "medium": "TV",
+    "years": {
+      "from": 1963,
+      "to": 1964
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2402964",
     "provenance": "wikidata"
   },
   {
@@ -13701,25 +12403,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2417725",
-    "title": "The Kids Aren't Alright",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Punk",
-      "Pop"
-    ],
-    "wikidataId": "Q2417725",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q241777",
     "title": "Parklife",
     "medium": "Music",
@@ -13787,23 +12470,6 @@
       "Rock"
     ],
     "wikidataId": "Q2419756",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q24205638",
-    "title": "City of Fear",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q24205638",
     "provenance": "wikidata"
   },
   {
@@ -13912,23 +12578,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2435697",
-    "title": "O Dragão da Maldade Contra o Santo Guerreiro",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "BR"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2435697",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2438645",
     "title": "Dallas",
     "medium": "Film",
@@ -13954,8 +12603,7 @@
       "to": 1972
     },
     "countries": [
-      "US",
-      "MX"
+      "US"
     ],
     "genres": [
       "Rock",
@@ -14017,23 +12665,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2454853",
-    "title": "Quit Playing Games (With My Heart)",
-    "medium": "Music",
-    "years": {
-      "from": 1996,
-      "to": 1996
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2454853",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2455256",
     "title": "Starman",
     "medium": "Music",
@@ -14083,23 +12714,6 @@
       "Rock"
     ],
     "wikidataId": "Q2466691",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2467593",
-    "title": "Bailamos",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
-    },
-    "countries": [
-      "ES"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2467593",
     "provenance": "wikidata"
   },
   {
@@ -14240,42 +12854,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q24893645",
-    "title": "High Season for Spies",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "ES",
-      "PT",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q24893645",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q24904995",
-    "title": "The Impossible Spy",
-    "medium": "Film",
-    "years": {
-      "from": 1987,
-      "to": 1987
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q24904995",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2492000",
     "title": "Escape from Fort Bravo",
     "medium": "Film",
@@ -14341,6 +12919,41 @@
       "Western"
     ],
     "wikidataId": "Q249931",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2499441",
+    "title": "On the Threshold of a Dream",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q2499441",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q249952",
+    "title": "Ágætis byrjun",
+    "medium": "Music",
+    "years": {
+      "from": 1999,
+      "to": 1999
+    },
+    "countries": [
+      "IS"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q249952",
     "provenance": "wikidata"
   },
   {
@@ -14433,6 +13046,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2513008",
+    "title": "'Neath the Arizona Skies",
+    "medium": "Film",
+    "years": {
+      "from": 1934,
+      "to": 1934
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q2513008",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q251304",
     "title": "Free Bird",
     "medium": "Music",
@@ -14498,6 +13128,23 @@
       "Western"
     ],
     "wikidataId": "Q251997",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q25216466",
+    "title": "The Cat Shows Her Claws",
+    "medium": "Film",
+    "years": {
+      "from": 1960,
+      "to": 1960
+    },
+    "countries": [
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q25216466",
     "provenance": "wikidata"
   },
   {
@@ -14587,24 +13234,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2528150",
-    "title": "A Question of Balance",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q2528150",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q253004",
     "title": "Purple Rain",
     "medium": "Music",
@@ -14623,38 +13252,24 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2531291",
-    "title": "Even Flow",
+    "id": "wd-Q2531504",
+    "title": "Never a Dull Moment",
     "medium": "Music",
     "years": {
-      "from": 1992,
-      "to": 1992
+      "from": 1972,
+      "to": 1972
     },
     "countries": [
-      "US"
+      "GB"
     ],
     "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2531291",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2532929",
-    "title": "The Sonny Side of Chér",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
+      "Soul",
+      "Pop",
       "Folk",
-      "Rock"
+      "Rock",
+      "RockAndRoll"
     ],
-    "wikidataId": "Q2532929",
+    "wikidataId": "Q2531504",
     "provenance": "wikidata"
   },
   {
@@ -14831,6 +13446,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2552632",
+    "title": "A Question of Time",
+    "medium": "Music",
+    "years": {
+      "from": 1986,
+      "to": 1986
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Pop"
+    ],
+    "wikidataId": "Q2552632",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q255471",
     "title": "Déjà Vu",
     "medium": "Music",
@@ -14849,23 +13481,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q255782",
-    "title": "Seven Ways from Sundown",
-    "medium": "Film",
-    "years": {
-      "from": 1960,
-      "to": 1960
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q255782",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q255923",
     "title": "American Beauty",
     "medium": "Music",
@@ -14881,23 +13496,6 @@
       "Folk"
     ],
     "wikidataId": "Q255923",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2561481",
-    "title": "Amazing",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2561481",
     "provenance": "wikidata"
   },
   {
@@ -14952,6 +13550,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2564517",
+    "title": "I'm Too Sexy",
+    "medium": "Music",
+    "years": {
+      "from": 1991,
+      "to": 1991
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Pop"
+    ],
+    "wikidataId": "Q2564517",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2567279",
     "title": "Bizarre Love Triangle",
     "medium": "Music",
@@ -14987,12 +13602,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2579203",
-    "title": "No Name on the Bullet",
-    "medium": "Film",
+    "id": "wd-Q2578173",
+    "title": "Hec Ramsey",
+    "medium": "TV",
     "years": {
-      "from": 1959,
-      "to": 1959
+      "from": 1972,
+      "to": 1974
     },
     "countries": [
       "US"
@@ -15000,7 +13615,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q2579203",
+    "wikidataId": "Q2578173",
     "provenance": "wikidata"
   },
   {
@@ -15090,23 +13705,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2602678",
-    "title": "I Feel You",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2602678",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q260548",
     "title": "Silverado",
     "medium": "Film",
@@ -15158,21 +13756,24 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2610402",
-    "title": "His Band and the Street Choir",
+    "id": "wd-Q260948",
+    "title": "2 Years On",
     "medium": "Music",
     "years": {
       "from": 1970,
       "to": 1970
     },
     "countries": [
-      "GB"
+      "GB",
+      "AU"
     ],
     "genres": [
+      "Rock",
+      "Pop",
       "Folk",
-      "Rock"
+      "Disco"
     ],
-    "wikidataId": "Q2610402",
+    "wikidataId": "Q260948",
     "provenance": "wikidata"
   },
   {
@@ -15246,24 +13847,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2619734",
-    "title": "Blasphemous Rumours / Somebody",
-    "medium": "Music",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop",
-      "Rock"
-    ],
-    "wikidataId": "Q2619734",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2619759",
     "title": "Love, in Itself",
     "medium": "Music",
@@ -15332,58 +13915,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2627991",
-    "title": "Blue Öyster Cult",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q2627991",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2629288",
-    "title": "The Meaning of Love",
-    "medium": "Music",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2629288",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2629332",
-    "title": "Leave in Silence",
-    "medium": "Music",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2629332",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2629763",
     "title": "The Deadly Companions",
     "medium": "Film",
@@ -15416,23 +13947,6 @@
       "Punk"
     ],
     "wikidataId": "Q262981",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2630633",
-    "title": "Enola Gay",
-    "medium": "Music",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2630633",
     "provenance": "wikidata"
   },
   {
@@ -15575,6 +14089,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q2663415",
+    "title": "Give Me Love (Give Me Peace on Earth)",
+    "medium": "Music",
+    "years": {
+      "from": 1973,
+      "to": 1973
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Rock"
+    ],
+    "wikidataId": "Q2663415",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q2667755",
     "title": "(Don't Fear) The Reaper",
     "medium": "Music",
@@ -15658,23 +14189,6 @@
       "Punk"
     ],
     "wikidataId": "Q269674",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q26970559",
-    "title": "X-25 javlja",
-    "medium": "Film",
-    "years": {
-      "from": 1960,
-      "to": 1960
-    },
-    "countries": [
-      "YU"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q26970559",
     "provenance": "wikidata"
   },
   {
@@ -15886,22 +14400,23 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2711771",
-    "title": "Historic Performances Recorded at the Monterey International Pop Festival",
+    "id": "wd-Q2707551",
+    "title": "Ladies of the Canyon",
     "medium": "Music",
     "years": {
       "from": 1970,
       "to": 1970
     },
     "countries": [
+      "CA",
       "US"
     ],
     "genres": [
-      "Psychedelic",
+      "Folk",
       "Rock",
-      "Soul"
+      "Pop"
     ],
-    "wikidataId": "Q2711771",
+    "wikidataId": "Q2707551",
     "provenance": "wikidata"
   },
   {
@@ -15937,23 +14452,6 @@
       "Rock"
     ],
     "wikidataId": "Q2715264",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2716264",
-    "title": "Spoonman",
-    "medium": "Music",
-    "years": {
-      "from": 1994,
-      "to": 1994
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2716264",
     "provenance": "wikidata"
   },
   {
@@ -16060,24 +14558,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2725277",
-    "title": "A Gift from a Flower to a Garden",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q2725277",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2730322",
     "title": "The Evil That Men Do",
     "medium": "Music",
@@ -16109,23 +14589,6 @@
       "Rock"
     ],
     "wikidataId": "Q2730330",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2730341",
-    "title": "The Clairvoyant",
-    "medium": "Music",
-    "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2730341",
     "provenance": "wikidata"
   },
   {
@@ -16317,23 +14780,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2758957",
-    "title": "Today",
-    "medium": "Music",
-    "years": {
-      "from": 1993,
-      "to": 1993
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2758957",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q276033",
     "title": "90125",
     "medium": "Music",
@@ -16348,6 +14794,23 @@
       "Rock"
     ],
     "wikidataId": "Q276033",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q2761408",
+    "title": "The Champions",
+    "medium": "TV",
+    "years": {
+      "from": 1968,
+      "to": 1969
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Adventure"
+    ],
+    "wikidataId": "Q2761408",
     "provenance": "wikidata"
   },
   {
@@ -16416,23 +14879,6 @@
       "Western"
     ],
     "wikidataId": "Q2777878",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2788727",
-    "title": "Texas Across the River",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2788727",
     "provenance": "wikidata"
   },
   {
@@ -16539,22 +14985,40 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2826778",
-    "title": "Agent 3S3: Passport to Hell",
+    "id": "wd-Q2819655",
+    "title": "A Beard of Stars",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q2819655",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q28229210",
+    "title": "Target Goldseven",
     "medium": "Film",
     "years": {
-      "from": 1965,
-      "to": 1965
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "ES",
-      "IT",
-      "FR"
+      "IT"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q2826778",
+    "wikidataId": "Q28229210",
     "provenance": "wikidata"
   },
   {
@@ -16608,23 +15072,6 @@
       "Folk"
     ],
     "wikidataId": "Q284854",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2850279",
-    "title": "Burzum",
-    "medium": "Music",
-    "years": {
-      "from": 1992,
-      "to": 1992
-    },
-    "countries": [
-      "NO"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q2850279",
     "provenance": "wikidata"
   },
   {
@@ -16717,23 +15164,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2881100",
-    "title": "Ballade pour un voyou",
-    "medium": "Film",
-    "years": {
-      "from": 1963,
-      "to": 1963
-    },
-    "countries": [
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q2881100",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q2882090",
     "title": "Shadow of Evil",
     "medium": "Film",
@@ -16749,23 +15179,6 @@
       "Spy"
     ],
     "wikidataId": "Q2882090",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2882331",
-    "title": "Bandido",
-    "medium": "Film",
-    "years": {
-      "from": 1956,
-      "to": 1956
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2882331",
     "provenance": "wikidata"
   },
   {
@@ -16786,23 +15199,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2887756",
-    "title": "Bat Masterson",
-    "medium": "TV",
-    "years": {
-      "from": 1958,
-      "to": 1961
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q2887756",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q28969254",
     "title": "Silenzio: si uccide",
     "medium": "Film",
@@ -16817,24 +15213,6 @@
       "Spy"
     ],
     "wikidataId": "Q28969254",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2904640",
-    "title": "Tim Buckley",
-    "medium": "Music",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q2904640",
     "provenance": "wikidata"
   },
   {
@@ -16856,12 +15234,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2928319",
-    "title": "Fighting Caravans",
+    "id": "wd-Q2933993",
+    "title": "California",
     "medium": "Film",
     "years": {
-      "from": 1931,
-      "to": 1931
+      "from": 1947,
+      "to": 1947
     },
     "countries": [
       "US"
@@ -16869,7 +15247,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q2928319",
+    "wikidataId": "Q2933993",
     "provenance": "wikidata"
   },
   {
@@ -16924,39 +15302,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2972876",
-    "title": "Five Ashore in Singapore",
-    "medium": "Film",
+    "id": "wd-Q2974328",
+    "title": "The Cisco Kid",
+    "medium": "TV",
     "years": {
-      "from": 1967,
-      "to": 1967
+      "from": 1950,
+      "to": 1956
     },
     "countries": [
-      "IT",
-      "FR",
-      "AU"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q2972876",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q2980090",
-    "title": "I Wish It Would Rain Down",
-    "medium": "Music",
-    "years": {
-      "from": 1990,
-      "to": 1990
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q2980090",
+    "wikidataId": "Q2974328",
     "provenance": "wikidata"
   },
   {
@@ -16977,20 +15336,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2995882",
-    "title": "I Was Monty's Double",
-    "medium": "Film",
+    "id": "wd-Q2990717",
+    "title": "Zorro and Son",
+    "medium": "TV",
     "years": {
-      "from": 1958,
-      "to": 1958
+      "from": 1983,
+      "to": 1983
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q2995882",
+    "wikidataId": "Q2990717",
     "provenance": "wikidata"
   },
   {
@@ -17032,21 +15391,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q2996819",
-    "title": "Coplan Saves His Skin",
-    "medium": "Film",
+    "id": "wd-Q2997399",
+    "title": "Corky and White Shadow",
+    "medium": "TV",
     "years": {
-      "from": 1968,
-      "to": 1968
+      "from": 1956,
+      "to": 1956
     },
     "countries": [
-      "IT",
-      "FR"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q2996819",
+    "wikidataId": "Q2997399",
     "provenance": "wikidata"
   },
   {
@@ -17099,24 +15457,6 @@
       "Western"
     ],
     "wikidataId": "Q300589",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3009487",
-    "title": "Head",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3009487",
     "provenance": "wikidata"
   },
   {
@@ -17173,24 +15513,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3024718",
-    "title": "The Wise Guys",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3024718",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q303477",
     "title": "The Big Country",
     "medium": "Film",
@@ -17205,6 +15527,23 @@
       "Western"
     ],
     "wikidataId": "Q303477",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3039150",
+    "title": "Geronimo",
+    "medium": "Film",
+    "years": {
+      "from": 1962,
+      "to": 1962
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3039150",
     "provenance": "wikidata"
   },
   {
@@ -17225,23 +15564,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q304999",
-    "title": "The Green Hornet",
-    "medium": "TV",
-    "years": {
-      "from": 1966,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q304999",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q30560",
     "title": "Malesch",
     "medium": "Music",
@@ -17257,6 +15579,23 @@
       "Psychedelic"
     ],
     "wikidataId": "Q30560",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q30609693",
+    "title": "The House of Intrigue",
+    "medium": "Film",
+    "years": {
+      "from": 1956,
+      "to": 1956
+    },
+    "countries": [
+      "IT"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q30609693",
     "provenance": "wikidata"
   },
   {
@@ -17294,12 +15633,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q30742494",
-    "title": "Opération tonnerre",
+    "id": "wd-Q30740883",
+    "title": "Mission to Venice",
     "medium": "Film",
     "years": {
-      "from": 1956,
-      "to": 1956
+      "from": 1964,
+      "to": 1964
     },
     "countries": [
       "FR"
@@ -17307,24 +15646,7 @@
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q30742494",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q30766159",
-    "title": "Once Upon a Spy",
-    "medium": "Film",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q30766159",
+    "wikidataId": "Q30740883",
     "provenance": "wikidata"
   },
   {
@@ -17423,7 +15745,6 @@
     },
     "countries": [
       "US",
-      "MX",
       "GB"
     ],
     "genres": [
@@ -17523,21 +15844,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q31148",
-    "title": "The Double Man",
-    "medium": "Film",
+    "id": "wd-Q3124686",
+    "title": "H.M.S. Donovan",
+    "medium": "Music",
     "years": {
-      "from": 1967,
-      "to": 1967
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
-      "US",
       "GB"
     ],
     "genres": [
-      "Spy"
+      "Folk"
     ],
-    "wikidataId": "Q31148",
+    "wikidataId": "Q3124686",
     "provenance": "wikidata"
   },
   {
@@ -17576,21 +15896,56 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3148504",
-    "title": "Birgitt Haas Must Be Killed",
-    "medium": "Film",
+    "id": "wd-Q3139991",
+    "title": "Hondo",
+    "medium": "TV",
     "years": {
-      "from": 1981,
-      "to": 1981
+      "from": 1967,
+      "to": 1967
     },
     "countries": [
-      "FR",
-      "DE"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q3148504",
+    "wikidataId": "Q3139991",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3141742",
+    "title": "Saint Dominic's Preview",
+    "medium": "Music",
+    "years": {
+      "from": 1972,
+      "to": 1972
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock",
+      "Soul"
+    ],
+    "wikidataId": "Q3141742",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3147032",
+    "title": "I Ain't Marching Anymore",
+    "medium": "Music",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q3147032",
     "provenance": "wikidata"
   },
   {
@@ -17603,8 +15958,7 @@
     },
     "countries": [
       "IT",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -17649,6 +16003,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3179542",
+    "title": "Joan",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q3179542",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q3187",
     "title": "Rough Night in Jericho",
     "medium": "Film",
@@ -17663,6 +16034,24 @@
       "Western"
     ],
     "wikidataId": "Q3187",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3187001",
+    "title": "Journey to the Centre of the Eye",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q3187001",
     "provenance": "wikidata"
   },
   {
@@ -17753,40 +16142,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3203427",
-    "title": "The Executioner",
+    "id": "wd-Q3203631",
+    "title": "Lisbon",
     "medium": "Film",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1956,
+      "to": 1956
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q3203427",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3203617",
-    "title": "That Man in Istanbul",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3203617",
+    "wikidataId": "Q3203631",
     "provenance": "wikidata"
   },
   {
@@ -17878,40 +16247,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3206893",
-    "title": "Journey to Shiloh",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3206893",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3208286",
-    "title": "Stagecoach",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3208286",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3208681",
     "title": "Montana Belle",
     "medium": "Film",
@@ -17943,6 +16278,23 @@
       "Western"
     ],
     "wikidataId": "Q3208717",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3209024",
+    "title": "Broken Arrow",
+    "medium": "TV",
+    "years": {
+      "from": 1956,
+      "to": 1958
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3209024",
     "provenance": "wikidata"
   },
   {
@@ -18099,23 +16451,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3227191",
-    "title": "Escape to Nowhere",
-    "medium": "Film",
-    "years": {
-      "from": 1973,
-      "to": 1973
-    },
-    "countries": [
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3227191",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3227339",
     "title": "The Violent Men",
     "medium": "Film",
@@ -18133,22 +16468,37 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3228592",
-    "title": "The Viscount",
+    "id": "wd-Q3227795",
+    "title": "Horizons West",
     "medium": "Film",
     "years": {
-      "from": 1967,
-      "to": 1967
+      "from": 1952,
+      "to": 1952
     },
     "countries": [
-      "ES",
-      "IT",
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3227795",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3229375",
+    "title": "Lemmy pour les dames",
+    "medium": "Film",
+    "years": {
+      "from": 1962,
+      "to": 1962
+    },
+    "countries": [
       "FR"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q3228592",
+    "wikidataId": "Q3229375",
     "provenance": "wikidata"
   },
   {
@@ -18223,6 +16573,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3232960",
+    "title": "Night People",
+    "medium": "Film",
+    "years": {
+      "from": 1954,
+      "to": 1954
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q3232960",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q3232982",
     "title": "Les Globe-trotters",
     "medium": "TV",
@@ -18254,41 +16621,6 @@
       "Western"
     ],
     "wikidataId": "Q323401",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3235103",
-    "title": "Two Flags West",
-    "medium": "Film",
-    "years": {
-      "from": 1950,
-      "to": 1950
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3235103",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3236385",
-    "title": "Wolves Hunt at Night",
-    "medium": "Film",
-    "years": {
-      "from": 1952,
-      "to": 1952
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3236385",
     "provenance": "wikidata"
   },
   {
@@ -18379,24 +16711,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q325450",
-    "title": "Weiße Wölfe",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "DE",
-      "YU"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q325450",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q325574",
     "title": "Deadlock",
     "medium": "Film",
@@ -18411,60 +16725,6 @@
       "Western"
     ],
     "wikidataId": "Q325574",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q325651",
-    "title": "The Big Cat",
-    "medium": "Film",
-    "years": {
-      "from": 1950,
-      "to": 1950
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q325651",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3259241",
-    "title": "Looking On",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock",
-      "Pop",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q3259241",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3264259",
-    "title": "Love in a Mist",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q3264259",
     "provenance": "wikidata"
   },
   {
@@ -18504,24 +16764,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3279731",
-    "title": "Jardim Elétrico",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "BR"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3279731",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q3282392",
     "title": "Chuka",
     "medium": "Film",
@@ -18553,40 +16795,6 @@
       "Western"
     ],
     "wikidataId": "Q3282657",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3282724",
-    "title": "Rachel and the Stranger",
-    "medium": "Film",
-    "years": {
-      "from": 1948,
-      "to": 1948
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3282724",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3282923",
-    "title": "Bulletproof",
-    "medium": "Film",
-    "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3282923",
     "provenance": "wikidata"
   },
   {
@@ -18658,22 +16866,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3284284",
-    "title": "Mutantes e Seus Cometas no País do Baurets",
-    "medium": "Music",
+    "id": "wd-Q3284765",
+    "title": "In Old California",
+    "medium": "Film",
     "years": {
-      "from": 1972,
-      "to": 1972
+      "from": 1942,
+      "to": 1942
     },
     "countries": [
-      "BR"
+      "US"
     ],
     "genres": [
-      "Psychedelic",
-      "Rock",
-      "RockAndRoll"
+      "Western"
     ],
-    "wikidataId": "Q3284284",
+    "wikidataId": "Q3284765",
     "provenance": "wikidata"
   },
   {
@@ -18708,23 +16914,6 @@
       "Western"
     ],
     "wikidataId": "Q3284994",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3285536",
-    "title": "These Thousand Hills",
-    "medium": "Film",
-    "years": {
-      "from": 1959,
-      "to": 1959
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3285536",
     "provenance": "wikidata"
   },
   {
@@ -18800,23 +16989,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3295988",
-    "title": "The Yes Album",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q3295988",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q330725",
     "title": "The Red Hot Chili Peppers",
     "medium": "Music",
@@ -18849,6 +17021,24 @@
       "Western"
     ],
     "wikidataId": "Q331039",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q331270",
+    "title": "Three Ruthless Ones",
+    "medium": "Film",
+    "years": {
+      "from": 1964,
+      "to": 1964
+    },
+    "countries": [
+      "ES",
+      "IT"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q331270",
     "provenance": "wikidata"
   },
   {
@@ -19051,42 +17241,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3362470",
-    "title": "Panther Squad",
-    "medium": "Film",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "ES",
-      "BE",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3362470",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3374423",
-    "title": "Peking Opera Blues",
-    "medium": "Film",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "HK"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3374423",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q338553",
     "title": "The Visitors",
     "medium": "Music",
@@ -19139,59 +17293,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3414458",
-    "title": "Quicksilver",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3414458",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3427710",
-    "title": "The Looking Glass War",
-    "medium": "Film",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3427710",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3429140",
-    "title": "Surakshaa",
-    "medium": "Film",
-    "years": {
-      "from": 1979,
-      "to": 1979
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3429140",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q34316",
     "title": "Doctor Who",
     "medium": "TV",
@@ -19228,29 +17329,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3442835",
-    "title": "The Johnny Cash Show",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk"
-    ],
-    "wikidataId": "Q3442835",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3454266",
-    "title": "Abilene Town",
+    "id": "wd-Q3448634",
+    "title": "Randy Rides Alone",
     "medium": "Film",
     "years": {
-      "from": 1946,
-      "to": 1946
+      "from": 1934,
+      "to": 1934
     },
     "countries": [
       "US"
@@ -19258,42 +17342,42 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q3454266",
+    "wikidataId": "Q3448634",
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3481188",
-    "title": "Shady Grove",
+    "id": "wd-Q3492500",
+    "title": "Shooting at the Moon",
     "medium": "Music",
     "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q3481188",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3487486",
-    "title": "Innocent Bystanders",
-    "medium": "Film",
-    "years": {
-      "from": 1972,
-      "to": 1972
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
       "GB"
     ],
     "genres": [
-      "Spy"
+      "Rock",
+      "Psychedelic"
     ],
-    "wikidataId": "Q3487486",
+    "wikidataId": "Q3492500",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3494033",
+    "title": "The Desperadoes",
+    "medium": "Film",
+    "years": {
+      "from": 1943,
+      "to": 1943
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3494033",
     "provenance": "wikidata"
   },
   {
@@ -19314,21 +17398,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3498354",
-    "title": "New! Improved!",
+    "id": "wd-Q3497871",
+    "title": "Psychedelic Lollipop",
     "medium": "Music",
     "years": {
-      "from": 1969,
-      "to": 1969
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Psychedelic",
-      "Rock"
+      "Rock",
+      "Psychedelic"
     ],
-    "wikidataId": "Q3498354",
+    "wikidataId": "Q3497871",
     "provenance": "wikidata"
   },
   {
@@ -19366,21 +17450,55 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3522165",
-    "title": "The Papas & The Mamas",
-    "medium": "Music",
+    "id": "wd-Q3518637",
+    "title": "Copper Canyon",
+    "medium": "Film",
     "years": {
-      "from": 1968,
-      "to": 1968
+      "from": 1950,
+      "to": 1950
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Folk",
-      "Rock"
+      "Western"
     ],
-    "wikidataId": "Q3522165",
+    "wikidataId": "Q3518637",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3549730",
+    "title": "Une ravissante idiote",
+    "medium": "Film",
+    "years": {
+      "from": 1963,
+      "to": 1963
+    },
+    "countries": [
+      "IT",
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q3549730",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3555597",
+    "title": "Winds of the Wasteland",
+    "medium": "Film",
+    "years": {
+      "from": 1936,
+      "to": 1936
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3555597",
     "provenance": "wikidata"
   },
   {
@@ -19541,22 +17659,38 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q369544",
-    "title": "Children of Mata Hari",
-    "medium": "Film",
+    "id": "wd-Q3696351",
+    "title": "Cowboy G-Men",
+    "medium": "TV",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1952,
+      "to": 1953
     },
     "countries": [
-      "IT",
-      "FR",
-      "DE"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q369544",
+    "wikidataId": "Q3696351",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3699381",
+    "title": "Andy Warhol's Velvet Underground Featuring Nico",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Rock",
+      "Psychedelic"
+    ],
+    "wikidataId": "Q3699381",
     "provenance": "wikidata"
   },
   {
@@ -19594,21 +17728,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q370482",
-    "title": "Paul Simon",
+    "id": "wd-Q371200",
+    "title": "Motel Shot",
     "medium": "Music",
     "years": {
-      "from": 1972,
-      "to": 1972
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Folk",
-      "Rock"
+      "Rock",
+      "Folk"
     ],
-    "wikidataId": "Q370482",
+    "wikidataId": "Q371200",
     "provenance": "wikidata"
   },
   {
@@ -19660,25 +17794,6 @@
       "Spy"
     ],
     "wikidataId": "Q372174",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q372310",
-    "title": "Oh! Pleasant Hope",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q372310",
     "provenance": "wikidata"
   },
   {
@@ -19734,22 +17849,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q375454",
-    "title": "Agent 3S3: Massacre in the Sun",
-    "medium": "Film",
+    "id": "wd-Q3779824",
+    "title": "Gunslinger",
+    "medium": "TV",
     "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1961,
+      "to": 1961
     },
     "countries": [
-      "ES",
-      "IT",
-      "FR"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q375454",
+    "wikidataId": "Q3779824",
     "provenance": "wikidata"
   },
   {
@@ -19821,37 +17934,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q38143",
-    "title": "The File of the Golden Goose",
-    "medium": "Film",
+    "id": "wd-Q3795771",
+    "title": "Sergeant Preston of the Yukon",
+    "medium": "TV",
     "years": {
-      "from": 1969,
-      "to": 1969
+      "from": 1955,
+      "to": 1958
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q38143",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3816222",
-    "title": "Kokusai himitsu keisatsu: Kagi no kagi",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "JP"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3816222",
+    "wikidataId": "Q3795771",
     "provenance": "wikidata"
   },
   {
@@ -19872,46 +17968,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3822411",
-    "title": "Cloak & Dagger",
+    "id": "wd-Q3822094",
+    "title": "La donna che venne dal mare",
     "medium": "Film",
     "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3822411",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3824729",
-    "title": "Klondike",
-    "medium": "TV",
-    "years": {
-      "from": 1960,
-      "to": 1961
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q3824729",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3829092",
-    "title": "The Spy Who Loved Flowers",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1957,
+      "to": 1957
     },
     "countries": [
       "IT"
@@ -19919,42 +17981,7 @@
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q3829092",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3829096",
-    "title": "Secret Agent Fireball",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3829096",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3830881",
-    "title": "Les mignonnes",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "ES",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3830881",
+    "wikidataId": "Q3822094",
     "provenance": "wikidata"
   },
   {
@@ -20007,6 +18034,23 @@
       "Psychedelic"
     ],
     "wikidataId": "Q383486",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q3835814",
+    "title": "Law of the Plainsman",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1960
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q3835814",
     "provenance": "wikidata"
   },
   {
@@ -20200,25 +18244,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3922746",
-    "title": "The Internecine Project",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "GB",
-      "DE",
-      "AU"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3922746",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q392769",
     "title": "Agent trouble",
     "medium": "Film",
@@ -20307,29 +18332,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q3959929",
-    "title": "Si muore solo una volta",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q3959929",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q3989616",
-    "title": "The Texan",
+    "id": "wd-Q3968476",
+    "title": "State Trooper",
     "medium": "TV",
     "years": {
-      "from": 1958,
-      "to": 1960
+      "from": 1956,
+      "to": 1959
     },
     "countries": [
       "US"
@@ -20337,7 +18345,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q3989616",
+    "wikidataId": "Q3968476",
     "provenance": "wikidata"
   },
   {
@@ -20358,6 +18366,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q3997684",
+    "title": "Trap for Seven Spies",
+    "medium": "Film",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "IT"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q3997684",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q4004135",
     "title": "Nichols",
     "medium": "TV",
@@ -20372,40 +18397,6 @@
       "Western"
     ],
     "wikidataId": "Q4004135",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4006144",
-    "title": "Uomini ombra",
-    "medium": "Film",
-    "years": {
-      "from": 1954,
-      "to": 1954
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4006144",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4019502",
-    "title": "Whispering Smith",
-    "medium": "TV",
-    "years": {
-      "from": 1961,
-      "to": 1961
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q4019502",
     "provenance": "wikidata"
   },
   {
@@ -20441,41 +18432,6 @@
       "Western"
     ],
     "wikidataId": "Q4022492",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4025125",
-    "title": "À l'Olympia",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "FR"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q4025125",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4025464",
-    "title": "Two Female Spies with Flowered Panties",
-    "medium": "Film",
-    "years": {
-      "from": 1978,
-      "to": 1978
-    },
-    "countries": [
-      "PT"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4025464",
     "provenance": "wikidata"
   },
   {
@@ -20548,20 +18504,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4120985",
-    "title": "First Utterance",
+    "id": "wd-Q4187107",
+    "title": "\"The Party's Over\" and Other Great Willie Nelson Songs",
     "medium": "Music",
     "years": {
-      "from": 1971,
-      "to": 1971
+      "from": 1967,
+      "to": 1967
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
       "Folk"
     ],
-    "wikidataId": "Q4120985",
+    "wikidataId": "Q4187107",
     "provenance": "wikidata"
   },
   {
@@ -20808,23 +18764,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q43302300",
-    "title": "Operation Mata Hari",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "ES"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q43302300",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q4344059",
     "title": "Running Scared",
     "medium": "Film",
@@ -20876,24 +18815,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4354809",
-    "title": "The Second",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q4354809",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q4355362",
     "title": "Cowboy from Brooklyn",
     "medium": "Film",
@@ -20908,6 +18829,24 @@
       "Western"
     ],
     "wikidataId": "Q4355362",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q4357761",
+    "title": "Flowers of Evil",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q4357761",
     "provenance": "wikidata"
   },
   {
@@ -21057,23 +18996,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4431230",
-    "title": "Picasso Trigger",
-    "medium": "Film",
-    "years": {
-      "from": 1988,
-      "to": 1988
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4431230",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q44320",
     "title": "Thriller",
     "medium": "Music",
@@ -21160,6 +19082,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q4489470",
+    "title": "Trackdown",
+    "medium": "TV",
+    "years": {
+      "from": 1957,
+      "to": 1959
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q4489470",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q4492734",
     "title": "Coming from Reality",
     "medium": "Music",
@@ -21179,21 +19118,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q453004",
-    "title": "Espion, lève-toi",
-    "medium": "Film",
+    "id": "wd-Q451294",
+    "title": "Laramie",
+    "medium": "TV",
     "years": {
-      "from": 1982,
-      "to": 1982
+      "from": 1959,
+      "to": 1963
     },
     "countries": [
-      "CH",
-      "FR"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q453004",
+    "wikidataId": "Q451294",
     "provenance": "wikidata"
   },
   {
@@ -21268,23 +19206,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q461645",
-    "title": "In the sign of the Scorpio",
-    "medium": "Film",
-    "years": {
-      "from": 1977,
-      "to": 1977
-    },
-    "countries": [
-      "DK"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q461645",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q463081",
     "title": "America",
     "medium": "Music",
@@ -21338,25 +19259,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4677329",
-    "title": "Permission to Kill",
-    "medium": "Film",
-    "years": {
-      "from": 1975,
-      "to": 1975
-    },
-    "countries": [
-      "US",
-      "AT",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4677329",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q468868",
     "title": "The Return of the Tall Blond Man with One Black Shoe",
     "medium": "Film",
@@ -21371,23 +19273,6 @@
       "Spy"
     ],
     "wikidataId": "Q468868",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4692082",
-    "title": "Agent Vinod",
-    "medium": "Film",
-    "years": {
-      "from": 1977,
-      "to": 1977
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4692082",
     "provenance": "wikidata"
   },
   {
@@ -21444,24 +19329,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q4745386",
-    "title": "American Woman",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "CA"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q4745386",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q474960",
     "title": "Reign in Blood",
     "medium": "Music",
@@ -21476,23 +19343,6 @@
       "Rock"
     ],
     "wikidataId": "Q474960",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q4753628",
-    "title": "Andaru Dongale",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q4753628",
     "provenance": "wikidata"
   },
   {
@@ -21823,6 +19673,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q488140",
+    "title": "Sundance and the Kid",
+    "medium": "Film",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "ES",
+      "IT"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q488140",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q489042",
     "title": "Hannie Caulder",
     "medium": "Film",
@@ -21961,6 +19829,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q49788",
+    "title": "Just a Little Bit of You",
+    "medium": "Music",
+    "years": {
+      "from": 1975,
+      "to": 1975
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Soul"
+    ],
+    "wikidataId": "Q49788",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q49794",
     "title": "One Day in Your Life",
     "medium": "Music",
@@ -21996,6 +19881,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q4996649",
+    "title": "Bull of the Woods",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q4996649",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q500044",
     "title": "The Lady Vanishes",
     "medium": "Film",
@@ -22010,59 +19913,6 @@
       "Spy"
     ],
     "wikidataId": "Q500044",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q501135",
-    "title": "A Tab in the Ocean",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q501135",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5011552",
-    "title": "CIA contro KGB",
-    "medium": "Film",
-    "years": {
-      "from": 1978,
-      "to": 1978
-    },
-    "countries": [
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5011552",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5021742",
-    "title": "Callan",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5021742",
     "provenance": "wikidata"
   },
   {
@@ -22100,42 +19950,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5036568",
-    "title": "Captain Beyond",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q5036568",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5037796",
-    "title": "Caravan to Vaccarès",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "FR",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5037796",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q506452",
     "title": "Top Secret!",
     "medium": "Film",
@@ -22154,6 +19968,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q5069638",
+    "title": "Curro Jiménez",
+    "medium": "TV",
+    "years": {
+      "from": 1976,
+      "to": 1978
+    },
+    "countries": [
+      "ES"
+    ],
+    "genres": [
+      "Adventure"
+    ],
+    "wikidataId": "Q5069638",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q50714",
     "title": "Stagecoach",
     "medium": "Film",
@@ -22168,24 +19999,6 @@
       "Western"
     ],
     "wikidataId": "Q50714",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q507175",
-    "title": "The Best of Michael Jackson",
-    "medium": "Music",
-    "years": {
-      "from": 1975,
-      "to": 1975
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Soul",
-      "Pop"
-    ],
-    "wikidataId": "Q507175",
     "provenance": "wikidata"
   },
   {
@@ -22257,40 +20070,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5094752",
-    "title": "Chhailla Babu",
-    "medium": "Film",
-    "years": {
-      "from": 1977,
-      "to": 1977
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5094752",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5099935",
-    "title": "China Town",
-    "medium": "Film",
-    "years": {
-      "from": 1962,
-      "to": 1962
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5099935",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q510066",
     "title": "Riders on the Storm",
     "medium": "Music",
@@ -22344,22 +20123,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q511439",
-    "title": "Idea",
-    "medium": "Music",
+    "id": "wd-Q5120090",
+    "title": "Cimarron City",
+    "medium": "TV",
     "years": {
-      "from": 1968,
-      "to": 1968
+      "from": 1958,
+      "to": 1959
     },
     "countries": [
-      "GB",
-      "AU"
+      "US"
     ],
     "genres": [
-      "Psychedelic",
-      "Rock"
+      "Western"
     ],
-    "wikidataId": "Q511439",
+    "wikidataId": "Q5120090",
     "provenance": "wikidata"
   },
   {
@@ -22449,20 +20226,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5152230",
-    "title": "Commando",
+    "id": "wd-Q5149386",
+    "title": "Colt .45",
     "medium": "Film",
     "years": {
-      "from": 1988,
-      "to": 1988
+      "from": 1950,
+      "to": 1950
     },
     "countries": [
-      "IN"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q5152230",
+    "wikidataId": "Q5149386",
     "provenance": "wikidata"
   },
   {
@@ -22517,38 +20294,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5189893",
-    "title": "Cruel Sister",
+    "id": "wd-Q518974",
+    "title": "Butterfly",
     "medium": "Music",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1967,
+      "to": 1967
     },
     "countries": [
       "GB"
     ],
     "genres": [
-      "Folk",
+      "Psychedelic",
       "Rock"
     ],
-    "wikidataId": "Q5189893",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5198753",
-    "title": "Cyclone",
-    "medium": "Film",
-    "years": {
-      "from": 1987,
-      "to": 1987
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5198753",
+    "wikidataId": "Q518974",
     "provenance": "wikidata"
   },
   {
@@ -22596,8 +20356,7 @@
     "countries": [
       "IT",
       "FR",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -22639,6 +20398,23 @@
       "Western"
     ],
     "wikidataId": "Q522916",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q5231436",
+    "title": "Day of the Evil Gun",
+    "medium": "Film",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q5231436",
     "provenance": "wikidata"
   },
   {
@@ -22762,23 +20538,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5272650",
-    "title": "Dick Barton at Bay",
-    "medium": "Film",
-    "years": {
-      "from": 1950,
-      "to": 1950
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5272650",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q527377",
     "title": "Pain Is So Close to Pleasure",
     "medium": "Music",
@@ -22813,6 +20572,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q527702",
+    "title": "My Friend Flicka",
+    "medium": "TV",
+    "years": {
+      "from": 1956,
+      "to": 1957
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q527702",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q527759",
     "title": "The Big Sky",
     "medium": "Film",
@@ -22844,6 +20620,23 @@
       "Pop"
     ],
     "wikidataId": "Q527927",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q5281081",
+    "title": "Dirty Sally",
+    "medium": "TV",
+    "years": {
+      "from": 1974,
+      "to": 1974
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q5281081",
     "provenance": "wikidata"
   },
   {
@@ -22970,24 +20763,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q532374",
-    "title": "Toto IV",
-    "medium": "Music",
-    "years": {
-      "from": 1982,
-      "to": 1982
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q532374",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q533205",
     "title": "Estranged",
     "medium": "Music",
@@ -23002,23 +20777,6 @@
       "Rock"
     ],
     "wikidataId": "Q533205",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q533528",
-    "title": "Futureal",
-    "medium": "Music",
-    "years": {
-      "from": 1998,
-      "to": 1998
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q533528",
     "provenance": "wikidata"
   },
   {
@@ -23049,8 +20807,7 @@
     },
     "countries": [
       "IT",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -23180,42 +20937,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q543486",
-    "title": "Daisy Town",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "BE",
-      "FR"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q543486",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5437759",
-    "title": "Fathom",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5437759",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q544099",
     "title": "Autobahn",
     "medium": "Music",
@@ -23248,23 +20969,6 @@
       "Rock"
     ],
     "wikidataId": "Q544294",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q544782",
-    "title": "My Friends",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q544782",
     "provenance": "wikidata"
   },
   {
@@ -23321,6 +21025,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q547259",
+    "title": "Cannon for Cordoba",
+    "medium": "Film",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q547259",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q547286",
     "title": "Day of Anger",
     "medium": "Film",
@@ -23370,23 +21091,6 @@
       "Rock"
     ],
     "wikidataId": "Q547599",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5477180",
-    "title": "Foxhole in Cairo",
-    "medium": "Film",
-    "years": {
-      "from": 1960,
-      "to": 1960
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q5477180",
     "provenance": "wikidata"
   },
   {
@@ -23458,24 +21162,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q557654",
-    "title": "Live/Dead",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q557654",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q558969",
     "title": "Aladdin Sane",
     "medium": "Music",
@@ -23519,8 +21205,7 @@
     },
     "countries": [
       "FR",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -23581,30 +21266,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q5669854",
-    "title": "Seven Up",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q5669854",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q5672366",
-    "title": "Black Box Affair",
+    "id": "wd-Q5659816",
+    "title": "Killer 77",
     "medium": "Film",
     "years": {
-      "from": 1969,
-      "to": 1969
+      "from": 1966,
+      "to": 1966
     },
     "countries": [
       "ES",
@@ -23613,27 +21280,7 @@
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q5672366",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q567531",
-    "title": "The Dirty Game",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "US",
-      "IT",
-      "FR",
-      "DE"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q567531",
+    "wikidataId": "Q5659816",
     "provenance": "wikidata"
   },
   {
@@ -23777,24 +21424,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q572310",
-    "title": "Anthem of the Sun",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q572310",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q572651",
     "title": "Brain Salad Surgery",
     "medium": "Music",
@@ -23914,24 +21543,6 @@
       "Western"
     ],
     "wikidataId": "Q577380",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q577604",
-    "title": "Bark",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q577604",
     "provenance": "wikidata"
   },
   {
@@ -24493,23 +22104,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q600212",
-    "title": "Alice in Chains",
-    "medium": "Music",
-    "years": {
-      "from": 1995,
-      "to": 1995
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q600212",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q600476",
     "title": "Last Resort",
     "medium": "Music",
@@ -24524,42 +22118,6 @@
       "Rock"
     ],
     "wikidataId": "Q600476",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q602488",
-    "title": "Yeti",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q602488",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q602601",
-    "title": "Twelve Dreams of Dr. Sardonicus",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q602601",
     "provenance": "wikidata"
   },
   {
@@ -24618,24 +22176,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q6072062",
-    "title": "Per il gusto di uccidere",
-    "medium": "Film",
-    "years": {
-      "from": 1966,
-      "to": 1966
-    },
-    "countries": [
-      "ES",
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q6072062",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q607524",
     "title": "Destry Rides Again",
     "medium": "Film",
@@ -24667,6 +22207,26 @@
       "Adventure"
     ],
     "wikidataId": "Q607885",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q608241",
+    "title": "Tupelo Honey",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Soul",
+      "Pop",
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q608241",
     "provenance": "wikidata"
   },
   {
@@ -24876,23 +22436,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q61990485",
-    "title": "Istanbul Express",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q61990485",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q623040",
     "title": "Aqualung",
     "medium": "Music",
@@ -24978,42 +22521,6 @@
       "Rock"
     ],
     "wikidataId": "Q631153",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q6316602",
-    "title": "Just as I Am",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Soul"
-    ],
-    "wikidataId": "Q6316602",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q6320847",
-    "title": "Mr. Fantasy",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q6320847",
     "provenance": "wikidata"
   },
   {
@@ -25174,23 +22681,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q640517",
-    "title": "Rock DJ",
-    "medium": "Music",
-    "years": {
-      "from": 2000,
-      "to": 2000
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Disco"
-    ],
-    "wikidataId": "Q640517",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q640902",
     "title": "Mr. Bad Guy",
     "medium": "Music",
@@ -25274,24 +22764,6 @@
       "Western"
     ],
     "wikidataId": "Q643220",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q643264",
-    "title": "Homecoming",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q643264",
     "provenance": "wikidata"
   },
   {
@@ -25434,23 +22906,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q650539",
-    "title": "A Time for Killing",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q650539",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q651126",
     "title": "The White Buffalo",
     "medium": "Film",
@@ -25499,23 +22954,6 @@
       "Rock"
     ],
     "wikidataId": "Q652087",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q65242207",
-    "title": "Plastic Love",
-    "medium": "Music",
-    "years": {
-      "from": 1985,
-      "to": 1985
-    },
-    "countries": [
-      "JP"
-    ],
-    "genres": [
-      "Pop"
-    ],
-    "wikidataId": "Q65242207",
     "provenance": "wikidata"
   },
   {
@@ -25591,6 +23029,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q657856",
+    "title": "The Outcasts",
+    "medium": "TV",
+    "years": {
+      "from": 1968,
+      "to": 1969
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q657856",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q658926",
     "title": "Master of Reality",
     "medium": "Music",
@@ -25662,25 +23117,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q664466",
-    "title": "Bad Man's River",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q664466",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q668039",
     "title": "Brave New World",
     "medium": "Music",
@@ -25716,6 +23152,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q669557",
+    "title": "The Glass Bottom Boat",
+    "medium": "Film",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q669557",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q669592",
     "title": "Giant",
     "medium": "Film",
@@ -25730,6 +23183,23 @@
       "Western"
     ],
     "wikidataId": "Q669592",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q670059",
+    "title": "Arizona",
+    "medium": "Film",
+    "years": {
+      "from": 1940,
+      "to": 1940
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q670059",
     "provenance": "wikidata"
   },
   {
@@ -25854,23 +23324,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q6783921",
-    "title": "Masquerade",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q6783921",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q678516",
     "title": "Nothing Compares 2 U",
     "medium": "Music",
@@ -25936,24 +23389,6 @@
       "Rock"
     ],
     "wikidataId": "Q680677",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q682635",
-    "title": "Rock of Ages",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "CA"
-    ],
-    "genres": [
-      "Rock",
-      "Folk"
-    ],
-    "wikidataId": "Q682635",
     "provenance": "wikidata"
   },
   {
@@ -26044,39 +23479,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q6875706",
-    "title": "Misión Lisboa",
-    "medium": "Film",
+    "id": "wd-Q689947",
+    "title": "American Pie",
+    "medium": "Music",
     "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "FR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q6875706",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q6878476",
-    "title": "Mission: Impossible vs. the Mob",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Spy"
+      "Folk",
+      "Rock"
     ],
-    "wikidataId": "Q6878476",
+    "wikidataId": "Q689947",
     "provenance": "wikidata"
   },
   {
@@ -26112,24 +23529,6 @@
       "Psychedelic"
     ],
     "wikidataId": "Q693627",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q694402",
-    "title": "The Price of Power",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "ES",
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q694402",
     "provenance": "wikidata"
   },
   {
@@ -26220,23 +23619,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7096671",
-    "title": "Operación rosa rosa",
-    "medium": "Film",
-    "years": {
-      "from": 1974,
-      "to": 1974
-    },
-    "countries": [
-      "AR"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7096671",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q7111081",
     "title": "Our Man in Jamaica",
     "medium": "Film",
@@ -26253,6 +23635,23 @@
       "Spy"
     ],
     "wikidataId": "Q7111081",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q7113745",
+    "title": "Overland Trail",
+    "medium": "TV",
+    "years": {
+      "from": 1960,
+      "to": 1960
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7113745",
     "provenance": "wikidata"
   },
   {
@@ -26756,24 +24155,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q733003",
-    "title": "The Sheriff of Fractured Jaw",
-    "medium": "Film",
-    "years": {
-      "from": 1958,
-      "to": 1958
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q733003",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q733917",
     "title": "Born to Make You Happy",
     "medium": "Music",
@@ -26868,8 +24249,7 @@
     },
     "countries": [
       "IT",
-      "FR",
-      "YU"
+      "FR"
     ],
     "genres": [
       "Western"
@@ -26892,6 +24272,25 @@
       "Rock"
     ],
     "wikidataId": "Q737257",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q737584",
+    "title": "Odessa",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "AU",
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q737584",
     "provenance": "wikidata"
   },
   {
@@ -27082,26 +24481,6 @@
       "Rock"
     ],
     "wikidataId": "Q745000",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q745580",
-    "title": "Sweet Baby James",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US",
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock",
-      "Pop"
-    ],
-    "wikidataId": "Q745580",
     "provenance": "wikidata"
   },
   {
@@ -27365,23 +24744,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q750938",
-    "title": "Assignment K",
-    "medium": "Film",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q750938",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q751341",
     "title": "The Prize",
     "medium": "Film",
@@ -27396,6 +24758,24 @@
       "Spy"
     ],
     "wikidataId": "Q751341",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q751550",
+    "title": "Blue Panther",
+    "medium": "Film",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "IT",
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q751550",
     "provenance": "wikidata"
   },
   {
@@ -27554,24 +24934,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q754693",
-    "title": "Happy Trails",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q754693",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q755019",
     "title": "Love Gun",
     "medium": "Music",
@@ -27620,23 +24982,6 @@
       "Rock"
     ],
     "wikidataId": "Q755312",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7559406",
-    "title": "Some Girls Do",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7559406",
     "provenance": "wikidata"
   },
   {
@@ -27762,6 +25107,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q7620053",
+    "title": "Stories of the Century",
+    "medium": "TV",
+    "years": {
+      "from": 1954,
+      "to": 1955
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7620053",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q762235",
     "title": "Ma Baker",
     "medium": "Music",
@@ -27814,23 +25176,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q768192",
-    "title": "Lassiter",
-    "medium": "Film",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q768192",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q76824",
     "title": "Cat Ballou",
     "medium": "Film",
@@ -27845,25 +25190,6 @@
       "Western"
     ],
     "wikidataId": "Q76824",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7684097",
-    "title": "Tanz der Lemminge",
-    "medium": "Music",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "DE"
-    ],
-    "genres": [
-      "Folk",
-      "Rock",
-      "Psychedelic"
-    ],
-    "wikidataId": "Q7684097",
     "provenance": "wikidata"
   },
   {
@@ -27898,23 +25224,6 @@
       "Folk"
     ],
     "wikidataId": "Q769180",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q769237",
-    "title": "The Investigators",
-    "medium": "TV",
-    "years": {
-      "from": 1961,
-      "to": 1961
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q769237",
     "provenance": "wikidata"
   },
   {
@@ -27971,21 +25280,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q770586",
-    "title": "The Angry Hills",
-    "medium": "Film",
+    "id": "wd-Q7712556",
+    "title": "The Adventures of Jim Bowie",
+    "medium": "TV",
     "years": {
-      "from": 1959,
-      "to": 1959
+      "from": 1956,
+      "to": 1958
     },
     "countries": [
-      "US",
-      "GB"
+      "US"
     ],
     "genres": [
-      "Spy"
+      "Western"
     ],
-    "wikidataId": "Q770586",
+    "wikidataId": "Q7712556",
     "provenance": "wikidata"
   },
   {
@@ -28006,6 +25314,23 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q772909",
+    "title": "Wagon Train",
+    "medium": "TV",
+    "years": {
+      "from": 1957,
+      "to": 1965
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q772909",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q773276",
     "title": "Fort Apache",
     "medium": "Film",
@@ -28020,57 +25345,6 @@
       "Western"
     ],
     "wikidataId": "Q773276",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7737221",
-    "title": "The Good Guys and the Bad Guys",
-    "medium": "Film",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q7737221",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7740384",
-    "title": "The Hostage Tower",
-    "medium": "Film",
-    "years": {
-      "from": 1980,
-      "to": 1980
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7740384",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7743254",
-    "title": "The Jigsaw Man",
-    "medium": "Film",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7743254",
     "provenance": "wikidata"
   },
   {
@@ -28091,21 +25365,54 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q775208",
-    "title": "The Clash",
-    "medium": "Music",
+    "id": "wd-Q7750432",
+    "title": "The Marshal of Gunsight Pass",
+    "medium": "TV",
     "years": {
-      "from": 1977,
-      "to": 1977
+      "from": 1950,
+      "to": 1950
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
-      "Punk",
-      "Rock"
+      "Western"
     ],
-    "wikidataId": "Q775208",
+    "wikidataId": "Q7750432",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q7759742",
+    "title": "The Rebel",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1961
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7759742",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q7760333",
+    "title": "The Restless Gun",
+    "medium": "TV",
+    "years": {
+      "from": 1957,
+      "to": 1959
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7760333",
     "provenance": "wikidata"
   },
   {
@@ -28123,6 +25430,23 @@
       "Spy"
     ],
     "wikidataId": "Q7760454",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q7761606",
+    "title": "The Rough Riders",
+    "medium": "TV",
+    "years": {
+      "from": 1958,
+      "to": 1959
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7761606",
     "provenance": "wikidata"
   },
   {
@@ -28144,73 +25468,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7763272",
-    "title": "The Sell Out",
-    "medium": "Film",
+    "id": "wd-Q7767305",
+    "title": "The Sun, Moon & Herbs",
+    "medium": "Music",
     "years": {
-      "from": 1976,
-      "to": 1976
-    },
-    "countries": [
-      "US",
-      "IT",
-      "GB"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7763272",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7766000",
-    "title": "The Spook Who Sat by the Door",
-    "medium": "Film",
-    "years": {
-      "from": 1973,
-      "to": 1973
+      "from": 1971,
+      "to": 1971
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Spy"
+      "Psychedelic",
+      "Rock"
     ],
-    "wikidataId": "Q7766000",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7766087",
-    "title": "The Spy in the Green Hat",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7766087",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7766088",
-    "title": "The Spy with My Face",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7766088",
+    "wikidataId": "Q7767305",
     "provenance": "wikidata"
   },
   {
@@ -28222,7 +25494,6 @@
       "to": 1983
     },
     "countries": [
-      "MX",
       "CA",
       "ES",
       "US"
@@ -28234,20 +25505,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7772158",
-    "title": "The Venetian Affair",
+    "id": "wd-Q7770902",
+    "title": "The Two-Headed Spy",
     "medium": "Film",
     "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1958,
+      "to": 1958
     },
     "countries": [
-      "US"
+      "GB"
     ],
     "genres": [
       "Spy"
     ],
-    "wikidataId": "Q7772158",
+    "wikidataId": "Q7770902",
     "provenance": "wikidata"
   },
   {
@@ -28265,24 +25536,6 @@
       "Western"
     ],
     "wikidataId": "Q7774323",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q7774445",
-    "title": "The Whistle Blower",
-    "medium": "Film",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "GB",
-      "AU"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7774445",
     "provenance": "wikidata"
   },
   {
@@ -28425,23 +25678,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q792256",
-    "title": "Real Men",
-    "medium": "Film",
-    "years": {
-      "from": 1987,
-      "to": 1987
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q792256",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q794270",
     "title": "Better the Devil You Know",
     "medium": "Music",
@@ -28495,23 +25731,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q7969099",
-    "title": "Wardaat",
-    "medium": "Film",
-    "years": {
-      "from": 1981,
-      "to": 1981
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q7969099",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q7993704",
     "title": "Whiplash",
     "medium": "TV",
@@ -28526,6 +25745,23 @@
       "Western"
     ],
     "wikidataId": "Q7993704",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q7998171",
+    "title": "Wichita Town",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1960
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q7998171",
     "provenance": "wikidata"
   },
   {
@@ -28696,7 +25932,6 @@
       "to": 1991
     },
     "countries": [
-      "JP",
       "ES",
       "NL",
       "DE"
@@ -28733,8 +25968,7 @@
       "to": 1976
     },
     "countries": [
-      "US",
-      "MX"
+      "US"
     ],
     "genres": [
       "Western"
@@ -29135,7 +26369,6 @@
       "to": 1977
     },
     "countries": [
-      "JP",
       "AU"
     ],
     "genres": [
@@ -29264,23 +26497,6 @@
       "Rock"
     ],
     "wikidataId": "Q834410",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q834415",
-    "title": "Bon Jovi",
-    "medium": "Music",
-    "years": {
-      "from": 1984,
-      "to": 1984
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q834415",
     "provenance": "wikidata"
   },
   {
@@ -29902,21 +27118,21 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q846125",
-    "title": "Moby Grape",
+    "id": "wd-Q845639",
+    "title": "Emerson, Lake & Palmer",
     "medium": "Music",
     "years": {
-      "from": 1967,
-      "to": 1967
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
-      "US"
+      "GB"
     ],
     "genres": [
       "Psychedelic",
       "Rock"
     ],
-    "wikidataId": "Q846125",
+    "wikidataId": "Q845639",
     "provenance": "wikidata"
   },
   {
@@ -29954,24 +27170,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q848781",
-    "title": "The Velvet Underground",
-    "medium": "Music",
-    "years": {
-      "from": 1969,
-      "to": 1969
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q848781",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q849262",
     "title": "Breakthru",
     "medium": "Music",
@@ -30003,25 +27201,6 @@
       "Western"
     ],
     "wikidataId": "Q849344",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q851530",
-    "title": "Buffalo Springfield Again",
-    "medium": "Music",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "CA",
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q851530",
     "provenance": "wikidata"
   },
   {
@@ -30094,24 +27273,6 @@
       "Rock"
     ],
     "wikidataId": "Q85357",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q856955",
-    "title": "Caetano Veloso",
-    "medium": "Music",
-    "years": {
-      "from": 1968,
-      "to": 1968
-    },
-    "countries": [
-      "BR"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q856955",
     "provenance": "wikidata"
   },
   {
@@ -30256,6 +27417,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q868235",
+    "title": "Cold Fact",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q868235",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q868240",
     "title": "Cold Turkey",
     "medium": "Music",
@@ -30361,23 +27540,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q882468",
-    "title": "Rita of the West",
-    "medium": "Film",
-    "years": {
-      "from": 1967,
-      "to": 1967
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q882468",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q883213",
     "title": "Young Guns II",
     "medium": "Film",
@@ -30412,43 +27574,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q883985",
-    "title": "Das Vermächtnis des Inka",
-    "medium": "Film",
-    "years": {
-      "from": 1965,
-      "to": 1965
-    },
-    "countries": [
-      "ES",
-      "IT",
-      "DE"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q883985",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q884334",
-    "title": "Blindman",
-    "medium": "Film",
-    "years": {
-      "from": 1971,
-      "to": 1971
-    },
-    "countries": [
-      "US",
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q884334",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q895543",
     "title": "Among Vultures",
     "medium": "Film",
@@ -30459,8 +27584,7 @@
     "countries": [
       "IT",
       "FR",
-      "DE",
-      "YU"
+      "DE"
     ],
     "genres": [
       "Western"
@@ -30469,22 +27593,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q899498",
-    "title": "Cucumber Castle",
+    "id": "wd-Q898499",
+    "title": "I Can't Quit You Baby",
     "medium": "Music",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1956,
+      "to": 1956
     },
     "countries": [
-      "GB",
-      "AU"
+      "US"
     ],
     "genres": [
-      "Folk",
       "Rock"
     ],
-    "wikidataId": "Q899498",
+    "wikidataId": "Q898499",
     "provenance": "wikidata"
   },
   {
@@ -30611,23 +27733,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q906424",
-    "title": "Bolek and Lolek",
-    "medium": "TV",
-    "years": {
-      "from": 1963,
-      "to": 1986
-    },
-    "countries": [
-      "PL"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q906424",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q906705",
     "title": "High Plains Drifter",
     "medium": "Film",
@@ -30748,6 +27853,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q913069",
+    "title": "Liege & Lief",
+    "medium": "Music",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q913069",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q913092",
     "title": "Surrealistic Pillow",
     "medium": "Music",
@@ -30783,42 +27906,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q914020",
-    "title": "Stephen Stills",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q914020",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q914549",
-    "title": "John Barleycorn Must Die",
-    "medium": "Music",
-    "years": {
-      "from": 1970,
-      "to": 1970
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Folk",
-      "Rock"
-    ],
-    "wikidataId": "Q914549",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q917066",
     "title": "The Last Wagon",
     "medium": "Film",
@@ -30844,8 +27931,7 @@
       "to": 1974
     },
     "countries": [
-      "US",
-      "MX"
+      "US"
     ],
     "genres": [
       "Western"
@@ -30989,6 +28075,23 @@
       "Folk"
     ],
     "wikidataId": "Q923467",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q923550",
+    "title": "Songs of Leonard Cohen",
+    "medium": "Music",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": [
+      "CA"
+    ],
+    "genres": [
+      "Folk"
+    ],
+    "wikidataId": "Q923550",
     "provenance": "wikidata"
   },
   {
@@ -31183,55 +28286,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q9344714",
-    "title": "Stawiam na Tolka Banana",
+    "id": "wd-Q934887",
+    "title": "The Road West",
     "medium": "TV",
     "years": {
-      "from": 1973,
-      "to": 1973
-    },
-    "countries": [
-      "PL"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q9344714",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q934535",
-    "title": "Take a Hard Ride",
-    "medium": "Film",
-    "years": {
-      "from": 1975,
-      "to": 1975
-    },
-    "countries": [
-      "US",
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q934535",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q934575",
-    "title": "Show Me the Meaning of Being Lonely",
-    "medium": "Music",
-    "years": {
-      "from": 1999,
-      "to": 1999
+      "from": 1966,
+      "to": 1967
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Pop"
+      "Western"
     ],
-    "wikidataId": "Q934575",
+    "wikidataId": "Q934887",
     "provenance": "wikidata"
   },
   {
@@ -31270,40 +28338,6 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q9353063",
-    "title": "Slavné historky zbojnické",
-    "medium": "TV",
-    "years": {
-      "from": 1986,
-      "to": 1986
-    },
-    "countries": [
-      "CZ"
-    ],
-    "genres": [
-      "Adventure"
-    ],
-    "wikidataId": "Q9353063",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q937445",
-    "title": "Mysterious Ways",
-    "medium": "Music",
-    "years": {
-      "from": 1991,
-      "to": 1991
-    },
-    "countries": [
-      "IE"
-    ],
-    "genres": [
-      "Rock"
-    ],
-    "wikidataId": "Q937445",
-    "provenance": "wikidata"
-  },
-  {
     "id": "wd-Q938642",
     "title": "Goats Head Soup",
     "medium": "Music",
@@ -31336,6 +28370,24 @@
       "Rock"
     ],
     "wikidataId": "Q938656",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q939146",
+    "title": "Les Espions",
+    "medium": "Film",
+    "years": {
+      "from": 1957,
+      "to": 1957
+    },
+    "countries": [
+      "IT",
+      "FR"
+    ],
+    "genres": [
+      "Spy"
+    ],
+    "wikidataId": "Q939146",
     "provenance": "wikidata"
   },
   {
@@ -31390,6 +28442,40 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q940655",
+    "title": "UFO",
+    "medium": "TV",
+    "years": {
+      "from": 1970,
+      "to": 1971
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Adventure"
+    ],
+    "wikidataId": "Q940655",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q941025",
+    "title": "Laredo",
+    "medium": "TV",
+    "years": {
+      "from": 1965,
+      "to": 1967
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Western"
+    ],
+    "wikidataId": "Q941025",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q941053",
     "title": "Pippi Longstocking",
     "medium": "TV",
@@ -31408,12 +28494,12 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q942723",
-    "title": "Gold Is Where You Find It",
+    "id": "wd-Q942224",
+    "title": "Flame of Barbary Coast",
     "medium": "Film",
     "years": {
-      "from": 1938,
-      "to": 1938
+      "from": 1945,
+      "to": 1945
     },
     "countries": [
       "US"
@@ -31421,7 +28507,7 @@
     "genres": [
       "Western"
     ],
-    "wikidataId": "Q942723",
+    "wikidataId": "Q942224",
     "provenance": "wikidata"
   },
   {
@@ -31474,23 +28560,6 @@
       "Western"
     ],
     "wikidataId": "Q945332",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q945735",
-    "title": "Pocket Money",
-    "medium": "Film",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q945735",
     "provenance": "wikidata"
   },
   {
@@ -31668,6 +28737,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q959637",
+    "title": "Mr. Tambourine Man",
+    "medium": "Music",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": [
+      "US"
+    ],
+    "genres": [
+      "Folk",
+      "Rock"
+    ],
+    "wikidataId": "Q959637",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q960731",
     "title": "Self Esteem",
     "medium": "Music",
@@ -31737,6 +28824,24 @@
     "provenance": "wikidata"
   },
   {
+    "id": "wd-Q962754",
+    "title": "The Best of The Pink Floyd",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q962754",
+    "provenance": "wikidata"
+  },
+  {
     "id": "wd-Q964009",
     "title": "My Name is Nobody",
     "medium": "Film",
@@ -31753,23 +28858,6 @@
       "Western"
     ],
     "wikidataId": "Q964009",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q96418714",
-    "title": "Kanni Theevu",
-    "medium": "Film",
-    "years": {
-      "from": 1981,
-      "to": 1981
-    },
-    "countries": [
-      "IN"
-    ],
-    "genres": [
-      "Spy"
-    ],
-    "wikidataId": "Q96418714",
     "provenance": "wikidata"
   },
   {
@@ -31790,20 +28878,38 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q966926",
-    "title": "A Man Could Get Killed",
-    "medium": "Film",
+    "id": "wd-Q966171",
+    "title": "Music in a Doll's House",
+    "medium": "Music",
     "years": {
-      "from": 1966,
-      "to": 1966
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": [
+      "GB"
+    ],
+    "genres": [
+      "Psychedelic",
+      "Rock"
+    ],
+    "wikidataId": "Q966171",
+    "provenance": "wikidata"
+  },
+  {
+    "id": "wd-Q966983",
+    "title": "Give Me Just a Little More Time",
+    "medium": "Music",
+    "years": {
+      "from": 1970,
+      "to": 1970
     },
     "countries": [
       "US"
     ],
     "genres": [
-      "Spy"
+      "Soul"
     ],
-    "wikidataId": "Q966926",
+    "wikidataId": "Q966983",
     "provenance": "wikidata"
   },
   {
@@ -31875,40 +28981,20 @@
     "provenance": "wikidata"
   },
   {
-    "id": "wd-Q978961",
-    "title": "Hawkwind",
-    "medium": "Music",
+    "id": "wd-Q977904",
+    "title": "The Travels of Jaimie McPheeters",
+    "medium": "TV",
     "years": {
-      "from": 1970,
-      "to": 1970
+      "from": 1963,
+      "to": 1964
     },
     "countries": [
-      "GB"
+      "US"
     ],
     "genres": [
-      "Psychedelic",
-      "Rock",
-      "Folk"
+      "Western"
     ],
-    "wikidataId": "Q978961",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q979048",
-    "title": "Doremi Fasol Latido",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "GB"
-    ],
-    "genres": [
-      "Psychedelic",
-      "Rock"
-    ],
-    "wikidataId": "Q979048",
+    "wikidataId": "Q977904",
     "provenance": "wikidata"
   },
   {
@@ -31926,23 +29012,6 @@
       "Rock"
     ],
     "wikidataId": "Q979065",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q979273",
-    "title": "Four of the Apocalypse",
-    "medium": "Film",
-    "years": {
-      "from": 1975,
-      "to": 1975
-    },
-    "countries": [
-      "IT"
-    ],
-    "genres": [
-      "Western"
-    ],
-    "wikidataId": "Q979273",
     "provenance": "wikidata"
   },
   {
@@ -31996,25 +29065,6 @@
       "Western"
     ],
     "wikidataId": "Q984164",
-    "provenance": "wikidata"
-  },
-  {
-    "id": "wd-Q987438",
-    "title": "Eagles",
-    "medium": "Music",
-    "years": {
-      "from": 1972,
-      "to": 1972
-    },
-    "countries": [
-      "US"
-    ],
-    "genres": [
-      "Rock",
-      "Folk",
-      "RockAndRoll"
-    ],
-    "wikidataId": "Q987438",
     "provenance": "wikidata"
   },
   {

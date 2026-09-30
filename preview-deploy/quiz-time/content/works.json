@@ -465,7 +465,11 @@
       "to": 1964
     },
     "countries": ["GB"],
-    "genres": ["Spy"]
+    "genres": ["Spy"],
+    "listen": {
+      "artist": "Shirley Bassey",
+      "track": "Goldfinger"
+    }
   },
   {
     "id": "the-saint-theme-1962",
@@ -498,7 +502,11 @@
       "to": 1958
     },
     "countries": ["US"],
-    "genres": ["Western"]
+    "genres": ["Western"],
+    "listen": {
+      "artist": "Frankie Laine",
+      "track": "Rawhide"
+    }
   },
   {
     "id": "mission-impossible-theme-1966",
@@ -542,7 +550,11 @@
       "to": 1966
     },
     "countries": ["US"],
-    "genres": ["Spy"]
+    "genres": ["Spy"],
+    "listen": {
+      "artist": "Johnny Rivers",
+      "track": "Secret Agent Man"
+    }
   },
   {
     "id": "do-not-forsake-me-1952",
@@ -586,7 +598,11 @@
       "to": 1973
     },
     "countries": ["GB"],
-    "genres": ["Spy", "Adventure"]
+    "genres": ["Spy", "Adventure"],
+    "listen": {
+      "artist": "Wings",
+      "track": "Live and Let Die"
+    }
   },
   {
     "id": "hawaii-five-o-theme-1968",
