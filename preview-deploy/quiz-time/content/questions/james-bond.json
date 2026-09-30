@@ -2,6 +2,7 @@
   {
     "id": "bond-first-film",
     "kind": "Trivia",
+    "category": "Series",
     "prompt": "What was the first James Bond film from Eon Productions?",
     "choices": [
       "From Russia with Love",
@@ -17,6 +18,7 @@
   {
     "id": "bond-creator",
     "kind": "Trivia",
+    "category": "Creators",
     "prompt": "Who created James Bond?",
     "choices": [
       "Ian Fleming",
@@ -31,6 +33,7 @@
   {
     "id": "bond-lazenby",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Bond in \"On Her Majesty's Secret Service\" (1969)?",
     "choices": [
       "Sean Connery",
@@ -46,6 +49,7 @@
   {
     "id": "bond-oddjob",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which Bond film features the henchman Oddjob?",
     "choices": ["Thunderball", "Goldfinger", "Dr. No", "Moonraker"],
     "answerIndex": 1,
@@ -55,6 +59,7 @@
   {
     "id": "bond-felix",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the name of Bond's CIA ally?",
     "choices": ["Felix Leiter", "Bill Tanner", "Jack Wade", "Charles Robinson"],
     "answerIndex": 0,
@@ -64,6 +69,7 @@
   {
     "id": "bond-blofeld-yolt",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Blofeld in \"You Only Live Twice\" (1967)?",
     "choices": [
       "Telly Savalas",
@@ -78,6 +84,7 @@
   {
     "id": "bond-moore-first",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What was Roger Moore's first film as 007?",
     "choices": [
       "The Man with the Golden Gun",
@@ -92,6 +99,7 @@
   {
     "id": "bond-connery-return",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "In which 1971 film did Sean Connery return as Bond?",
     "choices": [
       "Diamonds Are Forever",
@@ -106,6 +114,7 @@
   {
     "id": "bond-q-name",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is Q's name, first given in \"Dr. No\"?",
     "choices": [
       "Major Boothroyd",
@@ -120,6 +129,7 @@
   {
     "id": "bond-goldfinger-singer",
     "kind": "ThemeSong",
+    "category": "Music",
     "prompt": "Who sang the title song of \"Goldfinger\" (1964)?",
     "choices": ["Nancy Sinatra", "Shirley Bassey", "Tom Jones", "Lulu"],
     "answerIndex": 1,

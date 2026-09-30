@@ -2,6 +2,7 @@
   {
     "id": "cw-searchers-director",
     "kind": "Trivia",
+    "category": "Directors",
     "prompt": "Who directed \"The Searchers\" (1956)?",
     "choices": ["John Ford", "Howard Hawks", "Anthony Mann", "Sam Peckinpah"],
     "answerIndex": 0,
@@ -12,6 +13,7 @@
   {
     "id": "cw-high-noon-train",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "In \"High Noon\" (1952), when does the train carrying Frank Miller arrive?",
     "choices": ["At dawn", "At noon", "At sunset", "At midnight"],
     "answerIndex": 1,
@@ -22,6 +24,7 @@
   {
     "id": "cw-man-no-name",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played the \"Man with No Name\" in the Dollars Trilogy?",
     "choices": [
       "Lee Van Cleef",
@@ -40,6 +43,7 @@
   {
     "id": "cw-fistful-yojimbo",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "\"A Fistful of Dollars\" (1964) is an unofficial remake of which film?",
     "choices": ["Seven Samurai", "Rashomon", "Sanjuro", "Yojimbo"],
     "answerIndex": 3,
@@ -50,6 +54,7 @@
   {
     "id": "cw-once-upon-director",
     "kind": "Trivia",
+    "category": "Directors",
     "prompt": "Who directed \"Once Upon a Time in the West\" (1968)?",
     "choices": [
       "Sergio Corbucci",
@@ -64,6 +69,7 @@
   {
     "id": "cw-mag-seven-source",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "\"The Magnificent Seven\" (1960) is based on which film?",
     "choices": [
       "Seven Samurai",
@@ -78,6 +84,7 @@
   {
     "id": "cw-true-grit-role",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Which character won John Wayne his Oscar in \"True Grit\" (1969)?",
     "choices": [
       "Ethan Edwards",
@@ -92,6 +99,7 @@
   {
     "id": "cw-rio-bravo",
     "kind": "Trivia",
+    "category": "Directors",
     "prompt": "Who directed \"Rio Bravo\" (1959)?",
     "choices": [
       "John Sturges",
@@ -106,6 +114,7 @@
   {
     "id": "cw-butch-sundance",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "In \"Butch Cassidy and the Sundance Kid\" (1969), who played Sundance?",
     "choices": [
       "Paul Newman",
@@ -120,6 +129,7 @@
   {
     "id": "cw-unforgiven",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which Western won Best Picture at the 1993 Academy Awards?",
     "choices": ["Dances with Wolves", "Tombstone", "Wyatt Earp", "Unforgiven"],
     "answerIndex": 3,

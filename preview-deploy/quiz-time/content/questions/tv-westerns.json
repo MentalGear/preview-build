@@ -2,6 +2,7 @@
   {
     "id": "tvw-bonanza-ranch",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the name of the Cartwright family ranch in \"Bonanza\"?",
     "choices": ["Big Valley", "High Chaparral", "Ponderosa", "Shiloh"],
     "answerIndex": 2,
@@ -11,6 +12,7 @@
   {
     "id": "tvw-gunsmoke-town",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which town is \"Gunsmoke\" set in?",
     "choices": ["Tombstone", "Dodge City", "Deadwood", "Abilene"],
     "answerIndex": 1,
@@ -20,6 +22,7 @@
   {
     "id": "tvw-gunsmoke-dillon",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Marshal Matt Dillon on television in \"Gunsmoke\"?",
     "choices": [
       "James Arness",
@@ -34,6 +37,7 @@
   {
     "id": "tvw-rawhide-eastwood",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Which character did a young Clint Eastwood play in \"Rawhide\"?",
     "choices": ["Gil Favor", "Rowdy Yates", "Pete Nolan", "Wishbone"],
     "answerIndex": 1,
@@ -43,6 +47,7 @@
   {
     "id": "tvw-have-gun",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the name of the gun-for-hire in \"Have Gun – Will Travel\"?",
     "choices": ["Paladin", "Cheyenne", "Maverick", "Yancy"],
     "answerIndex": 0,
@@ -52,6 +57,7 @@
   {
     "id": "tvw-wild-wild-west",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "In \"The Wild Wild West\" (1965), who is James West's partner?",
     "choices": ["Artemus Gordon", "Jingles", "Festus", "Hoss"],
     "answerIndex": 0,
@@ -62,6 +68,7 @@
   {
     "id": "tvw-lone-ranger-horse",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the name of the Lone Ranger's horse?",
     "choices": ["Trigger", "Scout", "Silver", "Champion"],
     "answerIndex": 2,
@@ -72,6 +79,7 @@
   {
     "id": "tvw-virginian-novel",
     "kind": "Trivia",
+    "category": "Creators",
     "prompt": "\"The Virginian\" (1962) is based on a novel by which author?",
     "choices": ["Zane Grey", "Owen Wister", "Louis L'Amour", "Max Brand"],
     "answerIndex": 1,

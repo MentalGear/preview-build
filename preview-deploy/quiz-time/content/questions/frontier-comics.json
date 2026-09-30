@@ -2,6 +2,7 @@
   {
     "id": "com-lucky-luke-shadow",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which cowboy \"shoots faster than his shadow\"?",
     "choices": ["Lucky Luke", "Tex Willer", "Blueberry", "Red Ryder"],
     "answerIndex": 0,
@@ -11,6 +12,7 @@
   {
     "id": "com-jolly-jumper",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the name of Lucky Luke's horse?",
     "choices": ["Silver", "Jolly Jumper", "Rantanplan", "Tornado"],
     "answerIndex": 1,
@@ -21,6 +23,7 @@
   {
     "id": "com-lucky-luke-creator",
     "kind": "Trivia",
+    "category": "Creators",
     "prompt": "Which cartoonist created Lucky Luke?",
     "choices": ["Hergé", "Morris", "Franquin", "Uderzo"],
     "answerIndex": 1,
@@ -31,6 +34,7 @@
   {
     "id": "com-daltons",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which outlaw brothers are Lucky Luke's recurring foes?",
     "choices": ["The Jameses", "The Youngers", "The Daltons", "The Clantons"],
     "answerIndex": 2,
@@ -40,6 +44,7 @@
   {
     "id": "com-blueberry-artist",
     "kind": "Trivia",
+    "category": "Creators",
     "prompt": "Which artist co-created \"Blueberry\" with Jean-Michel Charlier?",
     "choices": ["Jean Giraud", "Hermann", "Jijé", "Enki Bilal"],
     "answerIndex": 0,
@@ -50,6 +55,7 @@
   {
     "id": "com-jonah-hex",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "Which publisher launched Jonah Hex?",
     "choices": ["Marvel", "DC Comics", "Dark Horse", "Image"],
     "answerIndex": 1,
@@ -59,6 +65,7 @@
   {
     "id": "com-tex-willer",
     "kind": "Trivia",
+    "category": "Places",
     "prompt": "In which country did the Tex Willer comics originate?",
     "choices": ["France", "Belgium", "Spain", "Italy"],
     "answerIndex": 3,

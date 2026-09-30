@@ -2,6 +2,7 @@
   {
     "id": "spy-saint-actor",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Simon Templar in \"The Saint\" (1962–69)?",
     "choices": [
       "Roger Moore",
@@ -17,6 +18,7 @@
   {
     "id": "spy-saint-symbol",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the Saint's calling card?",
     "choices": [
       "A playing card",
@@ -31,6 +33,7 @@
   {
     "id": "spy-saint-creator",
     "kind": "Trivia",
+    "category": "Creators",
     "prompt": "Which author created Simon Templar?",
     "choices": [
       "Ian Fleming",
@@ -45,6 +48,7 @@
   {
     "id": "spy-saint-car",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What make of car did Simon Templar drive in the 1960s series?",
     "choices": ["Jaguar", "Aston Martin", "Lotus", "Volvo"],
     "answerIndex": 3,
@@ -55,6 +59,7 @@
   {
     "id": "spy-avengers-peel",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Emma Peel in \"The Avengers\"?",
     "choices": [
       "Honor Blackman",
@@ -69,6 +74,7 @@
   {
     "id": "spy-avengers-steed",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played John Steed in \"The Avengers\"?",
     "choices": [
       "Patrick Macnee",
@@ -83,6 +89,7 @@
   {
     "id": "spy-persuaders-curtis",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "\"The Persuaders!\" (1971) paired Roger Moore with which American actor?",
     "choices": ["Tony Curtis", "Robert Wagner", "Jack Lemmon", "James Garner"],
     "answerIndex": 0,
@@ -92,6 +99,7 @@
   {
     "id": "spy-prisoner-number",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "In \"The Prisoner\" (1967), what number is Patrick McGoohan's character?",
     "choices": ["Number One", "Number Two", "Number Six", "Number Twelve"],
     "answerIndex": 2,
@@ -102,6 +110,7 @@
   {
     "id": "spy-prisoner-rover",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What is the white balloon guard in \"The Prisoner\" called?",
     "choices": ["Rover", "Orbit", "Bubble", "The Guardian"],
     "answerIndex": 0,
@@ -111,6 +120,7 @@
   {
     "id": "spy-uncle-solo",
     "kind": "Trivia",
+    "category": "Cast",
     "prompt": "Who played Napoleon Solo in \"The Man from U.N.C.L.E.\"?",
     "choices": [
       "David McCallum",
@@ -126,6 +136,7 @@
   {
     "id": "spy-danger-man",
     "kind": "Trivia",
+    "category": "Trivia",
     "prompt": "What was the name of Patrick McGoohan's agent in \"Danger Man\"?",
     "choices": ["John Drake", "John Steed", "Harry Palmer", "Jason King"],
     "answerIndex": 0,

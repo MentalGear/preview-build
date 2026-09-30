@@ -2,6 +2,7 @@
   {
     "id": "ts-saint",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the theme for \"The Saint\" (1962)?",
     "choices": ["John Barry", "Edwin Astley", "Laurie Johnson", "Ron Grainer"],
     "answerIndex": 1,
@@ -11,6 +12,7 @@
   {
     "id": "ts-gbu",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the score for \"The Good, the Bad and the Ugly\" (1966)?",
     "choices": ["Ennio Morricone", "Luis Bacalov", "Riz Ortolani", "Nino Rota"],
     "answerIndex": 0,
@@ -23,6 +25,7 @@
   {
     "id": "ts-rawhide",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who sang the \"Rawhide\" theme?",
     "choices": ["Johnny Cash", "Frankie Laine", "Tex Ritter", "Marty Robbins"],
     "answerIndex": 1,
@@ -32,6 +35,7 @@
   {
     "id": "ts-mission-impossible",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the \"Mission: Impossible\" theme?",
     "choices": [
       "Lalo Schifrin",
@@ -47,6 +51,7 @@
   {
     "id": "ts-mag-seven",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who scored \"The Magnificent Seven\" (1960)?",
     "choices": [
       "Dimitri Tiomkin",
@@ -61,6 +66,7 @@
   {
     "id": "ts-persuaders",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the theme for \"The Persuaders!\" (1971)?",
     "choices": ["John Barry", "Laurie Johnson", "Tony Hatch", "Edwin Astley"],
     "answerIndex": 0,
@@ -70,6 +76,7 @@
   {
     "id": "ts-secret-agent-man",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who sang \"Secret Agent Man\", the US theme for \"Danger Man\"?",
     "choices": ["Johnny Rivers", "Glen Campbell", "Dean Martin", "Bobby Darin"],
     "answerIndex": 0,
@@ -80,6 +87,7 @@
   {
     "id": "ts-high-noon",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who sang \"Do Not Forsake Me, Oh My Darlin'\" in \"High Noon\" (1952)?",
     "choices": ["Gene Autry", "Roy Rogers", "Tex Ritter", "Frankie Laine"],
     "answerIndex": 2,
@@ -89,6 +97,7 @@
   {
     "id": "ts-avengers",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the 1965 theme for \"The Avengers\"?",
     "choices": [
       "Laurie Johnson",
@@ -103,6 +112,7 @@
   {
     "id": "ts-bond-theme",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who is credited with composing the \"James Bond Theme\"?",
     "choices": ["John Barry", "Monty Norman", "David Arnold", "George Martin"],
     "answerIndex": 1,
@@ -113,6 +123,7 @@
   {
     "id": "ts-live-and-let-die",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who performed the title song of \"Live and Let Die\" (1973)?",
     "choices": ["Paul McCartney and Wings", "Carly Simon", "Lulu", "Tom Jones"],
     "answerIndex": 0,
@@ -122,6 +133,7 @@
   {
     "id": "ts-hawaii-five-o",
     "kind": "Trivia",
+    "category": "Music",
     "prompt": "Who composed the \"Hawaii Five-O\" theme?",
     "choices": ["Morton Stevens", "Mike Post", "Pete Rugolo", "Nelson Riddle"],
     "answerIndex": 0,
