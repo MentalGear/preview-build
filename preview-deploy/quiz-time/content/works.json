@@ -1,0 +1,602 @@
+[
+  {
+    "id": "the-searchers-1956",
+    "title": "The Searchers",
+    "medium": "Film",
+    "years": {
+      "from": 1956,
+      "to": 1956
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q276769"
+  },
+  {
+    "id": "high-noon-1952",
+    "title": "High Noon",
+    "medium": "Film",
+    "years": {
+      "from": 1952,
+      "to": 1952
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q245208"
+  },
+  {
+    "id": "a-fistful-of-dollars-1964",
+    "title": "A Fistful of Dollars",
+    "medium": "Film",
+    "years": {
+      "from": 1964,
+      "to": 1964
+    },
+    "countries": ["IT", "ES", "DE"],
+    "genres": ["Western"],
+    "wikidataId": "Q76479"
+  },
+  {
+    "id": "for-a-few-dollars-more-1965",
+    "title": "For a Few Dollars More",
+    "medium": "Film",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": ["IT", "ES", "DE"],
+    "genres": ["Western"],
+    "wikidataId": "Q153677"
+  },
+  {
+    "id": "the-good-the-bad-and-the-ugly-1966",
+    "title": "The Good, the Bad and the Ugly",
+    "medium": "Film",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": ["IT", "ES", "DE"],
+    "genres": ["Western"],
+    "wikidataId": "Q41483"
+  },
+  {
+    "id": "once-upon-a-time-in-the-west-1968",
+    "title": "Once Upon a Time in the West",
+    "medium": "Film",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": ["IT", "US"],
+    "genres": ["Western"],
+    "wikidataId": "Q168154"
+  },
+  {
+    "id": "the-magnificent-seven-1960",
+    "title": "The Magnificent Seven",
+    "medium": "Film",
+    "years": {
+      "from": 1960,
+      "to": 1960
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q19069"
+  },
+  {
+    "id": "true-grit-1969",
+    "title": "True Grit",
+    "medium": "Film",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q603263"
+  },
+  {
+    "id": "rio-bravo-1959",
+    "title": "Rio Bravo",
+    "medium": "Film",
+    "years": {
+      "from": 1959,
+      "to": 1959
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q1008351"
+  },
+  {
+    "id": "butch-cassidy-and-the-sundance-kid-1969",
+    "title": "Butch Cassidy and the Sundance Kid",
+    "medium": "Film",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q232000"
+  },
+  {
+    "id": "unforgiven-1992",
+    "title": "Unforgiven",
+    "medium": "Film",
+    "years": {
+      "from": 1992,
+      "to": 1992
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "bonanza-1959",
+    "title": "Bonanza",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1973
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q862187"
+  },
+  {
+    "id": "gunsmoke-1955",
+    "title": "Gunsmoke",
+    "medium": "TV",
+    "years": {
+      "from": 1955,
+      "to": 1975
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q29641"
+  },
+  {
+    "id": "rawhide-1959",
+    "title": "Rawhide",
+    "medium": "TV",
+    "years": {
+      "from": 1959,
+      "to": 1965
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q1247542"
+  },
+  {
+    "id": "have-gun-will-travel-1957",
+    "title": "Have Gun – Will Travel",
+    "medium": "TV",
+    "years": {
+      "from": 1957,
+      "to": 1963
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q1248082"
+  },
+  {
+    "id": "the-wild-wild-west-1965",
+    "title": "The Wild Wild West",
+    "medium": "TV",
+    "years": {
+      "from": 1965,
+      "to": 1969
+    },
+    "countries": ["US"],
+    "genres": ["Western", "Spy"],
+    "wikidataId": "Q1278637"
+  },
+  {
+    "id": "the-lone-ranger-1949",
+    "title": "The Lone Ranger",
+    "medium": "TV",
+    "years": {
+      "from": 1949,
+      "to": 1957
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "the-virginian-1962",
+    "title": "The Virginian",
+    "medium": "TV",
+    "years": {
+      "from": 1962,
+      "to": 1971
+    },
+    "countries": ["US"],
+    "genres": ["Western"],
+    "wikidataId": "Q1214471"
+  },
+  {
+    "id": "the-virginian-novel-1902",
+    "title": "The Virginian (novel)",
+    "medium": "Book",
+    "years": {
+      "from": 1902,
+      "to": 1902
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "the-saint-1962",
+    "title": "The Saint",
+    "medium": "TV",
+    "years": {
+      "from": 1962,
+      "to": 1969
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure", "Crime"],
+    "wikidataId": "Q1248868"
+  },
+  {
+    "id": "meet-the-tiger-1928",
+    "title": "Meet the Tiger",
+    "medium": "Book",
+    "years": {
+      "from": 1928,
+      "to": 1928
+    },
+    "countries": ["GB"],
+    "genres": ["Adventure", "Crime"]
+  },
+  {
+    "id": "the-avengers-1961",
+    "title": "The Avengers",
+    "medium": "TV",
+    "years": {
+      "from": 1961,
+      "to": 1969
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q113700"
+  },
+  {
+    "id": "the-persuaders-1971",
+    "title": "The Persuaders!",
+    "medium": "TV",
+    "years": {
+      "from": 1971,
+      "to": 1972
+    },
+    "countries": ["GB"],
+    "genres": ["Adventure", "Comedy", "Crime"]
+  },
+  {
+    "id": "the-prisoner-1967",
+    "title": "The Prisoner",
+    "medium": "TV",
+    "years": {
+      "from": 1967,
+      "to": 1968
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "SciFi"],
+    "wikidataId": "Q714753"
+  },
+  {
+    "id": "the-man-from-uncle-1964",
+    "title": "The Man from U.N.C.L.E.",
+    "medium": "TV",
+    "years": {
+      "from": 1964,
+      "to": 1968
+    },
+    "countries": ["US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q1264983"
+  },
+  {
+    "id": "danger-man-1960",
+    "title": "Danger Man",
+    "medium": "TV",
+    "years": {
+      "from": 1960,
+      "to": 1968
+    },
+    "countries": ["GB"],
+    "genres": ["Spy"]
+  },
+  {
+    "id": "mission-impossible-1966",
+    "title": "Mission: Impossible",
+    "medium": "TV",
+    "years": {
+      "from": 1966,
+      "to": 1973
+    },
+    "countries": ["US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q369111"
+  },
+  {
+    "id": "hawaii-five-o-1968",
+    "title": "Hawaii Five-O",
+    "medium": "TV",
+    "years": {
+      "from": 1968,
+      "to": 1980
+    },
+    "countries": ["US"],
+    "genres": ["Crime"]
+  },
+  {
+    "id": "dr-no-1962",
+    "title": "Dr. No",
+    "medium": "Film",
+    "years": {
+      "from": 1962,
+      "to": 1962
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q102754"
+  },
+  {
+    "id": "goldfinger-1964",
+    "title": "Goldfinger",
+    "medium": "Film",
+    "years": {
+      "from": 1964,
+      "to": 1964
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q106440"
+  },
+  {
+    "id": "you-only-live-twice-1967",
+    "title": "You Only Live Twice",
+    "medium": "Film",
+    "years": {
+      "from": 1967,
+      "to": 1967
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107761"
+  },
+  {
+    "id": "on-her-majestys-secret-service-1969",
+    "title": "On Her Majesty's Secret Service",
+    "medium": "Film",
+    "years": {
+      "from": 1969,
+      "to": 1969
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107894"
+  },
+  {
+    "id": "diamonds-are-forever-1971",
+    "title": "Diamonds Are Forever",
+    "medium": "Film",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q107914"
+  },
+  {
+    "id": "live-and-let-die-1973",
+    "title": "Live and Let Die",
+    "medium": "Film",
+    "years": {
+      "from": 1973,
+      "to": 1973
+    },
+    "countries": ["GB", "US"],
+    "genres": ["Spy", "Adventure"],
+    "wikidataId": "Q27204"
+  },
+  {
+    "id": "casino-royale-novel-1953",
+    "title": "Casino Royale (novel)",
+    "medium": "Book",
+    "years": {
+      "from": 1953,
+      "to": 1953
+    },
+    "countries": ["GB"],
+    "genres": ["Spy"]
+  },
+  {
+    "id": "lucky-luke-1946",
+    "title": "Lucky Luke",
+    "medium": "Comic",
+    "years": {
+      "from": 1946,
+      "to": 2026
+    },
+    "countries": ["BE", "FR"],
+    "genres": ["Western", "Comedy", "Adventure"]
+  },
+  {
+    "id": "blueberry-1963",
+    "title": "Blueberry",
+    "medium": "Comic",
+    "years": {
+      "from": 1963,
+      "to": 2005
+    },
+    "countries": ["FR", "BE"],
+    "genres": ["Western"],
+    "wikidataId": "Q137308"
+  },
+  {
+    "id": "tex-willer-1948",
+    "title": "Tex Willer",
+    "medium": "Comic",
+    "years": {
+      "from": 1948,
+      "to": 2026
+    },
+    "countries": ["IT"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "jonah-hex-1972",
+    "title": "Jonah Hex",
+    "medium": "Comic",
+    "years": {
+      "from": 1972,
+      "to": 1985
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "goldfinger-song-1964",
+    "title": "Goldfinger (title song)",
+    "medium": "Music",
+    "years": {
+      "from": 1964,
+      "to": 1964
+    },
+    "countries": ["GB"],
+    "genres": ["Spy"]
+  },
+  {
+    "id": "the-saint-theme-1962",
+    "title": "The Saint (theme)",
+    "medium": "Music",
+    "years": {
+      "from": 1962,
+      "to": 1962
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure", "Crime"]
+  },
+  {
+    "id": "the-good-the-bad-and-the-ugly-score-1966",
+    "title": "The Good, the Bad and the Ugly (score)",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": ["IT"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "rawhide-theme-1958",
+    "title": "Rawhide (theme song)",
+    "medium": "Music",
+    "years": {
+      "from": 1958,
+      "to": 1958
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "mission-impossible-theme-1966",
+    "title": "Mission: Impossible (theme)",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": ["US"],
+    "genres": ["Spy", "Adventure"]
+  },
+  {
+    "id": "the-magnificent-seven-score-1960",
+    "title": "The Magnificent Seven (score)",
+    "medium": "Music",
+    "years": {
+      "from": 1960,
+      "to": 1960
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "the-persuaders-theme-1971",
+    "title": "The Persuaders! (theme)",
+    "medium": "Music",
+    "years": {
+      "from": 1971,
+      "to": 1971
+    },
+    "countries": ["GB"],
+    "genres": ["Adventure", "Comedy", "Crime"]
+  },
+  {
+    "id": "secret-agent-man-1966",
+    "title": "Secret Agent Man",
+    "medium": "Music",
+    "years": {
+      "from": 1966,
+      "to": 1966
+    },
+    "countries": ["US"],
+    "genres": ["Spy"]
+  },
+  {
+    "id": "do-not-forsake-me-1952",
+    "title": "Do Not Forsake Me, Oh My Darlin'",
+    "medium": "Music",
+    "years": {
+      "from": 1952,
+      "to": 1952
+    },
+    "countries": ["US"],
+    "genres": ["Western"]
+  },
+  {
+    "id": "the-avengers-theme-1965",
+    "title": "The Avengers (theme)",
+    "medium": "Music",
+    "years": {
+      "from": 1965,
+      "to": 1965
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure"]
+  },
+  {
+    "id": "james-bond-theme-1962",
+    "title": "The James Bond Theme",
+    "medium": "Music",
+    "years": {
+      "from": 1962,
+      "to": 1962
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure"]
+  },
+  {
+    "id": "live-and-let-die-song-1973",
+    "title": "Live and Let Die (title song)",
+    "medium": "Music",
+    "years": {
+      "from": 1973,
+      "to": 1973
+    },
+    "countries": ["GB"],
+    "genres": ["Spy", "Adventure"]
+  },
+  {
+    "id": "hawaii-five-o-theme-1968",
+    "title": "Hawaii Five-O (theme)",
+    "medium": "Music",
+    "years": {
+      "from": 1968,
+      "to": 1968
+    },
+    "countries": ["US"],
+    "genres": ["Crime"]
+  }
+]

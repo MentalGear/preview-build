@@ -1,0 +1,129 @@
+[
+  {
+    "id": "bond-first-film",
+    "kind": "Trivia",
+    "prompt": "What was the first James Bond film from Eon Productions?",
+    "choices": [
+      "From Russia with Love",
+      "Dr. No",
+      "Goldfinger",
+      "Casino Royale"
+    ],
+    "answerIndex": 1,
+    "fact": "It was released in 1962.",
+    "about": ["dr-no-1962"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "bond-creator",
+    "kind": "Trivia",
+    "prompt": "Who created James Bond?",
+    "choices": [
+      "Ian Fleming",
+      "Kingsley Amis",
+      "John Gardner",
+      "Graham Greene"
+    ],
+    "answerIndex": 0,
+    "about": ["casino-royale-novel-1953", "dr-no-1962"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "bond-lazenby",
+    "kind": "Trivia",
+    "prompt": "Who played Bond in \"On Her Majesty's Secret Service\" (1969)?",
+    "choices": [
+      "Sean Connery",
+      "Roger Moore",
+      "George Lazenby",
+      "Timothy Dalton"
+    ],
+    "answerIndex": 2,
+    "fact": "It was Lazenby's only outing as 007.",
+    "about": ["on-her-majestys-secret-service-1969"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "bond-oddjob",
+    "kind": "Trivia",
+    "prompt": "Which Bond film features the henchman Oddjob?",
+    "choices": ["Thunderball", "Goldfinger", "Dr. No", "Moonraker"],
+    "answerIndex": 1,
+    "about": ["goldfinger-1964"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "bond-felix",
+    "kind": "Trivia",
+    "prompt": "What is the name of Bond's CIA ally?",
+    "choices": ["Felix Leiter", "Bill Tanner", "Jack Wade", "Charles Robinson"],
+    "answerIndex": 0,
+    "about": ["casino-royale-novel-1953", "dr-no-1962"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "bond-blofeld-yolt",
+    "kind": "Trivia",
+    "prompt": "Who played Blofeld in \"You Only Live Twice\" (1967)?",
+    "choices": [
+      "Telly Savalas",
+      "Charles Gray",
+      "Donald Pleasence",
+      "Max von Sydow"
+    ],
+    "answerIndex": 2,
+    "about": ["you-only-live-twice-1967"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "bond-moore-first",
+    "kind": "Trivia",
+    "prompt": "What was Roger Moore's first film as 007?",
+    "choices": [
+      "The Man with the Golden Gun",
+      "Live and Let Die",
+      "The Spy Who Loved Me",
+      "Moonraker"
+    ],
+    "answerIndex": 1,
+    "about": ["live-and-let-die-1973"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "bond-connery-return",
+    "kind": "Trivia",
+    "prompt": "In which 1971 film did Sean Connery return as Bond?",
+    "choices": [
+      "Diamonds Are Forever",
+      "Thunderball",
+      "Never Say Never Again",
+      "You Only Live Twice"
+    ],
+    "answerIndex": 0,
+    "about": ["diamonds-are-forever-1971"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "bond-q-name",
+    "kind": "Trivia",
+    "prompt": "What is Q's name, first given in \"Dr. No\"?",
+    "choices": [
+      "Major Boothroyd",
+      "Captain Parker",
+      "Colonel Smithers",
+      "Commander Tanner"
+    ],
+    "answerIndex": 0,
+    "about": ["dr-no-1962"],
+    "difficulty": "Expert"
+  },
+  {
+    "id": "bond-goldfinger-singer",
+    "kind": "ThemeSong",
+    "prompt": "Who sang the title song of \"Goldfinger\" (1964)?",
+    "choices": ["Nancy Sinatra", "Shirley Bassey", "Tom Jones", "Lulu"],
+    "answerIndex": 1,
+    "about": ["goldfinger-1964", "goldfinger-song-1964"],
+    "difficulty": "Buff"
+  }
+]

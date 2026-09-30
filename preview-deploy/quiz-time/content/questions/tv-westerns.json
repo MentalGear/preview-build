@@ -1,0 +1,81 @@
+[
+  {
+    "id": "tvw-bonanza-ranch",
+    "kind": "Trivia",
+    "prompt": "What is the name of the Cartwright family ranch in \"Bonanza\"?",
+    "choices": ["Big Valley", "High Chaparral", "Ponderosa", "Shiloh"],
+    "answerIndex": 2,
+    "about": ["bonanza-1959"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "tvw-gunsmoke-town",
+    "kind": "Trivia",
+    "prompt": "Which town is \"Gunsmoke\" set in?",
+    "choices": ["Tombstone", "Dodge City", "Deadwood", "Abilene"],
+    "answerIndex": 1,
+    "about": ["gunsmoke-1955"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "tvw-gunsmoke-dillon",
+    "kind": "Trivia",
+    "prompt": "Who played Marshal Matt Dillon on television in \"Gunsmoke\"?",
+    "choices": [
+      "James Arness",
+      "James Garner",
+      "Chuck Connors",
+      "Hugh O'Brian"
+    ],
+    "answerIndex": 0,
+    "about": ["gunsmoke-1955"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "tvw-rawhide-eastwood",
+    "kind": "Trivia",
+    "prompt": "Which character did a young Clint Eastwood play in \"Rawhide\"?",
+    "choices": ["Gil Favor", "Rowdy Yates", "Pete Nolan", "Wishbone"],
+    "answerIndex": 1,
+    "about": ["rawhide-1959"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "tvw-have-gun",
+    "kind": "Trivia",
+    "prompt": "What is the name of the gun-for-hire in \"Have Gun – Will Travel\"?",
+    "choices": ["Paladin", "Cheyenne", "Maverick", "Yancy"],
+    "answerIndex": 0,
+    "about": ["have-gun-will-travel-1957"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "tvw-wild-wild-west",
+    "kind": "Trivia",
+    "prompt": "In \"The Wild Wild West\" (1965), who is James West's partner?",
+    "choices": ["Artemus Gordon", "Jingles", "Festus", "Hoss"],
+    "answerIndex": 0,
+    "fact": "The show mixed Westerns with Bond-style spy gadgets.",
+    "about": ["the-wild-wild-west-1965"],
+    "difficulty": "Expert"
+  },
+  {
+    "id": "tvw-lone-ranger-horse",
+    "kind": "Trivia",
+    "prompt": "What is the name of the Lone Ranger's horse?",
+    "choices": ["Trigger", "Scout", "Silver", "Champion"],
+    "answerIndex": 2,
+    "fact": "Scout was Tonto's horse. Trigger was Roy Rogers'.",
+    "about": ["the-lone-ranger-1949"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "tvw-virginian-novel",
+    "kind": "Trivia",
+    "prompt": "\"The Virginian\" (1962) is based on a novel by which author?",
+    "choices": ["Zane Grey", "Owen Wister", "Louis L'Amour", "Max Brand"],
+    "answerIndex": 1,
+    "about": ["the-virginian-1962", "the-virginian-novel-1902"],
+    "difficulty": "Expert"
+  }
+]

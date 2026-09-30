@@ -1,0 +1,130 @@
+[
+  {
+    "id": "cw-searchers-director",
+    "kind": "Trivia",
+    "prompt": "Who directed \"The Searchers\" (1956)?",
+    "choices": ["John Ford", "Howard Hawks", "Anthony Mann", "Sam Peckinpah"],
+    "answerIndex": 0,
+    "fact": "Ford shot much of it in Monument Valley, his favourite location.",
+    "about": ["the-searchers-1956"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "cw-high-noon-train",
+    "kind": "Trivia",
+    "prompt": "In \"High Noon\" (1952), when does the train carrying Frank Miller arrive?",
+    "choices": ["At dawn", "At noon", "At sunset", "At midnight"],
+    "answerIndex": 1,
+    "fact": "The film plays out in close to real time.",
+    "about": ["high-noon-1952"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "cw-man-no-name",
+    "kind": "Trivia",
+    "prompt": "Who played the \"Man with No Name\" in the Dollars Trilogy?",
+    "choices": [
+      "Lee Van Cleef",
+      "Eli Wallach",
+      "Clint Eastwood",
+      "Gian Maria Volonté"
+    ],
+    "answerIndex": 2,
+    "about": [
+      "a-fistful-of-dollars-1964",
+      "for-a-few-dollars-more-1965",
+      "the-good-the-bad-and-the-ugly-1966"
+    ],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "cw-fistful-yojimbo",
+    "kind": "Trivia",
+    "prompt": "\"A Fistful of Dollars\" (1964) is an unofficial remake of which film?",
+    "choices": ["Seven Samurai", "Rashomon", "Sanjuro", "Yojimbo"],
+    "answerIndex": 3,
+    "fact": "Kurosawa's studio sued, and won a share of the profits.",
+    "about": ["a-fistful-of-dollars-1964"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "cw-once-upon-director",
+    "kind": "Trivia",
+    "prompt": "Who directed \"Once Upon a Time in the West\" (1968)?",
+    "choices": [
+      "Sergio Corbucci",
+      "Sergio Leone",
+      "Sergio Sollima",
+      "Duccio Tessari"
+    ],
+    "answerIndex": 1,
+    "about": ["once-upon-a-time-in-the-west-1968"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "cw-mag-seven-source",
+    "kind": "Trivia",
+    "prompt": "\"The Magnificent Seven\" (1960) is based on which film?",
+    "choices": [
+      "Seven Samurai",
+      "Yojimbo",
+      "The Hidden Fortress",
+      "Throne of Blood"
+    ],
+    "answerIndex": 0,
+    "about": ["the-magnificent-seven-1960"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "cw-true-grit-role",
+    "kind": "Trivia",
+    "prompt": "Which character won John Wayne his Oscar in \"True Grit\" (1969)?",
+    "choices": [
+      "Ethan Edwards",
+      "Rooster Cogburn",
+      "Tom Doniphon",
+      "John T. Chance"
+    ],
+    "answerIndex": 1,
+    "about": ["true-grit-1969"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "cw-rio-bravo",
+    "kind": "Trivia",
+    "prompt": "Who directed \"Rio Bravo\" (1959)?",
+    "choices": [
+      "John Sturges",
+      "Budd Boetticher",
+      "Howard Hawks",
+      "Delmer Daves"
+    ],
+    "answerIndex": 2,
+    "about": ["rio-bravo-1959"],
+    "difficulty": "Buff"
+  },
+  {
+    "id": "cw-butch-sundance",
+    "kind": "Trivia",
+    "prompt": "In \"Butch Cassidy and the Sundance Kid\" (1969), who played Sundance?",
+    "choices": [
+      "Paul Newman",
+      "Robert Redford",
+      "Steve McQueen",
+      "Warren Beatty"
+    ],
+    "answerIndex": 1,
+    "about": ["butch-cassidy-and-the-sundance-kid-1969"],
+    "difficulty": "Easy"
+  },
+  {
+    "id": "cw-unforgiven",
+    "kind": "Trivia",
+    "prompt": "Which Western won Best Picture at the 1993 Academy Awards?",
+    "choices": ["Dances with Wolves", "Tombstone", "Wyatt Earp", "Unforgiven"],
+    "answerIndex": 3,
+    "fact": "\"Dances with Wolves\" had won two years earlier.",
+    "about": ["unforgiven-1992"],
+    "difficulty": "Buff"
+  }
+]
