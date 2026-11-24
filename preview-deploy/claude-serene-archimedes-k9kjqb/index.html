@@ -1038,16 +1038,16 @@
         :root[data-theme="dark"] { --bg-color: #20242c; }
         :root[data-theme="light"] { --bg-color: #f5f0ea; --text-color: #1e2430; }
     </style>
-    <script src="vendor/three.min.js?v=b47fc1fc3ecb"></script>
-    <script src="vendor/OrbitControls.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/geodata-walferdange.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/geodata-inset-raschpetzer.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/geodata-context-walferdange.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/buildings-context.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/buildings3d-context.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/data.bundle.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/vectors-walferdange.js?v=b47fc1fc3ecb"></script>
-    <script src="assets/paths-walferdange.js?v=b47fc1fc3ecb"></script>
+    <script src="vendor/three.min.js?v=5853a9fb0a8e"></script>
+    <script src="vendor/OrbitControls.js?v=5853a9fb0a8e"></script>
+    <script src="assets/geodata-walferdange.js?v=5853a9fb0a8e"></script>
+    <script src="assets/geodata-inset-raschpetzer.js?v=5853a9fb0a8e"></script>
+    <script src="assets/geodata-context-walferdange.js?v=5853a9fb0a8e"></script>
+    <script src="assets/buildings-context.js?v=5853a9fb0a8e"></script>
+    <script src="assets/buildings3d-context.js?v=5853a9fb0a8e"></script>
+    <script src="assets/data.bundle.js?v=5853a9fb0a8e"></script>
+    <script src="assets/vectors-walferdange.js?v=5853a9fb0a8e"></script>
+    <script src="assets/paths-walferdange.js?v=5853a9fb0a8e"></script>
 </head>
 <body class="mode-views">
 
@@ -8752,14 +8752,17 @@
         // How far the current shot's reveal is open (0 = closed, 1 = fully revealed).
         function attractRevealAt(now) {
             const shot = attract.shots[attract.idx];
-            if (!shot || !shot.reveal) return 0;
+            if (!shot || !shot.reveal || attract.revealDone) return 0;   // the cut-through plays once per visit
             const t = ((attract.manual ? attract.pausedAt : now) - attract.shotStart) / 1000, k = shot.reveal;
-            if (t <= k[0][0]) return k[0][1];
-            for (let i = 0; i < k.length - 1; i++) {
+            let r = k[k.length - 1][1];
+            if (t <= k[0][0]) r = k[0][1];
+            else for (let i = 0; i < k.length - 1; i++) {
                 const [t0, v0] = k[i], [t1, v1] = k[i + 1];
-                if (t <= t1) return v0 + (v1 - v0) * easeInOut((t - t0) / (t1 - t0));
+                if (t <= t1) { r = v0 + (v1 - v0) * easeInOut((t - t0) / (t1 - t0)); break; }
             }
-            return k[k.length - 1][1];
+            if (r > 0.5) attract.revealOpen = true;
+            else if (attract.revealOpen && r <= 0.02 && t > k[1][0]) attract.revealDone = true;   // it has opened and closed again
+            return r;
         }
         function setAttractPass(pass) {
             const bp = pass === 'blueprint';
